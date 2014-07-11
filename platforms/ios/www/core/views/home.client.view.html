@@ -13,7 +13,11 @@
 				an app to give and listen to 
 				apology
 			</h2>
+			<div>		
+				<div class="alert alert-warning text-center" data-ng-if="apology.$resolved && !apology.length">
+					No articles yet, why don't you <a href="#!/apology/create">create one</a>?
+				</div>
+			</div>
 		</div>
-		<button ng-click="captureAudio()" class="btn btn-ptimary">CLICK ME!</button>
 	</div>
 </section>
