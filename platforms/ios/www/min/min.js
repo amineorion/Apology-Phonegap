@@ -42741,6 +42741,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                 // specific for iOS device: recording start here in call-back function
                 recordNow();
             }
+            $scope.mediaFiles.push(mediaRecFile)
 
         }        
 
@@ -42843,7 +42844,9 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
             options.mimeType="audio/wav"
             options.chunkedMode = false;
             options.params = { // Whatever you populate options.params with, will be available in req.body at the server-side.
-                "description": "Uploaded from my phone"
+                "description": "Uploaded from my phone",
+                "selectedType" : "username",
+                "username" : 'denis'
             };
 
             // Transfer picture to server
