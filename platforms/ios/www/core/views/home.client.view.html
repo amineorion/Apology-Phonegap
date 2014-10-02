@@ -3,7 +3,7 @@
 		<div class="row"> 
 			<h2>Welcome To</h2>
 		</div>
-		<div class="row">
+<!-- 		<div class="row">
 			<h1>Apology.fm</h1>
 		</div>
 		<div class="row">
@@ -18,6 +18,22 @@
 					No articles yet, why don't you <a href="#!/apology/create">create one</a>?
 				</div>
 			</div>
-		</div>
+		</div> -->
+		<p>
+			<button ng-click="captureAudio()" class="btn btn-primary">CLICK ME!</button>
+			<button ng-click="stopRecording()" class="btn btn-primary">STOP ME!</button>			
+		</p>
+
+		<p ng-repeat='file in mediaFiles'>
+			{{ $index+1 }}. {{ file }}
+			<button ng-click="playMedia(file)" class="btn btn-primary">PLAY ME!</button>
+			<button ng-click="pauseMedia()" class="btn btn-primary">Pause ME!</button>
+			<button ng-click="stopMedia()" class="btn btn-primary">Stop ME!</button>
+		</p>
+
+		<p>
+		</p>
+
+
 	</div>
 </section>

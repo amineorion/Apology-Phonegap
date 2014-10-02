@@ -34787,283 +34787,6 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
     "</ul>");
 }]);
 
-/* --- Made by justgoscha and licensed under MIT license --- */
-
-var app = angular.module('autocomplete', []);
-
-app.directive('autocomplete', function() {
-  var index = -1;
-
-  return {
-    restrict: 'E',
-    scope: {
-      searchParam: '=ngModel',
-      suggestions: '=data',
-      onType: '=onType',
-      onSelect: '=onSelect'
-    },
-    controller: ['$scope', function($scope){
-      // the index of the suggestions that's currently selected
-      $scope.selectedIndex = -1;
-
-      // set new index
-      $scope.setIndex = function(i){
-        $scope.selectedIndex = parseInt(i);
-      };
-
-      this.setIndex = function(i){
-        $scope.setIndex(i);
-        $scope.$apply();
-      };
-
-      $scope.getIndex = function(i){
-        return $scope.selectedIndex;
-      };
-
-      // watches if the parameter filter should be changed
-      var watching = true;
-
-      // autocompleting drop down on/off
-      $scope.completing = false;
-
-      // starts autocompleting on typing in something
-      $scope.$watch('searchParam', function(newValue, oldValue){
-        if (oldValue === newValue) {
-          return;
-        }
-
-        if(watching && $scope.searchParam) {
-          $scope.completing = true;
-          $scope.searchFilter = $scope.searchParam;
-          $scope.selectedIndex = -1;
-        }
-
-        // function thats passed to on-type attribute gets executed
-        if($scope.onType)
-          $scope.onType($scope.searchParam);
-      });
-
-      // for hovering over suggestions
-      this.preSelect = function(suggestion){
-
-        watching = false;
-
-        // this line determines if it is shown
-        // in the input field before it's selected:
-        //$scope.searchParam = suggestion;
-
-        $scope.$apply();
-        watching = true;
-
-      };
-
-      $scope.preSelect = this.preSelect;
-
-      this.preSelectOff = function(){
-        watching = true;
-      };
-
-      $scope.preSelectOff = this.preSelectOff;
-
-      // selecting a suggestion with RIGHT ARROW or ENTER
-      $scope.select = function(suggestion){
-        if(suggestion){
-          $scope.searchParam = suggestion;
-          $scope.searchFilter = suggestion;
-          if($scope.onSelect)
-            $scope.onSelect(suggestion);
-        }
-        watching = false;
-        $scope.completing = false;
-        setTimeout(function(){watching = true;},1000);
-        $scope.setIndex(-1);
-      };
-
-
-    }],
-    link: function(scope, element, attrs){
-
-      var attr = '';
-
-      // Default atts
-      scope.attrs = {
-        "placeholder": "start typing...",
-        "class": "",
-        "id": "",
-        "inputclass": "",
-        "inputid": ""
-      };
-
-      for (var a in attrs) {
-        attr = a.replace('attr', '').toLowerCase();
-        // add attribute overriding defaults
-        // and preventing duplication
-        if (a.indexOf('attr') === 0) {
-          scope.attrs[attr] = attrs[a];
-        }
-      }
-
-      if (attrs.clickActivation) {
-        element[0].onclick = function(e){
-          if(!scope.searchParam){
-            scope.completing = true;
-            scope.$apply();
-          }
-        };
-      }
-
-      var key = {left: 37, up: 38, right: 39, down: 40 , enter: 13, esc: 27};
-
-      document.addEventListener("keydown", function(e){
-        var keycode = e.keyCode || e.which;
-
-        switch (keycode){
-          case key.esc:
-            // disable suggestions on escape
-            scope.select();
-            scope.setIndex(-1);
-            scope.$apply();
-            e.preventDefault();
-        }
-      }, true);
-
-      document.addEventListener("blur", function(e){
-        // disable suggestions on blur
-        // we do a timeout to prevent hiding it before a click event is registered
-        setTimeout(function() {
-          scope.select();
-          scope.setIndex(-1);
-          scope.$apply();
-        }, 200);
-      }, true);
-
-      element[0].addEventListener("keydown",function (e){
-        var keycode = e.keyCode || e.which;
-
-        var l = angular.element(this).find('li').length;
-
-        // implementation of the up and down movement in the list of suggestions
-        switch (keycode){
-          case key.up:
-
-            index = scope.getIndex()-1;
-            if(index<-1){
-              index = l-1;
-            } else if (index >= l ){
-              index = -1;
-              scope.setIndex(index);
-              scope.preSelectOff();
-              break;
-            }
-            scope.setIndex(index);
-
-            if(index!==-1)
-              scope.preSelect(angular.element(angular.element(this).find('li')[index]).text());
-
-            scope.$apply();
-
-            break;
-          case key.down:
-            index = scope.getIndex()+1;
-            if(index<-1){
-              index = l-1;
-            } else if (index >= l ){
-              index = -1;
-              scope.setIndex(index);
-              scope.preSelectOff();
-              scope.$apply();
-              break;
-            }
-            scope.setIndex(index);
-
-            if(index!==-1)
-              scope.preSelect(angular.element(angular.element(this).find('li')[index]).text());
-
-            break;
-          case key.left:
-            break;
-          case key.right:
-          case key.enter:
-
-            index = scope.getIndex();
-            // scope.preSelectOff();
-            if(index !== -1)
-              scope.select(angular.element(angular.element(this).find('li')[index]).text());
-            scope.setIndex(-1);
-            scope.$apply();
-
-            break;
-          case key.esc:
-            // disable suggestions on escape
-            scope.select();
-            scope.setIndex(-1);
-            scope.$apply();
-            e.preventDefault();
-            break;
-          default:
-            return;
-        }
-
-        if(scope.getIndex()!==-1 || keycode == key.enter)
-          e.preventDefault();
-      });
-    },
-    template: '\
-        <div class="autocomplete {{ attrs.class }}" id="{{ attrs.id }}">\
-          <input\
-            type="text"\
-            ng-model="searchParam"\
-            placeholder="{{ attrs.placeholder }}"\
-            class="{{ attrs.inputclass }}"\
-            id="{{ attrs.inputid }}"/>\
-          <ul ng-show="completing">\
-            <li\
-              suggestion\
-              ng-repeat="suggestion in suggestions | filter:searchFilter | orderBy:\'toString()\' track by $index"\
-              index="{{ $index }}"\
-              val="{{ suggestion }}"\
-              ng-class="{ active: ($index === selectedIndex) }"\
-              ng-click="select(suggestion)"\
-              ng-bind-html="suggestion | highlight:searchParam"></li>\
-          </ul>\
-        </div>'
-  };
-});
-
-app.filter('highlight', ['$sce', function ($sce) {
-  return function (input, searchParam) {
-    if (typeof input === 'function') return '';
-    if (searchParam) {
-      var words = '(' +
-            searchParam.split(/\ /).join(' |') + '|' +
-            searchParam.split(/\ /).join('|') +
-          ')',
-          exp = new RegExp(words, 'gi');
-      if (words.length) {
-        input = input.replace(exp, "<span class=\"highlight\">$1</span>");
-      }
-    }
-    return $sce.trustAsHtml(input);
-  };
-}]);
-
-app.directive('suggestion', function(){
-  return {
-    restrict: 'A',
-    require: '^autocomplete', // ^look for controller on parents element
-    link: function(scope, element, attrs, autoCtrl){
-      element.bind('mouseenter', function() {
-        autoCtrl.preSelect(attrs.val);
-        autoCtrl.setIndex(attrs.index);
-      });
-
-      element.bind('mouseleave', function() {
-        autoCtrl.preSelectOff();
-      });
-    }
-  };
-});
-
 /**!
  * FileAPI a set of tools for working with files
  *
@@ -42537,7 +42260,7 @@ var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'apologyfm';
 	var apiRoot = 'http://localhost:3000';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'angularFileUpload', 'autocomplete'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'angularFileUpload'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName) {
@@ -42566,40 +42289,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
 	function($locationProvider) {
 		$locationProvider.hashPrefix('!');
 	}
-])
-.run(function($rootScope, $http) {
-
-	var checkNotifications = function () {
-		$http.get(ApplicationConfiguration.apiRoot + '/check/notification').success(function(response) {
-			$rootScope.authentication.notifications = response;
-		}).error(function(response) {
-			console.log(response.message);
-		});
-		console.log('check');
-	}
-
-	$rootScope.$watch('authentication.user', function () {
-		if ($rootScope.authentication.user !== undefined) {
-			checkNotifications();
-		}
-	});
-
-	$rootScope.$watch('authentication.notifications', function () {
-		if ($rootScope.authentication.notifications > 0) {
-			$rootScope.isNotification = true;
-			$rootScope.notificationsCount = $rootScope.authentication.notifications;
-		} else {
-			$rootScope.isNotification = false;
-			$rootScope.notificationsCount = $rootScope.authentication.notifications;	
-		}
-	});
-
-	$rootScope.$on('$locationChangeStart', function(next, current) { 
-		if ($rootScope.authentication.user !== undefined) {
-			checkNotifications();
-		}
- 	});
-});
+]);
 
 //Then define the init function for starting up the application
 angular.element(document).ready(function() {
@@ -42665,108 +42355,9 @@ angular.module('apologies').config(['$stateProvider',
 'use strict';
 
 // Apologies controller
-angular.module('apologies').controller('ApologiesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Apologies', '$http',
-	function($scope, $stateParams, $location, Authentication, Apologies, $http) {
+angular.module('apologies').controller('ApologiesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Apologies',
+	function($scope, $stateParams, $location, Authentication, Apologies ) {
 		$scope.authentication = Authentication;
-
-		$scope.seletedType = 'username';
-		$scope.receipient = 'nobody';
-		$scope.isEmpty = true;
-		$scope.users = [];
-
-		$scope.$watch('email', function () {
-			if ($scope.email === '' || $scope.email === undefined) {
-				if ($scope.seletedType === 'email') {
-					$scope.isEmpty = true;
-				}
-			} else {
-				if ($scope.seletedType === 'email') {
-					$scope.isEmpty = false;
-				}
-			}
-		})
-
-		 var captureSuccess = function (mediaFiles) {
-            var i, len;
-            for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-                $scope.uploadFile(mediaFiles[i]);
-            }
-        }
-
-
-        var captureError = function (error) {
-            var msg = 'An error occurred during capture: ' + error.code;
-            navigator.notification.alert(msg, null, 'Uh oh!');
-        }
-
-        $scope.captureAudio = function () {
-            navigator.device.capture.captureAudio(captureSuccess, captureError, {limit: 1, duration: 30});
-        }
-
-        $scope.uploadFile = function (mediaFile) {
-            var options = new FileUploadOptions();
-            options.fileKey="file";
-            options.fileName=mediaFile.name;
-            options.mimeType="audio/wav"
-            options.chunkedMode = false;
-            if ($scope.seletedType === 'username') {
-            	if ($scope.username !== undefined && $scope.username !== '') {
-	            	options.params = {
-		                'username': $scope.username,
-		                'selectedType': $scope.seletedType
-	            	};
-            	} else{
-            		return null;
-            	}
-            } else if ($scope.seletedType === 'email') {
-            	if ($scope.email !== undefined && $scope.email !== '') {
-	            	options.params = {
-		                'email': $scope.email,
-		                'selectedType': $scope.seletedType
-	            	};
-            	} else {
-            		return null;
-            	}
-            }
-
-            var ft = new FileTransfer();
-            ft.upload(mediaFile.fullPath, ApplicationConfiguration.apiRoot + '/apologies', function(r) {
-                   	console.log( "Upload successful: "+r.bytesSent+" bytes uploaded.");
-                   }, function(error) {
-                   	console.log("Upload failed: Code = "+error.code);
-                   }, options, true);
-
-        }
-
-
-        $scope.updateUsers = function(typed){
-        	$scope.users = [];
-        	if (typed != '') {
-	            $http({ method: 'GET', url: ApplicationConfiguration.apiRoot + '/users/' + $scope.username})
-			     .success(function (data,status) {
-			     	if (data.length === 1) {
-			     		$scope.username = data[0].username;
-			     		$scope.isEmpty = false;
-			     		$scope.receipient = $scope.username;
-			     	} else {
-			     		var i = 0;
-			     		_.forEach(data, function (d) {
-			     			if ($scope.username === d.username) {
-			     				$scope.receipient = d.username;
-			     				$scope.isEmpty = false;
-			     				i++;
-			     			} else {
-			     				if (i === 0) {
-			     					$scope.isEmpty = true;
-			     					$scope.receipient = 'nobody';
-			     				}
-			     			}
-			     			$scope.users.push(d.username);
-			     		})
-			     	}
-				});
-        	}
-        }
 
 		// Create new Apology
 		$scope.create = function() {
@@ -42802,6 +42393,16 @@ angular.module('apologies').controller('ApologiesController', ['$scope', '$state
 			}
 		};
 
+		// Update existing Apology
+		$scope.update = function() {
+			var apology = $scope.apology ;
+
+			apology.$update(function() {
+				$location.path(ApplicationConfiguration.apiRoot + 'apologies/' + apology._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
 
 		// Find a list of Apologies
 		$scope.find = function() {
@@ -42813,39 +42414,6 @@ angular.module('apologies').controller('ApologiesController', ['$scope', '$state
 			$scope.apology = Apologies.get({ 
 				apologyId: $stateParams.apologyId
 			});
-		};
-	}
-]);
-'use strict';
-
-angular.module('apologies').directive('create', ['$timeout', '$http',
-	function($timeout, $http) {
-		return {
-			restrict: 'A',
-			link: function postLink(scope, element, attrs) {
-
-				var changeRadio = function (e) {
-					if (attrs.create == 'username') {
-						if (scope.seletedType != 'username') {
-							scope.seletedType = 'username';
-						}
-					}	else if (attrs.create == 'email') {
-						if (scope.seletedType != 'email') {
-							scope.seletedType = 'email';
-						}
-					}
-				}
-
-				element.bind('keypress', function(e) {
-					changeRadio(e);
-				})
-				element.bind('click', function(e) {
-					changeRadio(e);
-				})
-				element.bind('focus', function(e) {
-					changeRadio(e);
-				})
-			}
 		};
 	}
 ]);
@@ -43028,9 +42596,9 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 ]);
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus', '$http', '$rootScope',
-	function($scope, Authentication, Menus, $http, $rootScope) {
-		$rootScope.authentication = Authentication;
+angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus',
+	function($scope, Authentication, Menus) {
+		$scope.authentication = Authentication;
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
 
@@ -43043,7 +42611,6 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 		$scope.$on('$stateChangeSuccess', function() {
 			$scope.isCollapsed = false;
 		});
-
 		
 		// if (user) {
 		// 	if (user.isAllInformation === false) {
@@ -43061,6 +42628,240 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 		$scope.authentication = Authentication;
 
 
+        var captureSuccess = function (mediaFiles) {
+            var i, len;
+            for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+                $scope.uploadFile(mediaFiles[i]);
+            }
+        }
+
+        // Called if something bad happens.
+        //
+        var captureError = function (error) {
+            var msg = 'An error occurred during capture: ' + error.code;
+            navigator.notification.alert(msg, null, 'Uh oh!');
+        }
+
+
+
+
+
+
+
+
+
+        var ua = navigator.userAgent.toLowerCase();
+
+        var phoneCheck = {
+            ios: ua.match(/(iphone|ipod|ipad)/i),
+            blackberry: ua.match(/blackberry/i),
+            android: ua.match(/android/i),
+            windowsphone: ua.match(/windows phone/i)
+        };
+
+        // detect browser
+        var browserCheck = {
+            chrome: ua.match(/chrome/i),
+            ie: ua.match(/msie/i),
+            firefox: ua.match(/firefox/i),
+            safari: ua.match(/safari/i), //this one is the same as chrome. 
+            opera: ua.match(/opera/i)
+        };
+
+        // detect HTML5 tag support
+        var myDeviceSupport = {
+            HTML5_audio: !!(document.createElement('audio').canPlayType),
+            HTML5_audio_mp3: !!(document.createElement('audio').canPlayType) && document.createElement('audio').canPlayType('audio/mpeg') !== "",
+            HTML5_audio_wav: !!(document.createElement('audio').canPlayType) && document.createElement('audio').canPlayType('audio/wav') !== "",
+            HTML5_geolocation: navigator.geolocation
+        };
+        function onMediaCallSuccess() {
+            createdStatus = true;
+            console.log("***test: new Media() succeeded ***");
+            $scope.uploadFile({
+              name     : mediaRecFile,
+              fullPath : mediaFileFullName
+            })
+        }
+        // Media() error callback        
+        function onMediaCallError(error) {
+            console.log("***test: new Media() failed ***", error);
+        }
+        // A button will call this function
+        //
+        $scope.mediaFiles = [];
+        var mediaRecFile = "";
+        var my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
+        var my_player = null;
+        var mediaFileFullName = null;
+        var filepath = '';
+
+        function recordNow() {
+            if (my_recorder) {
+                my_recorder.startRecord();
+                // document.getElementById('RecStatusID').innerHTML = "Status: recording";
+                console.log("***test:  recording started: in startRecording()***");
+            }
+            else
+                console.log("***test:  my_recorder==null: in startRecording()***");
+
+            // reset the recTime every time when recording
+            // recTime = 0;
+
+            // Stop recording after 10 sec
+            // progressTimmer = setInterval(function() {
+            //     recTime = recTime + 1;
+            //     setAudioPosition('media_rec_pos', recTime + " sec");
+            //     if (recTime >= 10)
+            //         stopRecording();
+            //     console.log("***test: interval-func()***");
+            // }, 1000);
+        }
+
+        function onOK_GetFile(fileEntry) {
+            console.log("***test: File " + mediaRecFile + " at " + fileEntry.fullPath);
+
+            filepath = fileEntry.toURL()
+            
+            // save the full file name
+            mediaFileFullName = fileEntry.fullPath;
+            
+            if (phoneCheck.ios)
+                mediaRecFile = mediaFileFullName;
+
+            if (checkFileOnly === true) { // check if file exist at app launch. 
+                mediaFileExist = true;
+                
+            } 
+            else { // record on iOS
+                
+                // create media object using full media file name 
+                my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
+
+                // specific for iOS device: recording start here in call-back function
+                recordNow();
+            }
+
+        }        
+
+        // Stop recording
+        $scope.stopRecording = function () {
+            if (my_recorder) 
+                my_recorder.stopRecord(); // the file should be moved to "/sdcard/"+mediaRecFile
+            console.log("***test: recording stopped***");
+        }
+        
+        $scope.playMedia = function (file) {
+          console.log('file', file);
+          // the existing medail should be on /sdcard/ for android. 
+          if (phoneCheck.android) {
+              my_player = new Media("/sdcard/" + file, onMediaCallSuccess, onMediaCallError);
+
+              console.log("***test: Open file:" + file);
+          } else if (phoneCheck.windowsphone) // windows phone
+              my_player = new Media(file, onMediaCallSuccess, onMediaCallError);
+          else if (phoneCheck.ios) {
+              my_player = new Media('/' + file, onMediaCallSuccess, onMediaCallError);
+          }
+          my_player.play();
+        }
+
+        $scope.pauseMedia = function () {
+          // Play audio
+          if (my_player) {
+              my_player.pause();
+          }
+        }
+        $scope.stopMedia = function () {
+          // Play audio
+          if (my_player) {
+              my_player.stop();
+          }
+        }
+
+        function onSuccessFileSystem(fileSystem) {
+            console.log("***test: fileSystem.root.name: " + fileSystem.root.name);
+
+            if (checkFileOnly === true)
+                fileSystem.root.getFile(mediaRecFile, { create: false, exclusive: false }, onOK_GetFile, null);
+            else
+                fileSystem.root.getFile(mediaRecFile, { create: true, exclusive: false }, onOK_GetFile, null);
+            
+        }
+        $scope.captureAudio = function () {
+
+            mediaRecFile = "myRecording" + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1) + ".wav";
+
+
+
+            // create media object - overwrite existing recording
+            if (my_recorder)
+                my_recorder.startRecord();
+
+            if (phoneCheck.android) {
+                my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
+                console.log("***test: new Media() for android ***");
+
+                recordNow();
+            }
+            else if (phoneCheck.windowsphone) {
+                my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
+                console.log("***test: new Media() for Windows Phone ***");
+
+                recordNow();
+            }
+            else if (phoneCheck.ios) {
+                //first create the file
+                checkFileOnly = false;
+                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccessFileSystem, function() {
+                    console.log("***test: failed in creating media file in requestFileSystem");
+                });
+
+                console.log("***test: new Media() for ios***");
+            }            
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        // Upload files to server
+        $scope.uploadFile = function (mediaFile) {
+
+            console.log('mediaFile', mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1));
+
+            var options = new FileUploadOptions();
+            options.fileKey="file";
+            options.fileName = mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1);
+            options.mimeType="audio/wav"
+            options.chunkedMode = false;
+            options.params = { // Whatever you populate options.params with, will be available in req.body at the server-side.
+                "description": "Uploaded from my phone"
+            };
+
+            // Transfer picture to server
+            var ft = new FileTransfer();
+            ft.upload(
+              filepath, 
+              encodeURI(ApplicationConfiguration.apiRoot + '/apologies'),
+              // ApplicationConfiguration.apiRoot + '/apologies', 
+              function(r) {
+                console.log( "Upload successful: "+r.bytesSent+" bytes uploaded.");
+                console.log('r',r);
+              },
+              function(error) {
+                console.log("Upload failed: Code = "+error.code, error);
+              }, options, true);
+        }
+
+
     }
 ]);
 'use strict';
@@ -43073,27 +42874,12 @@ angular.module('core').controller('PlaybackController', ['$scope', 'Authenticati
 
         $http.get(ApplicationConfiguration.apiRoot + '/apologies').success(function(response) {
             $scope.apologies = response;
-            $scope.myApologies = [];
-            $scope.forMeApologies = [];
             _.forEach($scope.apologies, function (apology) {
                 apology.path = $sce.trustAsResourceUrl(apology.path);
-                if (apology.user == $scope.authentication.user._id) {
-                    $scope.myApologies.push(apology);
-                } else {
-                    $scope.forMeApologies.push(apology);
-                }
             });
         }).error(function(response) {
             $scope.error = response.message;
         });
-
-        $scope.listened = function (apology) {
-            $http.put(ApplicationConfiguration.apiRoot + '/apologies/' + apology._id).success(function(response) {
-                console.log(response);
-            }).error(function(response) {
-                $scope.error = response.message;
-            });
-        }
     }
 ]);
 'use strict';
@@ -43320,9 +43106,9 @@ angular.module('users').config(['$stateProvider',
 ]);
 'use strict';
 
-angular.module('users').controller('AuthenticationController', ['$scope', '$http', '$location', 'Authentication', '$rootScope',
-	function($scope, $http, $location, Authentication, $rootScope) {
-		$rootScope.authentication = Authentication;
+angular.module('users').controller('AuthenticationController', ['$scope', '$http', '$location', 'Authentication',
+	function($scope, $http, $location, Authentication) {
+		$scope.authentication = Authentication;
 
 		//If user is signed in then redirect back home
 		if ($scope.authentication.user) $location.path('/');
@@ -43330,7 +43116,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		$scope.signup = function() {
 			$http.post(ApplicationConfiguration.apiRoot + '/auth/signup', $scope.credentials).success(function(response) {
 				//If successful we assign the response to the global user model
-				$rootScope.authentication.user = response;
+				$scope.authentication.user = response;
 
 				//And redirect to the index page
 				$location.path('/');
@@ -43342,15 +43128,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		$scope.signin = function() {
 			$http.post(ApplicationConfiguration.apiRoot + '/auth/signin', $scope.credentials).success(function(response) {
 				//If successful we assign the response to the global user model
-				$rootScope.authentication.user = response;
-				// $http.get(ApplicationConfiguration.apiRoot + '/check/notification').success(function(response) {
+				$scope.authentication.user = response;
 
-				// 	$rootScope.authentication.notifications = response;
-				// 	console.log($scope.authentication.notifications);
-					
-				// }).error(function(response) {
-				// 	console.log(response.message);
-				// });
 				//And redirect to the index page
 				$location.path('/');
 			}).error(function(response) {
@@ -43399,7 +43178,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 		$scope.removeUserSocialAccount = function(provider) {
 			$scope.success = $scope.error = null;
 
-			$http.delete(ApplicationConfiguration.apiRoot + '/users/accounts', {
+			$http.delete('/users/accounts', {
 				params: {
 					provider: provider
 				}
@@ -43448,8 +43227,7 @@ angular.module('users').factory('Authentication', [
 		var _this = this;
 
 		_this._data = {
-			user: window.user,
-			notifications: 0
+			user: window.user
 		};
 
 		return _this._data;
@@ -43460,7 +43238,7 @@ angular.module('users').factory('Authentication', [
 // Users service used for communicating with the users REST endpoint
 angular.module('users').factory('Users', ['$resource',
 	function($resource) {
-		return $resource(ApplicationConfiguration.apiRoot + '/users', {}, {
+		return $resource('users', {}, {
 			update: {
 				method: 'PUT'
 			}
