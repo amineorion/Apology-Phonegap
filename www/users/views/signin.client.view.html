@@ -1,5 +1,36 @@
-<section class="row" data-ng-controller="AuthenticationController">
-	<h3 class="col-md-12 text-center">Log In using your social accounts</h3>
+<section class="" data-ng-controller="AuthenticationController">
+
+
+	<div class="col-md-12 text-center">
+		<div class='login-logo login-main-width'>
+			<img src="./core/img/logo.gif"></img>
+		</div>
+		<div class='login-input login-main-width'>
+			<input type='text' placeholder='Login' ng-model='credentials.username' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Login'" ></input>
+			<span ng-show="signInForm.username.$invalid">UserName</span>
+			<input type='password' placeholder='Password' ng-model='credentials.password' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" ></input>
+			<span ng-show="signInForm.password.$invalid">Password</span>
+		</div>
+		<div class='login-remember login-main-width'>
+			<img src="">
+		</div>
+		<div class='login-buttons login-main-width row'>
+			<a ng-click='goTo("/signup")' class="col-xs-6">
+				<img src="./core/img/btn-register.gif">
+			</a>
+			<a ng-click='signin()' class="col-xs-6">
+				<img src="./core/img/btn-signin.gif">
+			</a>
+		</div>
+		<div class='login-forgot login-main-width'>
+			<a ng-click='goTo("/forgot-password")'>Forgot you password?</a>
+		</div>
+	</div>
+
+
+
+
+<!-- 	<h3 class="col-md-12 text-center">Log In using your social accounts</h3>
 	<div class="col-md-12 text-center">
 		<a href="/auth/facebook" class="undecorated-link">
 			<img src="/modules/users/img/buttons/facebook.png">
@@ -50,5 +81,5 @@
 				<a href="/#!/forgot-password" class="btn btn-default col-md-12">Forgot Password</a>
 			</div>
 		</form>
-	</div>
+	</div> -->
 </section>

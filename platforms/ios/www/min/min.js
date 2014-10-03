@@ -42621,251 +42621,246 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 ]);
 'use strict';
 
+angular.module('core').controller('RecordController', ['$scope', 'Authentication', '$upload', '$http', 'Apologies', '$sce',
+  function($scope, Authentication, $upload, $http, Apologies, $sce) {
+    // This provides Authentication context.
+    $scope.authentication = Authentication;
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication', '$upload', '$http', 'Apologies', '$sce',
-	function($scope, Authentication, $upload, $http, Apologies, $sce) {
-		// This provides Authentication context.
-		$scope.authentication = Authentication;
+    var ua = navigator.userAgent.toLowerCase();
 
+    var phoneCheck = {
+        ios          : ua.match(/(iphone|ipod|ipad)/i),
+        blackberry   : ua.match(/blackberry/i),
+        android      : ua.match(/android/i),
+        windowsphone : ua.match(/windows phone/i)
+    };
 
-        var captureSuccess = function (mediaFiles) {
-            var i, len;
-            for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-                $scope.uploadFile(mediaFiles[i]);
-            }
-        }
+    // detect browser
+    var browserCheck = {
+        chrome  : ua.match(/chrome/i),
+        ie      : ua.match(/msie/i),
+        firefox : ua.match(/firefox/i),
+        safari  : ua.match(/safari/i), //this one is the same as chrome. 
+        opera   : ua.match(/opera/i)
+    };
 
-        // Called if something bad happens.
-        //
-        var captureError = function (error) {
-            var msg = 'An error occurred during capture: ' + error.code;
-            navigator.notification.alert(msg, null, 'Uh oh!');
-        }
-
-
-
-
-
-
-
-
-
-        var ua = navigator.userAgent.toLowerCase();
-
-        var phoneCheck = {
-            ios: ua.match(/(iphone|ipod|ipad)/i),
-            blackberry: ua.match(/blackberry/i),
-            android: ua.match(/android/i),
-            windowsphone: ua.match(/windows phone/i)
-        };
-
-        // detect browser
-        var browserCheck = {
-            chrome: ua.match(/chrome/i),
-            ie: ua.match(/msie/i),
-            firefox: ua.match(/firefox/i),
-            safari: ua.match(/safari/i), //this one is the same as chrome. 
-            opera: ua.match(/opera/i)
-        };
-
-        // detect HTML5 tag support
-        var myDeviceSupport = {
-            HTML5_audio: !!(document.createElement('audio').canPlayType),
-            HTML5_audio_mp3: !!(document.createElement('audio').canPlayType) && document.createElement('audio').canPlayType('audio/mpeg') !== "",
-            HTML5_audio_wav: !!(document.createElement('audio').canPlayType) && document.createElement('audio').canPlayType('audio/wav') !== "",
-            HTML5_geolocation: navigator.geolocation
-        };
-        function onMediaCallSuccess() {
-            createdStatus = true;
-            console.log("***test: new Media() succeeded ***");
-            $scope.uploadFile({
-              name     : mediaRecFile,
-              fullPath : mediaFileFullName
-            })
-        }
-        // Media() error callback        
-        function onMediaCallError(error) {
-            console.log("***test: new Media() failed ***", error);
-        }
-        // A button will call this function
-        //
-        $scope.mediaFiles = [];
-        var mediaRecFile = "";
-        var my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
-        var my_player = null;
-        var mediaFileFullName = null;
-        var filepath = '';
-
-        function recordNow() {
-            if (my_recorder) {
-                my_recorder.startRecord();
-                // document.getElementById('RecStatusID').innerHTML = "Status: recording";
-                console.log("***test:  recording started: in startRecording()***");
-            }
-            else
-                console.log("***test:  my_recorder==null: in startRecording()***");
-
-            // reset the recTime every time when recording
-            // recTime = 0;
-
-            // Stop recording after 10 sec
-            // progressTimmer = setInterval(function() {
-            //     recTime = recTime + 1;
-            //     setAudioPosition('media_rec_pos', recTime + " sec");
-            //     if (recTime >= 10)
-            //         stopRecording();
-            //     console.log("***test: interval-func()***");
-            // }, 1000);
-        }
-
-        function onOK_GetFile(fileEntry) {
-            console.log("***test: File " + mediaRecFile + " at " + fileEntry.fullPath);
-
-            filepath = fileEntry.toURL()
-            
-            // save the full file name
-            mediaFileFullName = fileEntry.fullPath;
-            
-            if (phoneCheck.ios)
-                mediaRecFile = mediaFileFullName;
-
-            if (checkFileOnly === true) { // check if file exist at app launch. 
-                mediaFileExist = true;
-                
-            } 
-            else { // record on iOS
-                
-                // create media object using full media file name 
-                my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
-
-                // specific for iOS device: recording start here in call-back function
-                recordNow();
-            }
-            $scope.mediaFiles.push(mediaRecFile)
-
-        }        
-
-        // Stop recording
-        $scope.stopRecording = function () {
-            if (my_recorder) 
-                my_recorder.stopRecord(); // the file should be moved to "/sdcard/"+mediaRecFile
-            console.log("***test: recording stopped***");
-        }
-        
-        $scope.playMedia = function (file) {
-          console.log('file', file);
-          // the existing medail should be on /sdcard/ for android. 
-          if (phoneCheck.android) {
-              my_player = new Media("/sdcard/" + file, onMediaCallSuccess, onMediaCallError);
-
-              console.log("***test: Open file:" + file);
-          } else if (phoneCheck.windowsphone) // windows phone
-              my_player = new Media(file, onMediaCallSuccess, onMediaCallError);
-          else if (phoneCheck.ios) {
-              my_player = new Media('/' + file, onMediaCallSuccess, onMediaCallError);
-          }
-          my_player.play();
-        }
-
-        $scope.pauseMedia = function () {
-          // Play audio
-          if (my_player) {
-              my_player.pause();
-          }
-        }
-        $scope.stopMedia = function () {
-          // Play audio
-          if (my_player) {
-              my_player.stop();
-          }
-        }
-
-        function onSuccessFileSystem(fileSystem) {
-            console.log("***test: fileSystem.root.name: " + fileSystem.root.name);
-
-            if (checkFileOnly === true)
-                fileSystem.root.getFile(mediaRecFile, { create: false, exclusive: false }, onOK_GetFile, null);
-            else
-                fileSystem.root.getFile(mediaRecFile, { create: true, exclusive: false }, onOK_GetFile, null);
-            
-        }
-        $scope.captureAudio = function () {
-
-            mediaRecFile = "myRecording" + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1) + ".wav";
-
-
-
-            // create media object - overwrite existing recording
-            if (my_recorder)
-                my_recorder.startRecord();
-
-            if (phoneCheck.android) {
-                my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
-                console.log("***test: new Media() for android ***");
-
-                recordNow();
-            }
-            else if (phoneCheck.windowsphone) {
-                my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
-                console.log("***test: new Media() for Windows Phone ***");
-
-                recordNow();
-            }
-            else if (phoneCheck.ios) {
-                //first create the file
-                checkFileOnly = false;
-                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccessFileSystem, function() {
-                    console.log("***test: failed in creating media file in requestFileSystem");
-                });
-
-                console.log("***test: new Media() for ios***");
-            }            
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-        // Upload files to server
-        $scope.uploadFile = function (mediaFile) {
-
-            console.log('mediaFile', mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1));
-
-            var options = new FileUploadOptions();
-            options.fileKey="file";
-            options.fileName = mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1);
-            options.mimeType="audio/wav"
-            options.chunkedMode = false;
-            options.params = { // Whatever you populate options.params with, will be available in req.body at the server-side.
-                "description": "Uploaded from my phone",
-                "selectedType" : "username",
-                "username" : 'denis'
-            };
-
-            // Transfer picture to server
-            var ft = new FileTransfer();
-            ft.upload(
-              filepath, 
-              encodeURI(ApplicationConfiguration.apiRoot + '/apologies'),
-              // ApplicationConfiguration.apiRoot + '/apologies', 
-              function(r) {
-                console.log( "Upload successful: "+r.bytesSent+" bytes uploaded.");
-                console.log('r',r);
-              },
-              function(error) {
-                console.log("Upload failed: Code = "+error.code, error);
-              }, options, true);
-        }
-
-
+    // detect HTML5 tag support
+    var myDeviceSupport = {
+        HTML5_audio: !!(document.createElement('audio').canPlayType),
+        HTML5_audio_mp3: !!(document.createElement('audio').canPlayType) && document.createElement('audio').canPlayType('audio/mpeg') !== "",
+        HTML5_audio_wav: !!(document.createElement('audio').canPlayType) && document.createElement('audio').canPlayType('audio/wav') !== "",
+        HTML5_geolocation: navigator.geolocation
+    };
+    
+    function onMediaCallSuccess() {
+        createdStatus = true;
+        console.log("***test: new Media() succeeded ***");
+        $scope.uploadFile({
+          name     : mediaRecFile,
+          fullPath : mediaFileFullName
+        })
     }
+    
+    // Media() error callback        
+    function onMediaCallError(error) {
+        console.log("***test: new Media() failed ***", error);
+    }
+
+    // A button will call this function
+    //
+    $scope.mediaFiles = [];
+    var mediaRecFile  = "";
+    var my_recorder   = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
+    var my_player     = null;
+    var filepath      = '';
+    var mediaFileFullName = null;
+
+    function recordNow() {
+        if (my_recorder) {
+            my_recorder.startRecord();
+            console.log("***test:  recording started: in startRecording()***");
+        } else {
+            console.log("***test:  my_recorder==null: in startRecording()***");
+        }
+    }
+
+    function onOK_GetFile(fileEntry) {
+        console.log("***test: File " + mediaRecFile + " at " + fileEntry.fullPath);
+
+        filepath = fileEntry.toURL()
+        
+        // save the full file name
+        mediaFileFullName = fileEntry.fullPath;
+        
+        if (phoneCheck.ios)
+            mediaRecFile = mediaFileFullName;
+
+        if (checkFileOnly === true) { // check if file exist at app launch. 
+            mediaFileExist = true;
+            
+        } 
+        else { // record on iOS
+            
+            // create media object using full media file name 
+            my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
+
+            // specific for iOS device: recording start here in call-back function
+            recordNow();
+        }
+        $scope.mediaFiles.push(mediaRecFile)
+
+    }        
+
+    // Stop recording
+    $scope.stopRecording = function () {
+        if (my_recorder) 
+            my_recorder.stopRecord(); // the file should be moved to "/sdcard/"+mediaRecFile
+        console.log("***test: recording stopped***");
+    }
+    
+    $scope.playMedia = function (file) {
+      console.log('file', file);
+      // the existing medail should be on /sdcard/ for android. 
+      if (phoneCheck.android) {
+          my_player = new Media("/sdcard/" + file, onMediaCallSuccess, onMediaCallError);
+
+          console.log("***test: Open file:" + file);
+      } else if (phoneCheck.windowsphone) // windows phone
+          my_player = new Media(file, onMediaCallSuccess, onMediaCallError);
+      else if (phoneCheck.ios) {
+          my_player = new Media('/' + file, onMediaCallSuccess, onMediaCallError);
+      }
+      my_player.play();
+    }
+
+    $scope.pauseMedia = function () {
+      // Play audio
+      if (my_player) {
+          my_player.pause();
+      }
+    }
+    $scope.stopMedia = function () {
+      // Play audio
+      if (my_player) {
+          my_player.stop();
+      }
+    }
+
+    function onSuccessFileSystem(fileSystem) {
+        console.log("***test: fileSystem.root.name: " + fileSystem.root.name);
+
+        if (checkFileOnly === true)
+            fileSystem.root.getFile(mediaRecFile, { create: false, exclusive: false }, onOK_GetFile, null);
+        else
+            fileSystem.root.getFile(mediaRecFile, { create: true, exclusive: false }, onOK_GetFile, null);
+        
+    }
+
+    $scope.captureAudio = function () {
+
+        mediaRecFile = "myRecording" + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1) + ".wav";
+
+        // create media object - overwrite existing recording
+        if (my_recorder)
+            my_recorder.startRecord();
+
+        if (phoneCheck.android) {
+            my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
+            console.log("***test: new Media() for android ***");
+
+            recordNow();
+        }
+        else if (phoneCheck.windowsphone) {
+            my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
+            console.log("***test: new Media() for Windows Phone ***");
+
+            recordNow();
+        }
+        else if (phoneCheck.ios) {
+            //first create the file
+            checkFileOnly = false;
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccessFileSystem, function() {
+                console.log("***test: failed in creating media file in requestFileSystem");
+            });
+
+            console.log("***test: new Media() for ios***");
+        }            
+    }
+
+    // Upload files to server
+    $scope.uploadFile = function (mediaFile) {
+
+        console.log('mediaFile', mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1));
+
+        var options = new FileUploadOptions();
+        options.fileKey="file";
+        options.fileName = mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1);
+        options.mimeType="audio/wav"
+        options.chunkedMode = false;
+        options.params = { // Whatever you populate options.params with, will be available in req.body at the server-side.
+            "description": "Uploaded from my phone",
+            "selectedType" : "username",
+            "username" : 'denis'
+        };
+
+        // Transfer picture to server
+        var ft = new FileTransfer();
+        ft.upload(
+          filepath, 
+          encodeURI(ApplicationConfiguration.apiRoot + '/apologies'),
+          // ApplicationConfiguration.apiRoot + '/apologies', 
+          function(r) {
+            console.log( "Upload successful: "+r.bytesSent+" bytes uploaded.");
+            console.log('r', r.response);
+          },
+          function(error) {
+            console.log("Upload failed: Code = "+error.code, error);
+          }, options, true);
+    }
+
+  }
+]);
+'use strict';
+
+
+angular.module('core').directive('landingPage', ['$timeout', '$location', 'Authentication', function($timeout, $location, Authentication){
+  return {
+    link: function (scope, element, attrs) {
+      scope.authentication = Authentication;
+      if(scope.authentication.user) {
+        element.remove();
+      }
+      scope.letTheGameBegin = function () {
+        element.css({
+          left : '100%'
+        });
+        $timeout(function () {
+          $location.path('/signin');
+        }, 150)
+
+      }
+    }
+  };
+}]);
+angular.module('core').controller('HomeController', ['$scope', 'Authentication', '$upload', '$http', 'Apologies', '$sce',
+  function($scope, Authentication, $upload, $http, Apologies, $sce) {
+    // This provides Authentication context.
+    $scope.authentication = Authentication;
+
+    var captureSuccess = function (mediaFiles) {
+        var i, len;
+        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+            $scope.uploadFile(mediaFiles[i]);
+        }
+    }
+
+    // Called if something bad happens.
+    //
+    var captureError = function (error) {
+        var msg = 'An error occurred during capture: ' + error.code;
+        navigator.notification.alert(msg, null, 'Uh oh!');
+    }
+  }
 ]);
 'use strict';
 
@@ -43115,6 +43110,10 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 
 		//If user is signed in then redirect back home
 		if ($scope.authentication.user) $location.path('/');
+
+    $scope.goTo = function (link) {
+      $location.path(link)
+    }
 
 		$scope.signup = function() {
 			$http.post(ApplicationConfiguration.apiRoot + '/auth/signup', $scope.credentials).success(function(response) {

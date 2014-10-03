@@ -89,6 +89,39 @@ img {
 svg:not(:root) {
   overflow: hidden;
 }
+html, body {
+  height: 100%;
+  width: 100%;
+}
+.main-window {
+  width: 100%;
+  height: 100%;
+  background-image: url('../core/img/bg_main.gif');
+  background-size: cover;
+}
+.landing-page {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+
+  -webkit-transition:0.15s linear all;
+  transition:0.15s linear all;
+}
+.landing-page img {
+  height: 100%;
+  width: 100%;
+}
+.landing-begin {
+  position: absolute;
+  z-index: 99999;
+  bottom: 75px;
+  left: 35px;
+  font-weight: 100;
+  font-size: 22px;
+}
 figure {
   margin: 1em 40px;
 }
@@ -1391,10 +1424,16 @@ pre code {
   overflow-y: scroll;
 }
 .container {
-  padding-right: 15px;
+/*  padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
-  margin-left: auto;
+  margin-left: auto;*/
+  width: 100%;
+  height: 100%;
+}
+section {
+  width: 100%;
+  height: 100%; 
 }
 @media (min-width: 768px) {
   .container {
@@ -6646,10 +6685,88 @@ button.close {
 /*# sourceMappingURL=bootstrap-theme.css.map */
 
 body {
-	background-color: #0778AE;
+  background-image: url('../core/img/bg.gif');
+  background-size: cover;
 	color: #FFFFFF;
 }
+.login-logo img {
+  width: 230px;
+}
+.login-main-width {
+  width: 80%;
+  margin: 0% 10% 0% 10%;
+}
+.login-buttons a {
+  padding: 5px;
+}
+.login-buttons a img {
+  width: 105px;
+}
+.login-forgot a {
+  color: white;
+  text-decoration: underline;
+  font-size: 13px;
+  font-weight: 300;
+}
+.login-buttons a img:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+.login-forgot {
+  position: fixed;
+  bottom: 10px;
+  left: 0;
+}
+.register-input {
+  padding-top: 20px !important;
+}
+.login-input {
+  padding-top: 90px;
+}
+.login-input input {
+  width: 100%;
+  background: transparent;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  color: white;
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 300;
+}
+.forgot-buttons {
+  text-align: right;
+}
+.forgot-buttons .btn {
+  background: transparent;
+  border: 1px solid white;
+  border-radius: 23px;
+  padding: 5px 15px;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+.login-input input:focus {
+    outline: none;
+}
+.login-input input::-webkit-input-placeholder {
+   color: white;
+}
 
+.login-input input:-moz-placeholder { /* Firefox 18- */
+   color: white;  
+}
+
+.login-input input::-moz-placeholder {  /* Firefox 19+ */
+   color: white;  
+}
+
+.login-input input:-ms-input-placeholder {  
+   color: white;  
+}
+.login-logo {
+  padding-top: 75px;
+}
 .btn-default {
 	background: #56BA56;
 	color: white;
@@ -6671,7 +6788,9 @@ body {
 		border-color: #56BA56;
 	}
 .content {
-	margin-top: 50px;
+	/*margin-top: 50px;*/
+  width: 100%;
+  height: 100%;
 }
 .undecorated-link:hover {
 	text-decoration: none;

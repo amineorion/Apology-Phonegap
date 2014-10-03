@@ -1,4 +1,36 @@
-<section class="row" data-ng-controller="AuthenticationController">
+<section class="" data-ng-controller="AuthenticationController">
+
+
+	<div class="col-md-12 text-center">
+		<div class='login-logo login-main-width'>
+			<img src="./core/img/logo.gif"></img>
+		</div>
+		<div class='login-input register-input login-main-width'>
+			<input type='text' placeholder='Login' ng-model='credentials.username' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Login'" ></input>
+			<input type='email' placeholder='Email' ng-model='credentials.email' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" ></input>
+			<input type='password' placeholder='Password' ng-model='credentials.password' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" ></input>
+			<input type='text' placeholder='First name' ng-model='credentials.firstName' onfocus="this.placeholder = ''" onblur="this.placeholder = 'First name'" ></input>
+			<input type='text' placeholder='Last name' ng-model='credentials.lastName' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last name'" ></input>
+		</div>
+		<div class='login-remember login-main-width'>
+			<img src="">
+		</div>
+		<div class='login-buttons login-main-width row'>
+			<a ng-click='goTo("/signin")' class="col-xs-6">
+				<img src="./core/img/btn-signin.gif">
+			</a>
+			<a ng-click='signup()' class="col-xs-6">
+				<img src="./core/img/btn-register.gif">
+			</a>
+		</div>
+	</div>
+
+
+</section>
+
+
+
+<!-- <section class="row" data-ng-controller="AuthenticationController">
 	<h3 class="col-md-12 text-center">Register using your social accounts</h3>
 	<div class="col-md-12 text-center">
 		<a href="/auth/facebook" class="undecorated-link">
@@ -62,8 +94,8 @@
 				<button type="submit" class="btn btn-default col-md-12">Register</button>
 			</div>
 			<div class="form-group">
-				<a href="/#!/signin" class="btn btn-default col-md-12">Log In</a>
+				<a ng-click='goTo("/signin")' class="btn btn-default col-md-12">Log In</a>
 			</div>
 		</form>
 	</div>
-</section>
+</section> -->
