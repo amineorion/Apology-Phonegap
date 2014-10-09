@@ -4,7 +4,18 @@
 		<div class='landing-begin' ng-click='letTheGameBegin()'>BEGIN -></div>
 	</div>
 
-	<div class='main-window'>
-		
+	<div class='main-window' ng-controller='RecordController'>
+		<p class='apology-header'>Record an apology</p>
+		<p class='main-page-text'>Think about who you want to apology to, then hold the record button and we will guid you through a sansational apology.</p>
+		<p class='main-page-subtext'>When finished, chose who you want to recieve your words.</p>
+		<div class='record-button-cont'>
+			<div ng-hide='apologyStarted' ng-click='startApology()' class='record-button'></div>
+			<div ng-hide='!apologyStarted' ng-click='pauseApology()' class=''>
+				<i class='glyphicon glyphicon-pause'></i>
+			</div>
+		</div>
+		<div class='apology-footer'>
+			Tune into apology.fm
+		</div>
 	</div>
 </section>

@@ -42670,7 +42670,7 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
     //
     $scope.mediaFiles = [];
     var mediaRecFile  = "";
-    var my_recorder   = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
+    // var my_recorder   = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
     var my_player     = null;
     var filepath      = '';
     var mediaFileFullName = null;
@@ -42756,7 +42756,9 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
         
     }
 
-    $scope.captureAudio = function () {
+    $scope.startApology = function () {
+
+        $scope.apologyStarted = true;
 
         mediaRecFile = "myRecording" + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1) + ".wav";
 

@@ -1,10 +1,18 @@
 <section data-ng-controller="HomeController">
-	<div class='landing-page' landing-page>
+<!-- 	<div class='landing-page' landing-page>
 		<img src="./core/img/landing.gif"></img>
 		<div class='landing-begin' ng-click='letTheGameBegin()'>BEGIN -></div>
-	</div>
+	</div> -->
 
-	<div class='main-window'>
-		
+	<div class='main-window' ng-controller='RecordController'>
+		<p class='apology-header'>Record an apology</p>
+		<p class='main-page-text'>Think about who you want to apology to, then hold the record button and we will guid you through a sansational apology.</p>
+		<p class='main-page-subtext'>When finished, chose who you want to recieve your words.</p>
+		<div class='record-button-cont' ng-click='startApology()'>
+			<div ng-show='apologyStarted' class='record-button'></div>
+		</div>
+		<div class='apology-footer'>
+			Tune into apology.fm
+		</div>
 	</div>
 </section>

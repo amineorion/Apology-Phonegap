@@ -42756,7 +42756,9 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
         
     }
 
-    $scope.captureAudio = function () {
+    $scope.startApology = function () {
+
+        $scope.apologyStarted = true;
 
         mediaRecFile = "myRecording" + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1) + ".wav";
 

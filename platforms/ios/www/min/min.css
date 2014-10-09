@@ -42,6 +42,62 @@ audio:not([controls]) {
 template {
   display: none;
 }
+.apology-header {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 300;
+  font-size: 19px;
+  padding-top: 40px;
+  padding-bottom: 30px;
+}
+.main-page-text {
+  text-align: center;
+  padding: 15px;
+  font-weight: 300;
+}
+.record-button-cont::after {
+  content: 'RECORD';
+  font-weight: 300;
+  text-align: center;
+  padding-left: 6px;
+  font-size: 9px;
+  margin: auto;
+  position: relative;
+  top: 10px;
+}
+.record-button {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 100px;
+}
+.record-button-cont {
+  border: 2px solid;
+  width: 70px;
+  height: 70px;
+  border-radius: 100px;
+  margin: auto;
+  padding: 9px;
+  margin-top: 85px;
+}
+.apology-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  text-align: c;
+  font-weight: 300;
+  font-size: 15px;
+  border-top: 1px solid;
+  padding: 7px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.main-page-subtext {
+  padding: 15px;
+  text-align: center;
+  font-weight: 300;
+}
 a {
   background: transparent;
 }
