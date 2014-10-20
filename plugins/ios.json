@@ -22,13 +22,31 @@
                     "CoreGraphics.framework": [
                         {
                             "xml": "false",
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "AudioToolbox.framework": [
                         {
                             "xml": "true",
                             "count": 2
+                        }
+                    ],
+                    "AddressBook.framework": [
+                        {
+                            "xml": "true",
+                            "count": 1
+                        }
+                    ],
+                    "AddressBookUI.framework": [
+                        {
+                            "xml": "true",
+                            "count": 1
+                        }
+                    ],
+                    "MessageUI.framework": [
+                        {
+                            "xml": "true",
+                            "count": 1
                         }
                     ]
                 }
@@ -63,6 +81,14 @@
                         {
                             "xml": "<feature name=\"Vibration\"><param name=\"ios-package\" value=\"CDVVibration\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Contacts\"><param name=\"ios-package\" value=\"CDVContacts\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Sms\"><param name=\"ios-package\" value=\"Sms\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -86,6 +112,12 @@
             "PACKAGE_NAME": "com.phonegap.helloworld"
         },
         "org.apache.cordova.vibration": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "org.apache.cordova.contacts": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "org.apache.cordova.plugin.sms": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
         }
     },

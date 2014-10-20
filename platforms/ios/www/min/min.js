@@ -42560,9 +42560,13 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 			url: '/receiver-playback',
 			templateUrl: 'core/views/receiver-playback.client.view.html'
 		}).
-		state('confirmation', {
-			url: '/confirmation',
-			templateUrl: 'core/views/confirmation.client.view.html'
+    state('confirmation', {
+      url: '/confirmation',
+      templateUrl: 'core/views/confirmation.client.view.html'
+    }).
+		state('reviewapology', {
+			url: '/review-apology',
+			templateUrl: 'core/views/reviewapology.client.view.html'
 		}).
 		state('playback', {
 			url: '/playback',
@@ -42584,9 +42588,13 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 			url: '/contact-search',
 			templateUrl: 'core/views/contact-search.client.view.html'
 		}).
-		state('lodaing-page', {
-			url: '/lodaing-page',
-			templateUrl: 'core/views/lodaing-page.client.view.html'
+    state('lodaing-page', {
+      url: '/lodaing-page',
+      templateUrl: 'core/views/lodaing-page.client.view.html'
+    }).
+		state('apoloinbox', {
+			url: '/apoloinbox',
+			templateUrl: 'core/views/apoloinbox.client.view.html'
 		}).
 		state('home', {
 			url: '/',
@@ -42596,35 +42604,198 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 ]);
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus',
-	function($scope, Authentication, Menus) {
+angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus', '$timeout',
+  function($scope, Authentication, Menus, $timeout) {
+    $scope.authentication = Authentication;
+    $scope.isCollapsed = false;
+    $scope.menu = Menus.getMenu('topbar');
+
+
+    $scope.toggleCollapsibleMenu = function() {
+      $scope.isCollapsed = !$scope.isCollapsed;
+    };
+
+    // Collapsing the menu after navigation
+    $scope.$on('$stateChangeSuccess', function() {
+      $scope.isCollapsed = false;
+    });
+    
+    // if (user) {
+    //  if (user.isAllInformation === false) {
+    //    $location.path('settings/accounts/');
+    //  }
+    // }
+  }
+]);
+'use strict';
+
+angular.module('core').controller('InboxApolCtrl', ['$scope', 'Authentication', '$http',
+  function($scope, Authentication, $http) {
+    $scope.authentication = Authentication;
+    $scope.apologies = [];
+
+    $http.get(ApplicationConfiguration.apiRoot + '/apologies')
+    .success(function(response) {
+      console.log('Response', response)
+      $scope.apologies = response;
+    })
+    .error(function(err) {
+      console.log('Error', err)
+    })
+  }
+]);
+'use strict';
+
+angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication', '$http', '$rootScope', '$sce', '$state',
+	function($scope, Authentication, $http, $rootScope, $sce, $state) {
 		$scope.authentication = Authentication;
-		$scope.isCollapsed = false;
-		$scope.menu = Menus.getMenu('topbar');
+
+    console.log('$rootScope.lastApology', $rootScope.lastApology)
+    $rootScope.$watch('lastApology', function(lastApology) {
+      if(lastApology) {
+        console.log('lastApology.path', lastApology.path)
+        $scope.audioPath = $sce.trustAsResourceUrl(lastApology.path);
+        console.log('$scope.audioPath', $scope.audioPath)
+      }
+    })
+    // $scope.audioPath = $sce.trustAsResourceUrl('https://s3.amazonaws.com/ApologyFM/apologies/denis/apology28874.wav');
+    
+
+    $scope.apologyStarted = false;
+    $scope.apologyPaused = false;
+    var my_player = null;
+
+    
+    $scope.onMediaCallSuccess = function() {
+      console.log("***test: new Media() succeeded ***", $scope);
+      $scope.apologyStarted = false;
+    }
+    
+    // Media() error callback        
+    function onMediaCallError(error) {
+        console.log("***test: new Media() failed ***", error);
+    }
+    
+    var ua = navigator.userAgent.toLowerCase();
+
+    var phoneCheck = {
+        ios          : ua.match(/(iphone|ipod|ipad)/i),
+        blackberry   : ua.match(/blackberry/i),
+        android      : ua.match(/android/i),
+        windowsphone : ua.match(/windows phone/i)
+    };
+
+    // detect browser
+    var browserCheck = {
+        chrome  : ua.match(/chrome/i),
+        ie      : ua.match(/msie/i),
+        firefox : ua.match(/firefox/i),
+        safari  : ua.match(/safari/i), //this one is the same as chrome. 
+        opera   : ua.match(/opera/i)
+    };
+
+    // detect HTML5 tag support
+    var myDeviceSupport = {
+        HTML5_audio: !!(document.createElement('audio').canPlayType),
+        HTML5_audio_mp3: !!(document.createElement('audio').canPlayType) && document.createElement('audio').canPlayType('audio/mpeg') !== "",
+        HTML5_audio_wav: !!(document.createElement('audio').canPlayType) && document.createElement('audio').canPlayType('audio/wav') !== "",
+        HTML5_geolocation: navigator.geolocation
+    };
+
+    console.log('$rootScope.lastApology.path', $rootScope.lastApology.path)
+    if (phoneCheck.android) {
+        my_player = new Media($rootScope.lastApology.path, $scope.onMediaCallSuccess, onMediaCallError);
+    } else if (phoneCheck.windowsphone)
+        my_player = new Media($rootScope.lastApology.path, $scope.onMediaCallSuccess, onMediaCallError);
+    else if (phoneCheck.ios) {
+        my_player = new Media($rootScope.lastApology.path, $scope.onMediaCallSuccess, onMediaCallError);
+    }
+    // my_player.play();
+
+    $scope.goBackToHome = function() {
+      console.log('Go back')
+      $state.go('home')
+    };
+    
+    function onSuccess(contactid, contact) {
+      console.log('contactid, contact', contactid, contact)
+      
+      //In an options variable you can set some filter parameters
+      //In this example we will use the Id to receive the data of the chosen contact
+      var options = new ContactFindOptions();
+      options.filter   = ""+contactid;
+
+      //In the fields variable we're going to set the fields we want to receive
+      //'*' = every data. More field values are explained
+      // here: http://bit.ly/T8YyuE
+      var fields = ['id'];
+
+      navigator.contacts.find(fields, onPickContactSuccess, onPickContactError, options);      
+    };
+
+    function onPickContactSuccess(contacts){
+        //contacts contains all data you've requested
+        var _name = contacts[0].name
+
+        console.log('Name: ', _name.formatted)
+        console.log('Phone: ', contacts[0].phoneNumbers[0].value)
+
+        var number = contacts[0].phoneNumbers[0].value;
+        var message = 'Take it'
+
+        var intent = "INTENT"; //leave empty for sending sms using default intent
+        var success = function () { 
+          alert('Message sent successfully'); 
+        };
+        var error = function (e) {
+          alert('Message Failed:' + e); 
+        };
+        sms.send(number, message, intent, success, error);
+    }
+
+    function onPickContactError() {
+      console.log('onPickContactError')
+    };
+
+    $scope.chooseRecipient = function() {
+      console.log('chooseRecipient')
+
+      var options = new ContactFindOptions();
+      navigator.contacts.chooseContact(onSuccess, options);
+    }
+
+    $scope.playMedia = function (file) {
+      $scope.apologyPaused = false;
+      $scope.apologyStarted = true;
+      my_player.play();
+    }
+
+    $scope.pauseMedia = function () {
+      console.log('Pause media')
+      $scope.apologyPaused = true;
+      if (my_player) {
+          my_player.pause();
+      }
+    }
+    $scope.stopMedia = function () {
+      $scope.apologyPaused = true;
+      if (my_player) {
+          my_player.stop();
+      }
+    }
 
 
-		$scope.toggleCollapsibleMenu = function() {
-			$scope.isCollapsed = !$scope.isCollapsed;
-		};
-
-		// Collapsing the menu after navigation
-		$scope.$on('$stateChangeSuccess', function() {
-			$scope.isCollapsed = false;
-		});
-		
-		// if (user) {
-		// 	if (user.isAllInformation === false) {
-		// 		$location.path('settings/accounts/');
-		// 	}
-		// }
 	}
 ]);
 'use strict';
 
-angular.module('core').controller('RecordController', ['$scope', 'Authentication', '$upload', '$http', 'Apologies', '$sce',
-  function($scope, Authentication, $upload, $http, Apologies, $sce) {
+angular.module('core').controller('RecordController', ['$scope', 'Authentication', '$upload', '$http', 'Apologies', '$sce', '$timeout', '$state', '$rootScope',
+  function($scope, Authentication, $upload, $http, Apologies, $sce, $timeout, $state, $rootScope) { 
     // This provides Authentication context.
     $scope.authentication = Authentication;
+    $scope.apologyUploaded = false;
+
+    console.log('authentication.user', $scope.authentication.user)
 
     var ua = navigator.userAgent.toLowerCase();
 
@@ -42653,12 +42824,14 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
     };
     
     function onMediaCallSuccess() {
+      if(!$scope.goback) {
         createdStatus = true;
-        console.log("***test: new Media() succeeded ***");
+        console.log("***test: new Media() succeeded ***", mediaFileFullName);
         $scope.uploadFile({
           name     : mediaRecFile,
           fullPath : mediaFileFullName
         })
+      }
     }
     
     // Media() error callback        
@@ -42668,12 +42841,23 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
 
     // A button will call this function
     //
-    $scope.mediaFiles = [];
-    var mediaRecFile  = "";
-    var my_recorder   = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
-    var my_player     = null;
+    
+    var my_recorder = null, my_player = null;
+    var createdStatus = false;
+
+    $scope.stopRecord = false;
+
+    // for recording: do not specify any directory
+    var mediaFileFullName = null; 
+    var mediaRecFile = "myRecording100.wav";
+    var checkFileOnly = false;
+    var mediaFileExist = false;
+    var fileEntryUrl = null;
+    $scope.apologyUploading = false;
+
+    $scope.mediaFiles    = [];
+    $scope.apologyHeader = 'Record an apology';
     var filepath      = '';
-    var mediaFileFullName = null;
 
     function recordNow() {
         if (my_recorder) {
@@ -42687,17 +42871,17 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
     function onOK_GetFile(fileEntry) {
         console.log("***test: File " + mediaRecFile + " at " + fileEntry.fullPath);
 
-        filepath = fileEntry.toURL()
+        console.log('fileEntry', fileEntry)
+
+        fileEntryUrl = fileEntry.toURL();
         
         // save the full file name
         mediaFileFullName = fileEntry.fullPath;
-        
         if (phoneCheck.ios)
             mediaRecFile = mediaFileFullName;
 
         if (checkFileOnly === true) { // check if file exist at app launch. 
             mediaFileExist = true;
-            
         } 
         else { // record on iOS
             
@@ -42715,53 +42899,56 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
     $scope.stopRecording = function () {
         if (my_recorder) 
             my_recorder.stopRecord(); // the file should be moved to "/sdcard/"+mediaRecFile
-        console.log("***test: recording stopped***");
-    }
-    
-    $scope.playMedia = function (file) {
-      console.log('file', file);
-      // the existing medail should be on /sdcard/ for android. 
-      if (phoneCheck.android) {
-          my_player = new Media("/sdcard/" + file, onMediaCallSuccess, onMediaCallError);
-
-          console.log("***test: Open file:" + file);
-      } else if (phoneCheck.windowsphone) // windows phone
-          my_player = new Media(file, onMediaCallSuccess, onMediaCallError);
-      else if (phoneCheck.ios) {
-          my_player = new Media('/' + file, onMediaCallSuccess, onMediaCallError);
-      }
-      my_player.play();
+            my_recorder.release();
+            console.log("***test: recording stopped***");
+            $scope.apologyTimer = 1;
+            $scope.stopRecord = true;
+            // $scope.apologyStarted = false;
     }
 
-    $scope.pauseMedia = function () {
-      // Play audio
-      if (my_player) {
-          my_player.pause();
-      }
-    }
-    $scope.stopMedia = function () {
-      // Play audio
-      if (my_player) {
-          my_player.stop();
-      }
+    function checkMediaRecFileExist() {
+        checkFileOnly = true;
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccessFileSystem, null);
     }
 
     function onSuccessFileSystem(fileSystem) {
+        console.log('fileSystem', fileSystem)
         console.log("***test: fileSystem.root.name: " + fileSystem.root.name);
 
         if (checkFileOnly === true)
             fileSystem.root.getFile(mediaRecFile, { create: false, exclusive: false }, onOK_GetFile, null);
         else
             fileSystem.root.getFile(mediaRecFile, { create: true, exclusive: false }, onOK_GetFile, null);
-        
     }
+
+    $scope.goback = false;
+
+    $scope.goToInbox = function() {
+      $state.go('apoloinbox')
+    };
+
+    $scope.goBackToHome = function() {
+      $scope.goback = true;
+      $scope.apologyTimer   = 30;
+      $scope.stopRecord = true;
+      $scope.apologyHeader = 'Record an apology';
+      if (my_recorder) 
+          my_recorder.stopRecord(); // the file should be moved to "/sdcard/"+mediaRecFile
+          my_recorder.release();
+      $scope.apologyStarted = false;
+    };
 
     $scope.startApology = function () {
 
         $scope.apologyStarted = true;
+        $scope.apologyPaused  = false;
+        $scope.stopRecord     = false;
+        $scope.apologyTimer   = 30;
+        $scope.goback         = false;
 
-        mediaRecFile = "myRecording" + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1) + ".wav";
-
+        $scope.apologyHeader  = 'Step 1';
+        $scope.apologyTitle   = 'I\'m sorry for...';
+    
         // create media object - overwrite existing recording
         if (my_recorder)
             my_recorder.startRecord();
@@ -42786,34 +42973,67 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
             });
 
             console.log("***test: new Media() for ios***");
-        }            
+        }
+        $scope.recordTimer();
     }
+
+    $scope.recordTimer = function() {
+      if(!$scope.stopRecord) {
+        $timeout(function() {
+          $scope.apologyTimer--;
+          $scope.prBarWidth = (30-$scope.apologyTimer) * 3.33;
+          if($scope.apologyTimer<=20 && $scope.apologyTimer>10){
+            $scope.apologyHeader = 'Step 2'
+            $scope.apologyTitle  = 'And I honor you by...'
+          } else if ($scope.apologyTimer<=10){
+            $scope.apologyHeader = 'Step 3'
+            $scope.apologyTitle  = 'And I\'m greatful for...'
+          }
+          if ($scope.apologyTimer != 0) {
+            $scope.recordTimer();
+          } else {
+            $scope.stopRecording();
+          }
+        }, 1000)
+      }
+    };
 
     // Upload files to server
     $scope.uploadFile = function (mediaFile) {
 
+        console.log('mediaFile', mediaFile);
+        console.log('mediaFile.fullPath', mediaFile.fullPath)
         console.log('mediaFile', mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1));
 
-        var options = new FileUploadOptions();
-        options.fileKey="file";
-        options.fileName = mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1);
-        options.mimeType="audio/wav"
+        var options         = new FileUploadOptions();
+        options.fileKey     = "file";
+        options.fileName    = mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1);
+        options.mimeType    = "audio/wav"
         options.chunkedMode = false;
-        options.params = { // Whatever you populate options.params with, will be available in req.body at the server-side.
-            "description": "Uploaded from my phone",
+        options.params      = { // Whatever you populate options.params with, will be available in req.body at the server-side.
+            "description"  : "Uploaded from my phone",
             "selectedType" : "username",
-            "username" : 'denis'
+            "username"     : 'denis'
         };
+
+        console.log('fileEntryUrl', fileEntryUrl)
+        $scope.apologyUploading = true;
+
+        var urlArray = fileEntryUrl.split('/');
+        urlArray[urlArray.length-2] = 'tmp';
+        fileEntryUrl = urlArray.join('/');
 
         // Transfer picture to server
         var ft = new FileTransfer();
         ft.upload(
-          filepath, 
+          fileEntryUrl, 
           encodeURI(ApplicationConfiguration.apiRoot + '/apologies'),
           // ApplicationConfiguration.apiRoot + '/apologies', 
           function(r) {
             console.log( "Upload successful: "+r.bytesSent+" bytes uploaded.");
             console.log('r', r.response);
+            $rootScope.lastApology = JSON.parse(r.response);
+            $state.go('reviewapology')
           },
           function(error) {
             console.log("Upload failed: Code = "+error.code, error);

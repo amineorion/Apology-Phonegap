@@ -1,0 +1,33 @@
+<section data-ng-controller="ReviewApolCtrl">
+	<!-- <div class='main-window'> -->
+	<div class='main-window ng-hide' ng-show='authentication.user'>
+		<p class='apology-header'>review your apology</p>
+		<div class='goback-to-record' ng-click="goBackToHome()"><</div>
+
+		<p class='main-page-text'>You apology has been recorded. Does it sounds good?</p>
+
+		<div class='apology-prbar'>
+			<div class='prbar' style='width:{{ prBarWidth }}%'></div>
+			<div class='prbar-ghost'></div>
+			<p class='time-zero'>0</p>
+			<p class='time-remaining' ng-show='!stopPlay'>-{{ apologyTimer }}</p>	
+			<p class='time-remaining' ng-show='stopPlay'>-30</p>	
+		</div>
+
+<!-- 		<audio controls>
+			<source type="audio/wav" ng-src=' {{ lastApology.path }} ' controls="controls" preload="none">
+			Your browser does not support the audio element.
+		</audio> -->		
+
+		<div class='record-button-cont'>
+			<div ng-show='apologyStarted&&!apologyPaused' ng-click='stopMedia()' class='pause-button'>
+				<img src="./core/img/pause.png" alt="">
+			</div>
+			<div ng-show='!apologyStarted || apologyStarted&&apologyPaused' ng-click='playMedia()' class='pause-button'>
+				<img src="./core/img/play.png" alt="">
+			</div>
+		</div>
+
+		<button ng-click='chooseRecipient()'>Choose recipient</button>
+	</div>
+</section>

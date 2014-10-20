@@ -42,6 +42,31 @@ audio:not([controls]) {
 template {
   display: none;
 }
+.your-inbox {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 9px;
+  text-transform: uppercase;
+  font-weight: 200;
+}
+.goback-to-record {
+  position: absolute;
+  top: 41px;
+  border: 1px solid;
+  padding: 7px;
+  line-height: 7px;
+  border-radius: 50px;
+  left: 13px;
+}
+.pause-button img {
+    width: 100%;
+    height: 100%;
+}
+.pause-button {
+    width: 100%;
+    height: 100%;
+}
 .apology-header {
   text-align: center;
   text-transform: uppercase;
@@ -49,6 +74,41 @@ template {
   font-size: 19px;
   padding-top: 40px;
   padding-bottom: 30px;
+}
+.apology-prbar {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+}
+.prbar {
+  width: 0%;
+  background-color: white;
+  height: 2px;
+}
+.time-remaining {
+  position: absolute;
+  right: 20px;
+  font-weight: 200;
+}
+.time-zero {
+  position: absolute;
+  left: 20px;
+  font-weight: 200;
+}
+.prbar-ghost {
+  position: relative;
+  top: -2px;
+  width: 100%;
+  background-color: rgba(231, 231, 231, 0.44);
+  height: 2px;
+  left: 0px;
+}
+.stop-button {
+  width: 35px;
+  height: 35px;
+  background: white;
+  border-radius: 7px;
+  margin: 15% !important;
 }
 .main-page-text {
   text-align: center;
@@ -76,9 +136,19 @@ template {
   width: 70px;
   height: 70px;
   border-radius: 100px;
-  margin: auto;
+  /*margin: auto;*/
   padding: 9px;
-  margin-top: 85px;
+  /*margin-top: 85px;*/
+  position: absolute;
+  margin: 40%;
+  bottom: 0px;
+}
+.apology-title {
+  text-align: center;
+  font-weight: 200;
+  font-size: 20px;
+  padding-bottom: 60px;
+  padding-top: 10px;
 }
 .apology-footer {
   position: fixed;
@@ -149,6 +219,12 @@ html, body {
   height: 100%;
   width: 100%;
 }
+.apology-uploading {
+  width: 100%;
+  height: 100%;
+  background-image: url('../core/img/spinner-black.gif');
+  background-size: 100%;
+}
 .main-window {
   width: 100%;
   height: 100%;
@@ -175,7 +251,7 @@ html, body {
   z-index: 99999;
   bottom: 75px;
   left: 35px;
-  font-weight: 100;
+  font-weight: 200;
   font-size: 22px;
 }
 figure {
