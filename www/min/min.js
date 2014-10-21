@@ -42259,7 +42259,8 @@ angularFileUpload.directive('ngFileDrop', [ '$parse', '$timeout', function($pars
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'apologyfm';
-	var apiRoot = 'http://localhost:3000';
+  // var apiRoot = 'http://localhost:3000';
+	var apiRoot = 'http://apology.herokuapp.com';
 	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'angularFileUpload'];
 
 	// Add a new vertical module
@@ -42633,6 +42634,8 @@ angular.module('core').controller('InboxApolCtrl', ['$scope', 'Authentication', 
   function($scope, Authentication, $http) {
     $scope.authentication = Authentication;
     $scope.apologies = [];
+
+    // http://apology.herokuapp.com/
 
     $http.get(ApplicationConfiguration.apiRoot + '/apologies')
     .success(function(response) {
