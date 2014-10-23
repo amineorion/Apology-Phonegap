@@ -42259,8 +42259,8 @@ angularFileUpload.directive('ngFileDrop', [ '$parse', '$timeout', function($pars
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'apologyfm';
-  // var apiRoot = 'http://localhost:3000';
-	var apiRoot = 'http://apology.herokuapp.com';
+  var apiRoot = 'http://54.68.169.103';
+	//var apiRoot = 'http://apology.herokuapp.com';
 	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'angularFileUpload'];
 
 	// Add a new vertical module
@@ -42829,6 +42829,7 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
     function onMediaCallSuccess() {
       if(!$scope.goback) {
         createdStatus = true;
+        mediaFileFullName = LocalFileSystem.TEMPORARY +'/'+ mediaRecFile;
         console.log("***test: new Media() succeeded ***", mediaFileFullName);
         $scope.uploadFile({
           name     : mediaRecFile,
@@ -42957,7 +42958,7 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
             my_recorder.startRecord();
 
         if (phoneCheck.android) {
-            my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
+            my_recorder = new Media(LocalFileSystem.TEMPORARY+'/'+mediaRecFile, onMediaCallSuccess, onMediaCallError);
             console.log("***test: new Media() for android ***");
 
             recordNow();
@@ -42989,6 +42990,7 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
             $scope.apologyHeader = 'Step 2'
             $scope.apologyTitle  = 'And I honor you by...'
           } else if ($scope.apologyTimer<=10){
+            //navigator.notification.vibrate(1000);
             $scope.apologyHeader = 'Step 3'
             $scope.apologyTitle  = 'And I\'m greatful for...'
           }
@@ -43264,6 +43266,8 @@ angular.module('core').service('Menus', [
 		this.addMenu('topbar');
 	}
 ]);
+
+
 'use strict';
 
 // Config HTTP Error Handling
@@ -43301,8 +43305,7 @@ angular.module('users').config(['$stateProvider',
 	function($stateProvider) {
 		// Users state routing
 		$stateProvider.
-		state('forgot-password', {
-			url: '/forgot-password',
+/*			url: '/forgot-password',
 			templateUrl: 'users/views/forgot-password.client.view.html'
 		}).
 		state('profile', {
@@ -43316,7 +43319,7 @@ angular.module('users').config(['$stateProvider',
 		state('accounts', {
 			url: '/settings/accounts',
 			templateUrl: 'users/views/settings/social-accounts.client.view.html'
-		}).
+		}).*/
 		state('signup', {
 			url: '/signup',
 			templateUrl: 'users/views/signup.client.view.html'
@@ -43332,7 +43335,7 @@ angular.module('users').config(['$stateProvider',
 angular.module('users').controller('AuthenticationController', ['$scope', '$http', '$location', 'Authentication',
 	function($scope, $http, $location, Authentication) {
 		$scope.authentication = Authentication;
-
+    $scope.loading = false;
 		//If user is signed in then redirect back home
 		if ($scope.authentication.user) $location.path('/');
 
@@ -43341,29 +43344,30 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
     }
 
 		$scope.signup = function() {
-			$http.post(ApplicationConfiguration.apiRoot + '/auth/signup', $scope.credentials).success(function(response) {
-				//If successful we assign the response to the global user model
+		  $scope.error = '';
+			$http.post(ApplicationConfiguration.apiRoot + '/auth/signup', {user:{uuid: device.uuid, phoneNumber: $scope.phoneNumber}}).success(function(response) {
 				$scope.authentication.user = response;
-
-				//And redirect to the index page
-				$location.path('/');
+        $location.path('/');
 			}).error(function(response) {
 				$scope.error = response.message;
 			});
 		};
 
 		$scope.signin = function() {
-			$http.post(ApplicationConfiguration.apiRoot + '/auth/signin', $scope.credentials).success(function(response) {
+		  $scope.loading = true;
+			$http.post(ApplicationConfiguration.apiRoot + '/auth/signin', {user:{uuid: device.uuid, token:'ALDZKFOJOZASFFGG'}}).success(function(response) {
 				//If successful we assign the response to the global user model
 				$scope.authentication.user = response;
-
+        $scope.loading = false;
 				//And redirect to the index page
 				$location.path('/');
 			}).error(function(response) {
-				$scope.error = response.message;
+			  $scope.loading = false;
+				console.log(response);
 			});
 		};
-
+		$scope.signin();
+/*
 		$scope.forgotPassword = function() {
 			$scope.success = $scope.error = null;
 
@@ -43375,9 +43379,9 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 			}).error(function(response) {
 				$scope.error = response.message;
 			});
-		};
+		};*/
 	}
-]);
+]);/*
 'use strict';
 
 angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', 'Users', 'Authentication',
@@ -43417,7 +43421,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 				$scope.error = response.message;
 			});
 		};
-
+		
 		// Update a user profile
 		$scope.updateUserProfile = function() {
 			$scope.success = $scope.error = null;
@@ -43444,7 +43448,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 			});
 		};
 	}
-]);
+]);*/
 'use strict';
 
 // Authentication service for user variables
@@ -43459,7 +43463,7 @@ angular.module('users').factory('Authentication', [
 
 		return _this._data;
 	}
-]);
+]);/*
 'use strict';
 
 // Users service used for communicating with the users REST endpoint
@@ -43471,4 +43475,4 @@ angular.module('users').factory('Users', ['$resource',
 			}
 		});
 	}
-]);
+]);*/

@@ -7,6 +7,18 @@
     <author email="support@phonegap.com" href="http://phonegap.com">
         PhoneGap Team
     </author>
+    <feature name="Media">
+	    <param name="android-package" value="org.apache.cordova.media.AudioHandler" />
+	</feature>
+	<feature name="FileTransfer">
+	    <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
+	</feature>
+	<feature name="Device">
+	    <param name="android-package" value="org.apache.cordova.device.Device" />
+	</feature>
+	<feature name="Vibration">
+	    <param name="android-package" value="org.apache.cordova.vibration.Vibration" />
+	</feature>
     <preference name="permissions" value="none" />
     <preference name="phonegap-version" value="3.5.0" />
     <preference name="orientation" value="default" />

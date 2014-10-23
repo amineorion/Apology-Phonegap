@@ -1,0 +1,21 @@
+<section data-ng-controller="PlaybackController">
+	<div class="col-md-12">
+		<h1>My Apologyes</h1>
+		<ul>
+			<li>
+				<div data-ng-repeat="apology in apologies" data-ng-href="#!/apology/{{apology._id}}" class="list-group-item">
+						<small class="list-group-item-text">
+								Posted on
+							<span data-ng-bind="apology.created | date:'mediumDate'"></span>
+								by
+							<span data-ng-bind="apology.user.displayName"></span>
+						</small>
+						<audio controls>
+							<source type="audio/wav" ng-src=' {{ apology.path }} ' controls="controls" preload="auto">
+							Your browser does not support the audio element.
+						</audio>
+				</div>
+			</li>
+		</ul>
+	</div>
+</section>

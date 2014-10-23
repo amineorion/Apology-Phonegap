@@ -2,27 +2,38 @@
 
 
 	<div class="col-md-12 text-center">
-		<div class='login-logo login-main-width'>
-			<img src="./core/img/logo.gif"></img>
-		</div>
-		<div class='login-input register-input login-main-width'>
-			<input type='text' placeholder='Login' ng-model='credentials.username' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Login'" ></input>
-			<input type='email' placeholder='Email' ng-model='credentials.email' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" ></input>
-			<input type='password' placeholder='Password' ng-model='credentials.password' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" ></input>
-			<input type='text' placeholder='First name' ng-model='credentials.firstName' onfocus="this.placeholder = ''" onblur="this.placeholder = 'First name'" ></input>
-			<input type='text' placeholder='Last name' ng-model='credentials.lastName' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last name'" ></input>
-		</div>
-		<div class='login-remember login-main-width'>
-			<img src="">
-		</div>
-		<div class='login-buttons login-main-width row'>
-			<a ng-click='goTo("/signin")' class="col-xs-6">
-				<img src="./core/img/btn-signin.gif">
-			</a>
-			<a ng-click='signup()' class="col-xs-6">
-				<img src="./core/img/btn-register.gif">
-			</a>
-		</div>
+	    <form name="signupForm" novalidate>
+    		<div class='login-logo login-main-width'>
+    			<img src="./core/img/logo.gif"></img>
+    		</div>
+    		<div class='login-input register-input login-main-width'>
+    			<input type='text' placeholder='phone number' name='phone' ng-model='phoneNumber' onfocus="this.placeholder = ''" onblur="this.placeholder = 'phone number'" required></input>
+                <div ng-show="signupForm.phone.$dirty && signupForm.phone.$invalid">Invalid:
+                  <span ng-show="signupForm.phone.$error.required">Tell us your phone number.</span>
+                </div>
+                <div>
+                    {{ error }}
+                </div>
+                <!--
+    			<input type='text' placeholder='Login' name='login' ng-model='credentials.username' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Login'" required></input>
+    			<input type='email' placeholder='Email' name='email' ng-model='credentials.email' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" required></input>
+    			<input type='password' placeholder='Password' name='password' ng-model='credentials.password' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" required></input>
+    			<input type='text' placeholder='First name' name='first_name' ng-model='credentials.firstName' onfocus="this.placeholder = ''" onblur="this.placeholder = 'First name'" required></input>
+    			<input type='text' placeholder='Last name' name='last_name' ng-model='credentials.lastName' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last name'" required></input>
+    		      -->
+    		</div>
+    		<!--<div class='login-remember login-main-width'>
+    			<img src="">
+    		</div>-->
+    		<div class='login-buttons login-main-width row'>
+    			<!--<a ng-click='goTo("/signin")' class="col-xs-6">
+    				<img src="./core/img/btn-signin.gif">
+    			</a>-->
+    			<a ng-click='signup()' class="col-xs-6">
+    				<img src="./core/img/btn-register.gif">
+    			</a>
+    		</div>
+		</form>
 	</div>
 
 

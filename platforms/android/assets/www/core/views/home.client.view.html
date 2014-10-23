@@ -1,0 +1,43 @@
+<section data-ng-controller="RecordController">
+	<div class='landing-page' landing-page>
+		<img src="./core/img/landing.gif"></img>
+		<div class='landing-begin' ng-click='letTheGameBegin()'>BEGIN -></div>
+	</div>
+
+	<div class='main-window ng-hide' ng-controller='RecordController' ng-show='authentication.user && !apologyUploaded'>
+	    <div class='your-inbox' ng-show='!apologyStarted' ng-click='goToInbox()'>
+	    	your inbox
+	    </div>
+
+		<p class='apology-header'>{{ apologyHeader }}</p>
+		<div class='goback-to-record' ng-show='apologyStarted' ng-click="goBackToHome()"><</div>
+		<p class='main-page-text' ng-show='!apologyStarted'>Think about who you want to apology to, then hold the record button and we will guid you through a sansational apology.</p>
+		<p class='main-page-subtext' ng-show='!apologyStarted'>When finished, chose who you want to recieve your words.</p>
+
+		<p class='apology-title' ng-show='apologyStarted'>{{ apologyTitle }}</p>
+
+		<div class='apology-prbar' ng-show='apologyStarted'>
+			<div class='prbar' style='width:{{ prBarWidth }}%'></div>
+			<div class='prbar-ghost'></div>
+			<p class='time-zero'>0</p>
+			<p class='time-remaining' ng-show='!stopRecord'>-{{ apologyTimer }}</p>	
+			<p class='time-remaining' ng-show='stopRecord'>-30</p>	
+		</div>
+
+		<div class='record-button-cont'>
+			<div ng-show='!apologyStarted' ng-click='startApology()' class='record-button'></div>
+			<div ng-show='!apologyUploading&&apologyStarted&&!apologyPaused' ng-click='stopRecording()' class='stop-button'></div>
+			<div ng-show='apologyUploading' class='apology-uploading'></div>
+
+<!-- 			<div ng-show='apologyStarted&&!apologyPaused' ng-click='pauseMedia()' class='pause-button'>
+				<img src="./core/img/pause.png" alt="">
+			</div>
+			<div ng-show='apologyStarted&&apologyPaused' ng-click='startApology()' class='pause-button'>
+				<img src="./core/img/play.png" alt="">
+			</div> -->
+		</div>
+		<div class='apology-footer' ng-show='apologyStarted'>
+			Tune into apology.fm
+		</div>
+	</div>
+</section>
