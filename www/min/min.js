@@ -43018,7 +43018,10 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
             "selectedType" : "username",
             "username"     : 'denis'
         };
-        var headers={'Cookie':$cookieStore.get('connect.sid')};
+        var headers={
+          'Cookie':$cookieStore.get('connect.sid'),
+          Connection: "close"
+        };
 
         options.headers = headers;
        
