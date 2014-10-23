@@ -42829,7 +42829,6 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
     function onMediaCallSuccess() {
       if(!$scope.goback) {
         createdStatus = true;
-        mediaFileFullName = "/sdcard/"+ mediaRecFile;
         console.log("***test: new Media() succeeded ***", mediaFileFullName);
         $scope.uploadFile({
           name     : mediaRecFile,
