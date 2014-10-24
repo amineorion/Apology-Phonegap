@@ -43013,13 +43013,8 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
         options.fileName    = mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1);
         options.mimeType    = "audio/wav"
         options.chunkedMode = false;
-        options.params      = { // Whatever you populate options.params with, will be available in req.body at the server-side.
-            "description"  : "Uploaded from my phone",
-            "selectedType" : "username",
-            "username"     : 'denis'
-        };
+        
         var headers={
-          'Cookie':$cookieStore.get('connect.sid'),
           Connection: "close"
         };
 
@@ -43027,13 +43022,11 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
        
         console.log('fileEntryUrl', fileEntryUrl)
         $scope.apologyUploading = true;
-        if(fileEntryUrl){
-          var urlArray = fileEntryUrl.split('/');
-          urlArray[urlArray.length-2] = 'tmp';
-          fileEntryUrl = urlArray.join('/');  
-        }else{
-          fileEntryUrl = mediaFile.fullPath;
-        }
+        
+        var urlArray = fileEntryUrl.split('/');
+        urlArray[urlArray.length-2] = 'tmp';
+        fileEntryUrl = urlArray.join('/');  
+        
         
         // Transfer picture to server
         var ft = new FileTransfer();
