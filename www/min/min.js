@@ -42923,7 +42923,13 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
         else
             fileSystem.root.getFile(mediaRecFile, { create: true, exclusive: false }, onOK_GetFile, null);
     }
-
+    function successFileSystem(fileSystem) {
+      fileSystem.root.getFile('myRecording100.m4a', { create: false, exclusive: false },
+        function(entry){
+          entry.remove(null,null);
+        }, null
+      );
+    }
     $scope.goback = false;
 
     $scope.goToInbox = function() {
@@ -43003,38 +43009,35 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
     };
     // Upload files to server
     $scope.uploadFile = function (mediaFile) {
-
-        console.log('mediaFile', mediaFile);
-        console.log('mediaFile.fullPath', mediaFile.fullPath)
-        console.log('mediaFile', mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1));
+          var urlArray = fileEntryUrl.split('/');
+          urlArray[urlArray.length-2] = 'tmp';
+          fileEntryUrl = urlArray.join('/');  
+                            
+                  window.encodeAudio(fileEntryUrl.replace('file://',''), function(newM4APath){
+        $scope.apologyUploading = true;
+          console.log(mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1).replace('.wav','.m4a'));
 
         var options         = new FileUploadOptions();
         options.fileKey     = "file";
-        options.fileName    = mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1);
-        options.mimeType    = "audio/wav"
+        options.fileName    = mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1).replace('.wav','.m4a');
+        options.mimeType    = "audio/m4a"
         options.chunkedMode = false;
-        
+
         var headers={
+          //'Cookie':$cookieStore.get('connect.sid'),
           Connection: "close"
         };
 
         options.headers = headers;
-       
-        console.log('fileEntryUrl', fileEntryUrl)
-        $scope.apologyUploading = true;
-        
-        var urlArray = fileEntryUrl.split('/');
-        urlArray[urlArray.length-2] = 'tmp';
-        fileEntryUrl = urlArray.join('/');  
-        
-        
         // Transfer picture to server
         var ft = new FileTransfer();
         ft.upload(
-          fileEntryUrl, 
+          newM4APath, 
           encodeURI(ApplicationConfiguration.apiRoot + '/apologies'),
           // ApplicationConfiguration.apiRoot + '/apologies', 
           function(r) {
+                  
+            window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, successFileSystem, null);
             console.log( "Upload successful: "+r.bytesSent+" bytes uploaded.");
             console.log('r', r.response);
             $rootScope.lastApology = JSON.parse(r.response);
@@ -43042,8 +43045,15 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
           },
           function(error) {
             console.log("Upload failed: Code = "+error.code, error);
-          }, options, true);
+          }, options, true);  
+        }, function(err){
+          console.log("error converting");
+          console.log(err);
+        });
+        
     }
+
+
 
   }
 ]);

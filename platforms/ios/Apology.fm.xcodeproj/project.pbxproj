@@ -56,6 +56,7 @@
 		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
 		D5B9038FA4F84B4FB9CCAAD8 /* CDVAssetLibraryFilesystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB7CA7E317466EA6443628 /* CDVAssetLibraryFilesystem.m */; };
 		FB8870AD75194B149C47C593 /* CDVContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F24551BD1EA486588FD03CA /* CDVContact.m */; };
+		2348A4E33A644E2A8ECE4BE8 /* AudioEncode.m in Sources */ = {isa = PBXBuildFile; fileRef = 267DF3F52D1343628B7F81CE /* AudioEncode.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -150,6 +151,8 @@
 		EDA09E7BD0174F01999E3AC7 /* CDVSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVSound.h; path = org.apache.cordova.media/CDVSound.h; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = Apology.fm/config.xml; sourceTree = "<group>"; };
 		FCFD8598880D48E6BB8C93E5 /* CDVFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVFileTransfer.m; path = "org.apache.cordova.file-transfer/CDVFileTransfer.m"; sourceTree = "<group>"; };
+		267DF3F52D1343628B7F81CE /* AudioEncode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "AudioEncode.m"; path = "cordova.phonegap.audio.encode/AudioEncode.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		C454D36DEC1C4AB1A6A31B23 /* AudioEncode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "AudioEncode.h"; path = "cordova.phonegap.audio.encode/AudioEncode.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -304,6 +307,8 @@
 				D0122DEF95944DF3A66667F9 /* CDVContact.h */,
 				950D25781BF24B81BF37355B /* Sms.m */,
 				7D7C7998C4974BF189911857 /* Sms.h */,
+				267DF3F52D1343628B7F81CE /* AudioEncode.m */,
+				C454D36DEC1C4AB1A6A31B23 /* AudioEncode.h */,
 			);
 			name = Plugins;
 			path = Apology.fm/Plugins;
@@ -517,6 +522,7 @@
 				9EF990105B144656AD4E4F95 /* CDVContacts.m in Sources */,
 				FB8870AD75194B149C47C593 /* CDVContact.m in Sources */,
 				88AC8CB6E77A44B6BFB44D29 /* Sms.m in Sources */,
+				2348A4E33A644E2A8ECE4BE8 /* AudioEncode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
