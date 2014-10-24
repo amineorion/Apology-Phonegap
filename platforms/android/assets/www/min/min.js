@@ -42829,7 +42829,6 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
     function onMediaCallSuccess() {
       if(!$scope.goback) {
         createdStatus = true;
-        mediaFileFullName = "/sdcard/"+ mediaRecFile;
         console.log("***test: new Media() succeeded ***", mediaFileFullName);
         $scope.uploadFile({
           name     : mediaRecFile,
@@ -42958,7 +42957,7 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
             my_recorder.startRecord();
 
         if (phoneCheck.android) {
-            my_recorder = new Media("/sdcard/"+mediaRecFile, onMediaCallSuccess, onMediaCallError);
+            my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
             console.log("***test: new Media() for android ***");
 
             recordNow();
@@ -43004,39 +43003,44 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
     };
     // Upload files to server
     $scope.uploadFile = function (mediaFile) {
-
-        console.log('mediaFile', mediaFile);
-        console.log('mediaFile.fullPath', mediaFile.fullPath)
-        console.log('mediaFile', mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1));
+      var tempo = fileEntryUrl;
+          var urlArray = fileEntryUrl.split('/');
+          urlArray[urlArray.length-2] = 'tmp';
+          fileEntryUrl = urlArray.join('/');  
+        var fileout = fileEntryUrl.replace('.wav','.m4a');
+        console.log(fileEntryUrl);
+        console.log(tempo);
+        window.encodeAudio(fileEntryUrl, function(newM4APath){
+        $scope.apologyUploading = true;
+        //if(fileEntryUrl){
 
         var options         = new FileUploadOptions();
         options.fileKey     = "file";
-        options.fileName    = mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1);
-        options.mimeType    = "audio/wav"
+        options.fileName    = mediaFile.name.substr(mediaFile.name.lastIndexOf('/')+1).replace('.wav','.m4a');
+        options.mimeType    = "audio/m4a"
         options.chunkedMode = false;
-        options.params      = { // Whatever you populate options.params with, will be available in req.body at the server-side.
+/*        options.params      = { // Whatever you populate options.params with, will be available in req.body at the server-side.
             "description"  : "Uploaded from my phone",
             "selectedType" : "username",
             "username"     : 'denis'
+        };*/
+        var headers={
+          //'Cookie':$cookieStore.get('connect.sid'),
+          Connection: "close"
         };
-        var headers={'Cookie':$cookieStore.get('connect.sid')};
 
         options.headers = headers;
        
         console.log('fileEntryUrl', fileEntryUrl)
-        $scope.apologyUploading = true;
-        if(fileEntryUrl){
-          var urlArray = fileEntryUrl.split('/');
-          urlArray[urlArray.length-2] = 'tmp';
-          fileEntryUrl = urlArray.join('/');  
-        }else{
+        
+        /*}else{
           fileEntryUrl = mediaFile.fullPath;
-        }
+        }*/
         
         // Transfer picture to server
         var ft = new FileTransfer();
         ft.upload(
-          fileEntryUrl, 
+          newM4APath, 
           encodeURI(ApplicationConfiguration.apiRoot + '/apologies'),
           // ApplicationConfiguration.apiRoot + '/apologies', 
           function(r) {
@@ -43047,7 +43051,12 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
           },
           function(error) {
             console.log("Upload failed: Code = "+error.code, error);
-          }, options, true);
+          }, options, true);  
+        }, function(err){
+          console.log("error converting");
+          console.log(err);
+        });
+        
     }
 
   }

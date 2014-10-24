@@ -35,6 +35,13 @@
     <feature name="Sms">
         <param name="ios-package" value="Sms" />
     </feature>
+    <plugins>
+        <feature name="AudioEncode">
+            <param name="ios-package" value="AudioEncode" />
+            <param name="onload" value="true" />
+        </feature>
+        <plugin name="AudioEncode" value="AudioEncode" />
+    </plugins>
     <name>Apology.fm</name>
     <description>
         We want you to send apology!

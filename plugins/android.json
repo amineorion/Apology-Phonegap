@@ -128,6 +128,9 @@
         },
         "org.apache.cordova.vibration": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "cordova.phonegap.audio.encode": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
         }
     },
     "dependent_plugins": {}
