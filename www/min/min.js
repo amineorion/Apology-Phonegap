@@ -42634,9 +42634,6 @@ angular.module('core').controller('InboxApolCtrl', ['$scope', 'Authentication', 
   function($scope, Authentication, $http) {
     $scope.authentication = Authentication;
     $scope.apologies = [];
-
-    // http://apology.herokuapp.com/
-
     $http.get(ApplicationConfiguration.apiRoot + '/apologies')
     .success(function(response) {
       console.log('Response', response)
@@ -42644,7 +42641,7 @@ angular.module('core').controller('InboxApolCtrl', ['$scope', 'Authentication', 
     })
     .error(function(err) {
       console.log('Error', err)
-    })
+    });
   }
 ]);
 'use strict';
@@ -42744,16 +42741,31 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
         console.log('Phone: ', contacts[0].phoneNumbers[0].value)
 
         var number = contacts[0].phoneNumbers[0].value;
-        var message = 'Take it'
+        
+        $http.get(ApplicationConfiguration.apiRoot + '/users/exist/'+number)
+        .success(function(response) {
+          $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
+                  { apology: $rootScope.lastApology.path,
+                    receipient: number 
+                  }).success(function(response){
+                    alert('Message sent successfully');
+                  }).error(function(err){
+                    alert('error');
+                  });
+        })
+        .error(function(err) {
+          var message = 'Take it'
+  
+          var intent = "INTENT"; //leave empty for sending sms using default intent
+          var success = function () { 
+            alert('Message sent successfully'); 
+          };
+          var error = function (e) {
+            alert('Message Failed:' + e); 
+          };
+          sms.send(number, message, intent, success, error);
+        });
 
-        var intent = "INTENT"; //leave empty for sending sms using default intent
-        var success = function () { 
-          alert('Message sent successfully'); 
-        };
-        var error = function (e) {
-          alert('Message Failed:' + e); 
-        };
-        sms.send(number, message, intent, success, error);
     }
 
     function onPickContactError() {
@@ -42992,9 +43004,15 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
           $scope.apologyTimer--;
           $scope.prBarWidth = (30-$scope.apologyTimer) * 3.33;
           if($scope.apologyTimer<=20 && $scope.apologyTimer>10){
+            if($scope.apologyTimer === 20){
+              navigator.notification.vibrate(1000);
+            }
             $scope.apologyHeader = 'Step 2'
             $scope.apologyTitle  = 'And I honor you by...'
           } else if ($scope.apologyTimer<=10){
+            if($scope.apologyTimer === 10){
+              navigator.notification.vibrate(1000);
+            }
             //navigator.notification.vibrate(1000);
             $scope.apologyHeader = 'Step 3'
             $scope.apologyTitle  = 'And I\'m greatful for...'
