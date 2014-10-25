@@ -147,10 +147,12 @@
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/receiver-playback.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/header.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/apoloinbox.client.view.html \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/auth.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/submission.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/detail.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/share.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/home.client.view.html \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/radio.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/feed.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/reviewapology.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/playback.client.view.html \

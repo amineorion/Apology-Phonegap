@@ -42597,12 +42597,102 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 			url: '/apoloinbox',
 			templateUrl: 'core/views/apoloinbox.client.view.html'
 		}).
+		state('record', {
+      url: '/record',
+      templateUrl: 'core/views/home.client.view.html'
+    }).
+		state('radio', {
+      url: '/radio',
+      templateUrl: 'core/views/radio.client.view.html'
+    }).
 		state('home', {
 			url: '/',
-			templateUrl: 'core/views/home.client.view.html'
+			templateUrl: 'core/views/auth.client.view.html'
 		});
 	}
 ]);
+'use strict';
+
+angular.module('core').controller('RadioController', ['$scope', '$http', 'Authentication', '$timeout','$state',
+  function($scope, $http, Authentication, $timeout, $state) {
+    var scope = this;
+    this.authentication = Authentication;
+    this.currentApology = {};
+    this.isPlaying = false;
+    this.duration = 0;
+    this.timePlayed = 0;
+    var radio = null;
+    
+    this.start = function(){
+      $http.get(ApplicationConfiguration.apiRoot + '/radio')
+      .success(function(response) {
+        scope.currentApology = response;
+        scope.load();
+      })
+      .error(function(err) {
+        console.log('Error', err);
+      });
+    };
+    
+    this.load = function(){
+      if(this.currentApology){
+        radio = new Media(this.currentApology.path,
+        function(){
+        }, function(err){
+          console.log(err);
+        }, function(status){
+          if(status === Media.MEDIA_STOPPED){
+            scope.pause();
+            scope.start();
+          }
+        });
+        this.duration = radio.getDuration();
+        this.play();
+        setInterval(function() {
+          radio.getCurrentPosition(
+            function(position) {
+              if (position > -1) {
+                scope.timePlayed = position;
+                $scope.$apply();
+              }
+            },
+            function(e) {
+              console.log("Error getting pos=" + e);
+            });
+        }, 1000);
+      }
+    };
+    
+    this.play = function(){
+      if(!this.isPlaying){
+        radio.play(); 
+        this.isPlaying = true;
+      }
+    };
+    
+    this.pause = function(){
+      if(this.isPlaying){
+        radio.pause(); 
+        this.isPlaying = false;
+      }
+    };
+    this.goTo = function(path) {
+      $state.go(path);
+    };
+    this.start();
+  }]);
+'use strict';
+
+angular.module('core').controller('AuthController', ['$scope', 'Authentication','$state',
+  function($scope, Authentication,$state) {
+    $scope.authentication = Authentication;
+    $scope.$watch('authentication',function(auth){
+      if(auth.user){
+        $state.go('radio');
+      }
+    });  
+  }
+]);  
 'use strict';
 
 angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus', '$timeout',
@@ -42610,7 +42700,6 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
     $scope.authentication = Authentication;
     $scope.isCollapsed = false;
     $scope.menu = Menus.getMenu('topbar');
-
 
     $scope.toggleCollapsibleMenu = function() {
       $scope.isCollapsed = !$scope.isCollapsed;

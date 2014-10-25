@@ -1,0 +1,32 @@
+<section data-ng-controller="RadioController as radio">
+    <div class='main-window'>
+        <div class='your-inbox' ng-click='radio.goTo("apoloinbox")'>
+            your inbox
+        </div>
+
+        <p class='apology-header'>APOLOGY.FM</p>
+        <br/>
+        <p class='main-page-text' >LISTEN TO A<br/>RECENT APOLOGY</p>
+        <br/>
+        <p class='main-page-subtext' >RECORDED</p>
+
+        <p class='apology-title'>{{ radio.currentApology.created | date:'medium' }}</p>
+        
+        <div class='apology-prbar'>
+        {{ radio.timePlayed }} out of {{ radio.duration }}
+        </div>
+        
+        
+        <div class='record-button-cont'>
+            <div ng-show='radio.isPlaying' ng-click='radio.pause()' class='pause-button'>
+                <img src="./core/img/pause.png" alt="">
+            </div>
+            <div ng-hide='radio.isPlaying' ng-click='radio.play()' class='pause-button'>
+                <img src="./core/img/play.png" alt="">
+            </div>
+        </div>
+        <div class='apology-footer' ng-click='radio.goTo("record")'>
+            RECORD AN APOLOGY
+        </div>
+    </div>
+</section>
