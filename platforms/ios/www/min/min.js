@@ -42613,8 +42613,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 ]);
 'use strict';
 
-angular.module('core').controller('RadioController', ['$scope', '$http', 'Authentication', '$timeout','$state',
-  function($scope, $http, Authentication, $timeout, $state) {
+angular.module('core').controller('RadioController', ['$scope', '$http', 'Authentication', '$timeout','$state','$document','$location',
+  function($scope, $http, Authentication, $timeout, $state,$document,$location) {
     var scope = this;
     this.authentication = Authentication;
     this.currentApology = {};
@@ -42643,7 +42643,9 @@ angular.module('core').controller('RadioController', ['$scope', '$http', 'Authen
         }, function(status){
           if(status === Media.MEDIA_STOPPED){
             scope.pause();
-            scope.start();
+            if($location.path().indexOf("radio") > -1){
+              scope.start();
+            }
           }
         });
         this.duration = radio.getDuration();
@@ -42660,6 +42662,11 @@ angular.module('core').controller('RadioController', ['$scope', '$http', 'Authen
               console.log("Error getting pos=" + e);
             });
         }, 1000);
+        setInterval(function() {
+          if($location.path().indexOf("radio") === -1){
+            radio.stop();
+          }
+        }, 100);
       }
     };
     
@@ -42677,10 +42684,12 @@ angular.module('core').controller('RadioController', ['$scope', '$http', 'Authen
       }
     };
     this.goTo = function(path) {
-      this.pause();
+      radio.stop();
       $state.go(path);
     };
     this.start();
+    
+    //$document.addEventListener("pause", function(){radio.stop();}, false);
   }]);
 'use strict';
 
@@ -42724,9 +42733,9 @@ angular.module('core').controller('InboxApolCtrl', ['$scope', 'Authentication', 
   function($scope, Authentication, $http) {
     $scope.authentication = Authentication;
     $scope.apologies = [];
-    $http.get(ApplicationConfiguration.apiRoot + '/apologies')
+    $http.get(ApplicationConfiguration.apiRoot + '/inbox')
     .success(function(response) {
-      console.log('Response', response)
+      console.log('Response', response);
       $scope.apologies = response;
     })
     .error(function(err) {
@@ -42835,13 +42844,13 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
         $http.post(ApplicationConfiguration.apiRoot + '/users/exist',{number: number})
         .success(function(response) {
           $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
-                  { apology: $rootScope.lastApology.path,
-                    receipient: number 
-                  }).success(function(response){
-                    alert('Message sent successfully');
-                  }).error(function(err){
-                    alert('error');
-                  });
+              { apology: $rootScope.lastApology.path,
+                receipient: number 
+              }).success(function(response){
+                alert('Message sent successfully');
+              }).error(function(err){
+                alert('error');
+              });
         })
         .error(function(err) {
           var message = 'Take it'
