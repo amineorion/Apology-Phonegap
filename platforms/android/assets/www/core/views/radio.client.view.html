@@ -5,15 +5,14 @@
         </div>
 
         <p class='apology-header'>APOLOGY.FM</p>
-        <br/>
         <p class='main-page-text' >LISTEN TO A<br/>RECENT APOLOGY</p>
-        <br/>
+        
         <p class='main-page-subtext' >RECORDED</p>
 
         <p class='apology-title'>{{ radio.currentApology.created | date:'medium' }}</p>
         
         <div class='apology-prbar'>
-        {{ radio.timePlayed }} out of {{ radio.duration }}
+        {{ radio.timePlayed | number:0 }}
         </div>
         
         
