@@ -42627,7 +42627,7 @@ angular.module('core').controller('PlayerController', ['$scope', '$http', 'Authe
     this.duration = 0;
     this.timePlayed = 0;
     var player = null;
-    console.log($stateParams);
+
     this.start = function(){
       $http.get(ApplicationConfiguration.apiRoot + '/sharedApology?id='+$stateParams.id)
       .success(function(response) {
