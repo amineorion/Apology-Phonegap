@@ -1,5 +1,5 @@
 <section data-ng-controller="InboxApolCtrl">
 	<div ng-repeat='apology in apologies'>
-		<div style="padding: 20px;">{{ $index+1 }}. {{ apology.phoneNumber }}<br/>{{ apology.sent }}</div>
+		<div style="padding: 20px;">{{ $index+1 }}. <a ng-href="#!/player/{{apology._id}}">{{ apology.senderPhoneNumber }}</a><br/>{{ apology.sent | date:'medium' }}</div>
 	</div>
 </section>
