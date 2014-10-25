@@ -42677,6 +42677,7 @@ angular.module('core').controller('RadioController', ['$scope', '$http', 'Authen
       }
     };
     this.goTo = function(path) {
+      this.pause();
       $state.go(path);
     };
     this.start();
@@ -42831,7 +42832,7 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
 
         var number = contacts[0].phoneNumbers[0].value;
         
-        $http.get(ApplicationConfiguration.apiRoot + '/users/exist/'+number)
+        $http.post(ApplicationConfiguration.apiRoot + '/users/exist',{number: number})
         .success(function(response) {
           $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
                   { apology: $rootScope.lastApology.path,
