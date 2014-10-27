@@ -7,6 +7,9 @@
     <author email="support@phonegap.com" href="http://phonegap.com">
         PhoneGap Team
     </author>
+    <feature name="File">
+	    <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+	</feature>
     <feature name="Media">
 	    <param name="android-package" value="org.apache.cordova.media.AudioHandler" />
 	</feature>
@@ -18,6 +21,9 @@
 	</feature>
 	<feature name="Vibration">
 	    <param name="android-package" value="org.apache.cordova.vibration.Vibration" />
+	</feature>
+	<feature name="Contacts">
+	    <param name="android-package" value="org.apache.cordova.contacts.ContactManager" />
 	</feature>
     <preference name="permissions" value="none" />
     <preference name="phonegap-version" value="3.5.0" />

@@ -42708,6 +42708,7 @@ angular.module('core').controller('RadioController', ['$scope', '$http', 'Authen
     
     this.load = function(){
       if(this.currentApology){
+        radio = null;
         radio = new Media(this.currentApology.path,
         function(){
         }, function(err){
@@ -42945,9 +42946,13 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
 
     $scope.chooseRecipient = function() {
       console.log('chooseRecipient')
-
-      var options = new ContactFindOptions();
-      navigator.contacts.chooseContact(onSuccess, options);
+      if(phoneCheck.ios){
+        var options = new ContactFindOptions();
+        navigator.contacts.chooseContact(onSuccess, options);
+      }else if(phoneCheck.android){
+        
+      } 
+      
     }
 
     $scope.playMedia = function (file) {
@@ -43129,6 +43134,61 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
           my_recorder.release();
       $scope.apologyStarted = false;
     };
+    var onAndroidMediaCallSuccess = function(){
+      if(!$scope.goback) {
+        createdStatus = true;
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
+          fileSystem.root.getFile(mediaRecFile, { create: false, exclusive: false }, 
+            function(fileEntry){
+              
+              fileEntryUrl = fileEntry.toURL();
+              console.log(fileEntryUrl);
+              mediaFileFullName = fileEntry.fullPath;
+              //mediaRecFile = mediaFileFullName;
+              if (checkFileOnly === true) 
+                mediaFileExist = true;
+              $scope.uploadFileAndroid({
+                name     : mediaRecFile,
+                fullPath : mediaFileFullName
+              });
+          }, null);
+        }, function() {
+            console.log("***test: failed in creating media file in requestFileSystem");
+        });
+      }
+    };
+    
+    
+    
+    $scope.uploadFileAndroid = function (mediaFile) {
+                          
+        $scope.apologyUploading = true;
+        
+        var options         = new FileUploadOptions();
+        options.fileKey     = "file";
+        options.fileName    = mediaFile.name;
+        options.mimeType    = "audio/3gp"
+        options.chunkedMode = false;
+        var headers={
+          Connection: "close"
+        };
+        options.headers = headers;
+        var ft = new FileTransfer();
+        ft.upload(
+          fileEntryUrl, 
+          encodeURI(ApplicationConfiguration.apiRoot + '/apologies'),
+          function(r) {
+            console.log( "Upload successful: "+r.bytesSent+" bytes uploaded.");
+            console.log('r', r.response);
+            $rootScope.lastApology = JSON.parse(r.response);
+            $state.go('reviewapology')
+          },
+          function(error) {
+            console.log("Upload failed: Code = "+error.code, error);
+          }, options, true);  
+        
+        
+    };
 
     $scope.startApology = function () {
 
@@ -43146,9 +43206,10 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
             my_recorder.startRecord();
 
         if (phoneCheck.android) {
-            my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
+            mediaRecFile = 'tmprecording.3gp';
+            my_recorder = new Media(mediaRecFile, onAndroidMediaCallSuccess, onMediaCallError);
             console.log("***test: new Media() for android ***");
-
+          
             recordNow();
         }
         else if (phoneCheck.windowsphone) {
@@ -43241,8 +43302,7 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
         });
         
     }
-
-
+    
 
   }
 ]);

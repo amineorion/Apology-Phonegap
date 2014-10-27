@@ -320,13 +320,6 @@ module.exports = [
         "merges": [
             "navigator.notification"
         ]
-    },
-    {
-        "file": "plugins/cordova.phonegap.audio.encode/www/AudioEncode.js",
-        "id": "cordova.phonegap.audio.encode.AudioEncode",
-        "clobbers": [
-            "window.encodeAudio"
-        ]
     }
 ];
 module.exports.metadata = 
@@ -335,13 +328,12 @@ module.exports.metadata =
     "org.apache.cordova.contacts": "0.2.14",
     "org.apache.cordova.device": "0.2.11-dev",
     "org.apache.cordova.dialogs": "0.2.9-dev",
-    "org.apache.cordova.file": "1.2.0",
+    "org.apache.cordova.file": "1.3.1",
     "org.apache.cordova.file-transfer": "0.4.5-dev",
     "org.apache.cordova.media": "0.2.12-dev",
     "org.apache.cordova.media-capture": "0.3.2-dev",
     "org.apache.cordova.plugin.sms": "0.1.0",
-    "org.apache.cordova.vibration": "0.3.10-dev",
-    "cordova.phonegap.audio.encode": "1.0.0"
+    "org.apache.cordova.vibration": "0.3.10-dev"
 }
 // BOTTOM OF METADATA
 });
