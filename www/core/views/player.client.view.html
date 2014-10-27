@@ -1,0 +1,28 @@
+<section>
+    <div class='main-window'>
+        <div class='your-inbox' ng-click='player.goTo("apoloinbox")'>
+            your inbox
+        </div>
+
+        <p class='apology-header'>{{ player.currentApology.senderPhoneNumber }}</p>
+        
+        <p class='apology-title'>{{ player.currentApology.sent | date:'medium' }}</p>
+        
+        <div class='apology-prbar'>
+        {{ player.timePlayed | number:0 }}
+        </div>
+        
+        
+        <div class='record-button-cont'>
+            <div ng-show='player.isPlaying' ng-click='player.pause()' class='pause-button'>
+                <img src="./core/img/pause.png" alt="">
+            </div>
+            <div ng-hide='player.isPlaying' ng-click='player.play()' class='pause-button'>
+                <img src="./core/img/play.png" alt="">
+            </div>
+        </div>
+        <div class='apology-footer' ng-click='player.goTo("record")'>
+            RECORD AN APOLOGY
+        </div>
+    </div>
+</section>

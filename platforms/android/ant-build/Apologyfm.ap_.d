@@ -141,6 +141,7 @@
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/brand/logo.png \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/css/core.css \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/about.client.view.html \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/player.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/lodaing-page.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/notifications.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/confirmation.client.view.html \

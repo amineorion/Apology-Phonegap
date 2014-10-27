@@ -42605,12 +42605,84 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       url: '/radio',
       templateUrl: 'core/views/radio.client.view.html'
     }).
+    state('player', {
+      url: '/player/:id',
+      templateUrl: 'core/views/player.client.view.html',
+      controller: 'PlayerController as player'
+    }).
 		state('home', {
 			url: '/',
 			templateUrl: 'core/views/auth.client.view.html'
 		});
 	}
 ]);
+'use strict';
+
+angular.module('core').controller('PlayerController', ['$scope', '$http', 'Authentication', '$timeout','$state','$document','$location','$stateParams',
+  function($scope, $http, Authentication, $timeout, $state,$document,$location,$stateParams) {
+    var scope = this;
+    this.authentication = Authentication;
+    this.currentApology = {};
+    this.isPlaying = false;
+    this.duration = 0;
+    this.timePlayed = 0;
+    var player = null;
+
+    this.start = function(){
+      $http.get(ApplicationConfiguration.apiRoot + '/sharedApology?id='+$stateParams.id)
+      .success(function(response) {
+        scope.currentApology = response;
+        scope.load();
+      })
+      .error(function(err) {
+        console.log('Error', err);
+      });
+    };
+    
+    this.load = function(){
+      if(this.currentApology){
+        player = new Media(this.currentApology.path,
+        function(){
+        }, function(err){
+          console.log(err);
+        });
+        this.duration = player.getDuration();
+        this.play();
+        setInterval(function() {
+          player.getCurrentPosition(
+            function(position) {
+              if (position > -1) {
+                scope.timePlayed = position;
+                $scope.$apply();
+              }
+            },
+            function(e) {
+              console.log("Error getting pos=" + e);
+            });
+        }, 1000);
+      }
+    };
+    
+    this.play = function(){
+      if(!this.isPlaying){
+        player.play(); 
+        this.isPlaying = true;
+      }
+    };
+    
+    this.pause = function(){
+      if(this.isPlaying){
+        player.pause(); 
+        this.isPlaying = false;
+      }
+    };
+    this.goTo = function(path) {
+      player.stop();
+      $state.go(path);
+    };
+    this.start();
+    
+  }]);
 'use strict';
 
 angular.module('core').controller('RadioController', ['$scope', '$http', 'Authentication', '$timeout','$state','$document','$location',
@@ -42662,11 +42734,11 @@ angular.module('core').controller('RadioController', ['$scope', '$http', 'Authen
               console.log("Error getting pos=" + e);
             });
         }, 1000);
-        setInterval(function() {
+        /*setInterval(function() {
           if($location.path().indexOf("radio") === -1){
             radio.stop();
           }
-        }, 100);
+        }, 100);*/
       }
     };
     
