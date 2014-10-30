@@ -143,6 +143,27 @@ template {
   margin: 40%;
   bottom: 0px;
 }
+.normal-button-cont::after {
+  font-weight: 300;
+  text-align: center;
+  padding-left: 6px;
+  font-size: 9px;
+  margin: auto;
+  position: relative;
+  top: 10px;
+}
+.normal-button-cont {
+  border: 2px solid;
+  width: 70px;
+  height: 70px;
+  border-radius: 100px;
+  /*margin: auto;*/
+  padding: 9px;
+  /*margin-top: 85px;*/
+  position: absolute;
+  margin: 40%;
+  bottom: 0px;
+}
 .apology-title {
   text-align: center;
   font-weight: 200;
@@ -157,11 +178,11 @@ template {
   text-align: center;
   text-align: c;
   font-weight: 300;
-  font-size: 15px;
+  font-size: 18px;
   border-top: 1px solid;
-  padding: 7px;
+  padding: 10px;
   text-transform: uppercase;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .main-page-subtext {
   padding: 15px;

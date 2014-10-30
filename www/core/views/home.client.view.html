@@ -2,7 +2,7 @@
 
 	<div class='main-window ng-hide' ng-controller='RecordController' ng-show='authentication.user && !apologyUploaded'>
 	    <div class='your-inbox' ng-show='!apologyStarted' ng-click='goToInbox()'>
-	    	your inbox
+	    	your inbox <span>{{ notifications }}</span>
 	    </div>
 
 		<p class='apology-header'>{{ apologyHeader }}</p>

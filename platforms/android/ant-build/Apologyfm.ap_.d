@@ -21,6 +21,7 @@
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/ant-build/res/drawable-land-xhdpi/screen.png \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/_where-is-www.txt \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/js \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/users \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/plugins \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/min \
@@ -32,6 +33,13 @@
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/phonegap.js \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/index.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/cordova.js \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/js/app.js \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/js/resources \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/js/libs \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/js/controllers \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/js/services \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/js/directives \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/js/filters \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/users/img \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/users/css \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/users/views \
@@ -57,6 +65,7 @@
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/plugins/org.apache.cordova.file-transfer \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/plugins/org.apache.cordova.file \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/plugins/org.apache.cordova.contacts \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/plugins/com.monday.contact-chooser \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/plugins/org.apache.cordova.device/www \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/plugins/org.apache.cordova.device/www/device.js \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/plugins/org.apache.cordova.plugin.sms/www \
@@ -114,6 +123,8 @@
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/plugins/org.apache.cordova.contacts/www/ContactError.js \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/plugins/org.apache.cordova.contacts/www/ContactAddress.js \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/plugins/org.apache.cordova.contacts/www/ContactFindOptions.js \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/plugins/com.monday.contact-chooser/www \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/plugins/com.monday.contact-chooser/www/ContactChooser.js \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/min/min.js \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/min/min.css \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/articles/views \
@@ -135,6 +146,7 @@
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/bg_main.gif \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/spinner-black.gif \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/brand \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/Apology.gif \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/btn-signin.gif \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/loaders/loader.gif \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/brand/favicon.ico \
@@ -143,11 +155,13 @@
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/about.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/player.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/lodaing-page.client.view.html \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/landing.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/notifications.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/confirmation.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/receiver-playback.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/header.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/apoloinbox.client.view.html \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/apolooutbox.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/auth.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/submission.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/detail.client.view.html \

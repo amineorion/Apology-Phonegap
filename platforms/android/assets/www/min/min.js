@@ -42259,7 +42259,7 @@ angularFileUpload.directive('ngFileDrop', [ '$parse', '$timeout', function($pars
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'apologyfm';
-  var apiRoot = 'http://54.68.169.103';
+  var apiRoot = 'http://apology.fm';
 	//var apiRoot = 'http://apology.herokuapp.com';
 	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'angularFileUpload'];
 
@@ -42597,6 +42597,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 			url: '/apoloinbox',
 			templateUrl: 'core/views/apoloinbox.client.view.html'
 		}).
+		state('apolooutbox', {
+      url: '/apolooutbox',
+      templateUrl: 'core/views/apolooutbox.client.view.html'
+    }).
 		state('record', {
       url: '/record',
       templateUrl: 'core/views/home.client.view.html'
@@ -42610,9 +42614,13 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       templateUrl: 'core/views/player.client.view.html',
       controller: 'PlayerController as player'
     }).
+		state('auth', {
+      url: '/auth',
+      templateUrl: 'core/views/auth.client.view.html'
+    }).
 		state('home', {
 			url: '/',
-			templateUrl: 'core/views/auth.client.view.html'
+			templateUrl: 'core/views/landing.client.view.html'
 		});
 	}
 ]);
@@ -42627,7 +42635,14 @@ angular.module('core').controller('PlayerController', ['$scope', '$http', 'Authe
     this.duration = 0;
     this.timePlayed = 0;
     var player = null;
-
+    var fnPosition = null;
+    
+    $http.get(ApplicationConfiguration.apiRoot + '/isViewed?id='+$stateParams.id)
+    .success(function(response) {
+    })
+    .error(function(err) {      
+    });
+    
     this.start = function(){
       $http.get(ApplicationConfiguration.apiRoot + '/sharedApology?id='+$stateParams.id)
       .success(function(response) {
@@ -42648,7 +42663,7 @@ angular.module('core').controller('PlayerController', ['$scope', '$http', 'Authe
         });
         this.duration = player.getDuration();
         this.play();
-        setInterval(function() {
+        fnPosition = setInterval(function() {
           player.getCurrentPosition(
             function(position) {
               if (position > -1) {
@@ -42685,25 +42700,29 @@ angular.module('core').controller('PlayerController', ['$scope', '$http', 'Authe
   }]);
 'use strict';
 
-angular.module('core').controller('RadioController', ['$scope', '$http', 'Authentication', '$timeout','$state','$document','$location',
-  function($scope, $http, Authentication, $timeout, $state,$document,$location) {
+angular.module('core').controller('RadioController', ['$scope', '$http', '$timeout','$document','$location',
+  function($scope, $http, $timeout,$document,$location) {
     var scope = this;
-    this.authentication = Authentication;
     this.currentApology = {};
     this.isPlaying = false;
     this.duration = 0;
     this.timePlayed = 0;
     var radio = null;
+    var fnPosition = null;
+    this.started = false;
     
     this.start = function(){
-      $http.get(ApplicationConfiguration.apiRoot + '/radio')
-      .success(function(response) {
-        scope.currentApology = response;
-        scope.load();
-      })
-      .error(function(err) {
-        console.log('Error', err);
-      });
+      if(!this.started){
+        this.started = true;
+        $http.get(ApplicationConfiguration.apiRoot + '/radio')
+        .success(function(response) {
+          scope.currentApology = response;
+          scope.load();
+        })
+        .error(function(err) {
+          console.log('Error', err);
+        });  
+      }
     };
     
     this.load = function(){
@@ -42723,7 +42742,7 @@ angular.module('core').controller('RadioController', ['$scope', '$http', 'Authen
         });
         this.duration = radio.getDuration();
         this.play();
-        setInterval(function() {
+        fnPosition = setInterval(function() {
           radio.getCurrentPosition(
             function(position) {
               if (position > -1) {
@@ -42758,9 +42777,10 @@ angular.module('core').controller('RadioController', ['$scope', '$http', 'Authen
     };
     this.goTo = function(path) {
       radio.stop();
-      $state.go(path);
+      clearInterval(fnPosition);
+      radio = null;
+      $location.path(path);
     };
-    this.start();
     
     //$document.addEventListener("pause", function(){radio.stop();}, false);
   }]);
@@ -42771,7 +42791,7 @@ angular.module('core').controller('AuthController', ['$scope', 'Authentication',
     $scope.authentication = Authentication;
     $scope.$watch('authentication',function(auth){
       if(auth.user){
-        $state.go('radio');
+        $state.go('record');
       }
     });  
   }
@@ -42802,8 +42822,8 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 ]);
 'use strict';
 
-angular.module('core').controller('InboxApolCtrl', ['$scope', 'Authentication', '$http',
-  function($scope, Authentication, $http) {
+angular.module('core').controller('InboxApolCtrl', ['$scope', 'Authentication', '$http', '$state',
+  function($scope, Authentication, $http, $state) {
     $scope.authentication = Authentication;
     $scope.apologies = [];
     $http.get(ApplicationConfiguration.apiRoot + '/inbox')
@@ -42814,6 +42834,28 @@ angular.module('core').controller('InboxApolCtrl', ['$scope', 'Authentication', 
     .error(function(err) {
       console.log('Error', err)
     });
+    $scope.goTo = function(path) {
+      $state.go(path);
+    };
+  }
+]);
+'use strict';
+
+angular.module('core').controller('OutboxApolCtrl', ['$scope', 'Authentication', '$http','$state',
+  function($scope, Authentication, $http, $state) {
+    $scope.authentication = Authentication;
+    $scope.apologies = [];
+    $http.get(ApplicationConfiguration.apiRoot + '/outbox')
+    .success(function(response) {
+      console.log('Response', response);
+      $scope.apologies = response;
+    })
+    .error(function(err) {
+      console.log('Error', err)
+    });
+    $scope.goTo = function(path) {
+      $state.go(path);
+    };
   }
 ]);
 'use strict';
@@ -42885,8 +42927,7 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
     // my_player.play();
 
     $scope.goBackToHome = function() {
-      console.log('Go back')
-      $state.go('home')
+      $state.go('radio');
     };
     
     function onSuccess(contactid, contact) {
@@ -42946,10 +42987,39 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
 
     $scope.chooseRecipient = function() {
       console.log('chooseRecipient')
-
-      var options = new ContactFindOptions();
-      filter = ["displayName", "phoneNumbers"];
-      navigator.contacts.find(filter, onSuccess, null, options);
+      if(phoneCheck.ios){
+        var options = new ContactFindOptions();
+        navigator.contacts.chooseContact(onSuccess, options);
+      }else if(phoneCheck.android){
+        window.plugins.ContactChooser.chooseContact(function (contactInfo) {
+          setTimeout(function () { // use timeout to fix iOS alert problem
+              $http.post(ApplicationConfiguration.apiRoot + '/users/exist',{number: contactInfo.phoneNumber})
+              .success(function(response) {
+                $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
+                    { apology: $rootScope.lastApology.path,
+                      receipient: contactInfo.phoneNumber 
+                    }).success(function(response){
+                      alert('Message sent successfully');
+                    }).error(function(err){
+                      alert('error');
+                    });
+                  })
+                  .error(function(err) {
+                    var message = $rootScope.lastApology.path;
+            
+                    var intent = "INTENT"; //leave empty for sending sms using default intent
+                    var success = function () { 
+                      alert('Message sent successfully'); 
+                    };
+                    var error = function (e) {
+                      alert('Message Failed:' + e); 
+                    };
+                    sms.send(contactInfo.phoneNumber, message, intent, success, error);
+                  });
+            }, 0);
+      });  
+      } 
+      
     }
 
     $scope.playMedia = function (file) {
@@ -42982,9 +43052,16 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
     // This provides Authentication context.
     $scope.authentication = Authentication;
     $scope.apologyUploaded = false;
-
+    $scope.notifications = 0;
     console.log('authentication.user', $scope.authentication.user)
-
+    
+    $http.get(ApplicationConfiguration.apiRoot + '/notifications')
+    .success(function(response) {
+      $scope.notifications = response.unread;
+    })
+    .error(function(err) {
+      
+    });
     var ua = navigator.userAgent.toLowerCase();
 
     var phoneCheck = {
@@ -43318,7 +43395,7 @@ angular.module('core').directive('landingPage', ['$timeout', '$location', 'Authe
           left : '100%'
         });
         $timeout(function () {
-          $location.path('/signin');
+          $location.path('/radio');
         }, 150)
 
       }
@@ -43593,7 +43670,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		$scope.authentication = Authentication;
     $scope.loading = false;
 		//If user is signed in then redirect back home
-		if ($scope.authentication.user) $location.path('/');
+		if ($scope.authentication.user) $location.path('/record');
 
     $scope.goTo = function (link) {
       $location.path(link)
@@ -43603,7 +43680,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		  $scope.error = '';
 			$http.post(ApplicationConfiguration.apiRoot + '/auth/signup', {user:{uuid: device.uuid, phoneNumber: $scope.phoneNumber}}).success(function(response) {
 				$scope.authentication.user = response;
-        $location.path('/');
+        $location.path('/record');
 			}).error(function(response) {
 				$scope.error = response.message;
 			});
@@ -43616,7 +43693,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 				$scope.authentication.user = response;
         $scope.loading = false;
 				//And redirect to the index page
-				$location.path('/');
+				$location.path('/record');
 			}).error(function(response) {
 			  $scope.loading = false;
 				console.log(response);

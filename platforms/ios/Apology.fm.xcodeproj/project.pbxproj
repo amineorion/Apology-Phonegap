@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		1478836363A54F468FA087C8 /* CDVCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D78650432084F15A657BA32 /* CDVCapture.m */; };
 		19E97915EA724C629B571A88 /* CDVCapture.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 90919BBBFED8472C8AE7CFBE /* CDVCapture.bundle */; };
@@ -58,6 +57,7 @@
 		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
 		D5B9038FA4F84B4FB9CCAAD8 /* CDVAssetLibraryFilesystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB7CA7E317466EA6443628 /* CDVAssetLibraryFilesystem.m */; };
 		FB8870AD75194B149C47C593 /* CDVContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F24551BD1EA486588FD03CA /* CDVContact.m */; };
+		2F1E7F7226804E53BFB3AA3C /* ContactChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F6DA0468A014F77AF148FF7 /* ContactChooser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +154,8 @@
 		EDA09E7BD0174F01999E3AC7 /* CDVSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVSound.h; path = org.apache.cordova.media/CDVSound.h; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = Apology.fm/config.xml; sourceTree = "<group>"; };
 		FCFD8598880D48E6BB8C93E5 /* CDVFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVFileTransfer.m; path = "org.apache.cordova.file-transfer/CDVFileTransfer.m"; sourceTree = "<group>"; };
+		3F6DA0468A014F77AF148FF7 /* ContactChooser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "ContactChooser.m"; path = "com.monday.contact-chooser/ContactChooser.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		3934AFC207354376962F203D /* ContactChooser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ContactChooser.h"; path = "com.monday.contact-chooser/ContactChooser.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -310,6 +312,8 @@
 				7D7C7998C4974BF189911857 /* Sms.h */,
 				267DF3F52D1343628B7F81CE /* AudioEncode.m */,
 				C454D36DEC1C4AB1A6A31B23 /* AudioEncode.h */,
+				3F6DA0468A014F77AF148FF7 /* ContactChooser.m */,
+				3934AFC207354376962F203D /* ContactChooser.h */,
 			);
 			name = Plugins;
 			path = Apology.fm/Plugins;
@@ -524,6 +528,7 @@
 				FB8870AD75194B149C47C593 /* CDVContact.m in Sources */,
 				88AC8CB6E77A44B6BFB44D29 /* Sms.m in Sources */,
 				2348A4E33A644E2A8ECE4BE8 /* AudioEncode.m in Sources */,
+				2F1E7F7226804E53BFB3AA3C /* ContactChooser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

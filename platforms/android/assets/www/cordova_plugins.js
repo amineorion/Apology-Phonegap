@@ -320,6 +320,13 @@ module.exports = [
         "merges": [
             "navigator.notification"
         ]
+    },
+    {
+        "file": "plugins/com.monday.contact-chooser/www/ContactChooser.js",
+        "id": "com.monday.contact-chooser.ContactChooser",
+        "clobbers": [
+            "ContactChooser"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -333,7 +340,8 @@ module.exports.metadata =
     "org.apache.cordova.media": "0.2.12-dev",
     "org.apache.cordova.media-capture": "0.3.2-dev",
     "org.apache.cordova.plugin.sms": "0.1.0",
-    "org.apache.cordova.vibration": "0.3.10-dev"
+    "org.apache.cordova.vibration": "0.3.10-dev",
+    "com.monday.contact-chooser": "0.2"
 }
 // BOTTOM OF METADATA
 });

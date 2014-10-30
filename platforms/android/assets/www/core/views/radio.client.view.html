@@ -1,22 +1,22 @@
 <section data-ng-controller="RadioController as radio">
     <div class='main-window'>
-        <div class='your-inbox' ng-click='radio.goTo("apoloinbox")'>
-            your inbox
+        
+        <div style="padding-top: 50px;padding-bottom: 35px;">
+            <center><img src="./core/img/Apology.gif" width="200px" /></center>
         </div>
-
-        <p class='apology-header'>APOLOGY.FM</p>
-        <p class='main-page-text' >LISTEN TO A<br/>RECENT APOLOGY</p>
+        
+        <p class='main-page-text' ng-click="radio.start()">LISTEN TO A<br/>RECENT APOLOGY</p>
         
         <p class='main-page-subtext' >RECORDED</p>
 
-        <p class='apology-title'>{{ radio.currentApology.created | date:'medium' }}</p>
+        <p class='main-page-subtext'>{{ radio.currentApology.created | date:'medium' }}</p>
         
-        <div class='apology-prbar'>
+        <!--<div class='apology-prbar'>
         {{ radio.timePlayed | number:0 }}
         </div>
+    -->
         
-        
-        <div class='record-button-cont'>
+        <div class='normal-button-cont'>
             <div ng-show='radio.isPlaying' ng-click='radio.pause()' class='pause-button'>
                 <img src="./core/img/pause.png" alt="">
             </div>
@@ -24,7 +24,7 @@
                 <img src="./core/img/play.png" alt="">
             </div>
         </div>
-        <div class='apology-footer' ng-click='radio.goTo("record")'>
+        <div class='apology-footer' ng-click='radio.goTo("/signin")'>
             RECORD AN APOLOGY
         </div>
     </div>

@@ -6,6 +6,7 @@
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/ant-build/classes/com/phonegap/helloworld/R$attr.class \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/ant-build/classes/com/phonegap/helloworld/BuildConfig.class \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/ant-build/classes/com/phonegap/helloworld/R.class \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/ant-build/classes/com/monday/cordova/ContactChooserPlugin.class \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/ant-build/classes/org/apache/cordova/vibration/Vibration.class \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$3$2.class \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$2.class \

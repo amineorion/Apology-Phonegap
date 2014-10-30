@@ -43,6 +43,10 @@
                         {
                             "xml": "<feature name=\"Vibration\"><param name=\"android-package\" value=\"org.apache.cordova.vibration.Vibration\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"ContactChooser\"><param name=\"android-package\" value=\"com.monday.cordova.ContactChooserPlugin\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -52,7 +56,7 @@
                     "/*": [
                         {
                             "xml": "<uses-permission android:name=\"android.permission.READ_CONTACTS\" />",
-                            "count": 1
+                            "count": 2
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\" />",
@@ -130,6 +134,9 @@
             "PACKAGE_NAME": "com.phonegap.helloworld"
         },
         "cordova.phonegap.audio.encode": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "com.monday.contact-chooser": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
         }
     },

@@ -35,11 +35,19 @@
                         {
                             "xml": "true",
                             "count": 1
+                        },
+                        {
+                            "xml": "false",
+                            "count": 1
                         }
                     ],
                     "AddressBookUI.framework": [
                         {
                             "xml": "true",
+                            "count": 1
+                        },
+                        {
+                            "xml": "false",
                             "count": 1
                         }
                     ],
@@ -89,6 +97,10 @@
                         {
                             "xml": "<feature name=\"Sms\"><param name=\"ios-package\" value=\"Sms\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"ContactChooser\"><param name=\"ios-package\" value=\"ContactChooser\" /></feature>",
+                            "count": 1
                         }
                     ],
                     "plugins": [
@@ -132,6 +144,9 @@
         },
         "cordova.phonegap.audio.encode": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "com.monday.contact-chooser": {
+            "PACKAGE_NAME": "com.apology.fm"
         }
     },
     "dependent_plugins": {

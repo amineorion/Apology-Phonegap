@@ -183,10 +183,10 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/cordova.phonegap.audio.encode/www/AudioEncode.js",
-        "id": "cordova.phonegap.audio.encode.AudioEncode",
+        "file": "plugins/com.monday.contact-chooser/www/ContactChooser.js",
+        "id": "com.monday.contact-chooser.ContactChooser",
         "clobbers": [
-            "window.encodeAudio"
+            "ContactChooser"
         ]
     },
     {
@@ -347,8 +347,8 @@ module.exports.metadata =
     "org.apache.cordova.vibration": "0.3.10-dev",
     "org.apache.cordova.contacts": "0.2.14",
     "org.apache.cordova.plugin.sms": "0.1.0",
-    "cordova.phonegap.audio.encode": "1.0.0",
-    "org.apache.cordova.file": "1.2.0"
+    "com.monday.contact-chooser": "0.2",
+    "org.apache.cordova.file": "1.3.1"
 }
 // BOTTOM OF METADATA
 });
