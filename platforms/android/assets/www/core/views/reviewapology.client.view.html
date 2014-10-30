@@ -19,7 +19,7 @@
 			Your browser does not support the audio element.
 		</audio> -->		
 
-		<div class='record-button-cont'>
+		<div class='review-button-cont'>
 			<div ng-show='apologyStarted&&!apologyPaused' ng-click='stopMedia()' class='pause-button'>
 				<img src="./core/img/pause.png" alt="">
 			</div>
@@ -27,7 +27,12 @@
 				<img src="./core/img/play.png" alt="">
 			</div>
 		</div>
-
-		<button ng-click="chooseRecipient()">Choose recipient</button>
+		<center>
+        <p style="margin-bottom: 30px;">
+          If you like it,choose personal<br/>contacts to share with.  
+        </p>
+        </center>    
+		<div ng-click="chooseRecipient()" style="margin: auto;border-color: white;border-width: 1px;border-style: solid;border-radius: 25px;text-align: center;padding: 10px;max-width: 200px;">Choose recipient</div>
+		<div style="margin-top: 20px;text-align: center;" ng-click="goTo('/signin')" >OR, START OVER</div>
 	</div>
 </section>

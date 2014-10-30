@@ -160,6 +160,7 @@
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/confirmation.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/receiver-playback.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/header.client.view.html \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/aftersent.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/apoloinbox.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/apolooutbox.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/auth.client.view.html \

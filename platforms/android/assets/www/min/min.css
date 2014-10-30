@@ -143,6 +143,26 @@ template {
   margin: 40%;
   bottom: 0px;
 }
+.review-button-cont::after {
+  font-weight: 300;
+  text-align: center;
+  padding-left: 6px;
+  font-size: 9px;
+  margin: auto;
+  position: relative;
+  top: 10px;
+}
+.review-button-cont {
+  border: 2px solid;
+  width: 70px;
+  height: 70px;
+  border-radius: 100px;
+  margin: auto;
+  padding: 9px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  bottom: 0px;
+}
 .normal-button-cont::after {
   font-weight: 300;
   text-align: center;

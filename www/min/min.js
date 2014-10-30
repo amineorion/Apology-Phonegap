@@ -42618,6 +42618,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       url: '/auth',
       templateUrl: 'core/views/auth.client.view.html'
     }).
+    state('aftersent', {
+      url: '/aftersent',
+      templateUrl: 'core/views/aftersent.client.view.html'
+    }).
 		state('home', {
 			url: '/',
 			templateUrl: 'core/views/landing.client.view.html'
@@ -42763,9 +42767,13 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
     };
     
     this.play = function(){
-      if(!this.isPlaying){
-        radio.play(); 
-        this.isPlaying = true;
+      if(!this.started){
+        this.start();
+      }else{
+        if(!this.isPlaying){
+          radio.play(); 
+          this.isPlaying = true;
+        }  
       }
     };
     
@@ -42776,9 +42784,11 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
       }
     };
     this.goTo = function(path) {
-      radio.stop();
-      clearInterval(fnPosition);
-      radio = null;
+      if(radio != null){
+        radio.stop();
+        clearInterval(fnPosition);  
+        radio = null;
+      }
       $location.path(path);
     };
     
@@ -42794,6 +42804,15 @@ angular.module('core').controller('AuthController', ['$scope', 'Authentication',
         $state.go('record');
       }
     });  
+  }
+]);  
+'use strict';
+
+angular.module('core').controller('AfterSentController', ['$scope', 'Authentication','$location',
+  function($scope, Authentication,$location) {
+    $scope.goTo = function(path) {
+      $location.path(path);
+    };  
   }
 ]);  
 'use strict';
@@ -42822,8 +42841,8 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 ]);
 'use strict';
 
-angular.module('core').controller('InboxApolCtrl', ['$scope', 'Authentication', '$http', '$state',
-  function($scope, Authentication, $http, $state) {
+angular.module('core').controller('InboxApolCtrl', ['$scope', 'Authentication', '$http', '$location',
+  function($scope, Authentication, $http, $location) {
     $scope.authentication = Authentication;
     $scope.apologies = [];
     $http.get(ApplicationConfiguration.apiRoot + '/inbox')
@@ -42835,13 +42854,13 @@ angular.module('core').controller('InboxApolCtrl', ['$scope', 'Authentication', 
       console.log('Error', err)
     });
     $scope.goTo = function(path) {
-      $state.go(path);
+      $location.path(path);
     };
   }
 ]);
 'use strict';
 
-angular.module('core').controller('OutboxApolCtrl', ['$scope', 'Authentication', '$http','$state',
+angular.module('core').controller('OutboxApolCtrl', ['$scope', 'Authentication', '$http','$location',
   function($scope, Authentication, $http, $state) {
     $scope.authentication = Authentication;
     $scope.apologies = [];
@@ -42854,14 +42873,14 @@ angular.module('core').controller('OutboxApolCtrl', ['$scope', 'Authentication',
       console.log('Error', err)
     });
     $scope.goTo = function(path) {
-      $state.go(path);
+      $location.path(path);
     };
   }
 ]);
 'use strict';
 
-angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication', '$http', '$rootScope', '$sce', '$state',
-	function($scope, Authentication, $http, $rootScope, $sce, $state) {
+angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication', '$http', '$rootScope', '$sce', '$state', '$location',
+	function($scope, Authentication, $http, $rootScope, $sce, $state, $location) {
 		$scope.authentication = Authentication;
 
     console.log('$rootScope.lastApology', $rootScope.lastApology)
@@ -42874,11 +42893,14 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
     })
     // $scope.audioPath = $sce.trustAsResourceUrl('https://s3.amazonaws.com/ApologyFM/apologies/denis/apology28874.wav');
     
-
+  
     $scope.apologyStarted = false;
     $scope.apologyPaused = false;
     var my_player = null;
 
+    $scope.goTo = function(path) {
+      $location.path(path);
+    };
     
     $scope.onMediaCallSuccess = function() {
       console.log("***test: new Media() succeeded ***", $scope);
@@ -42999,17 +43021,17 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
                     { apology: $rootScope.lastApology.path,
                       receipient: contactInfo.phoneNumber 
                     }).success(function(response){
-                      alert('Message sent successfully');
+                      $scope.goTo('/aftersent');
                     }).error(function(err){
                       alert('error');
                     });
                   })
                   .error(function(err) {
-                    var message = $rootScope.lastApology.path;
+                    var message = 'Someone sent you an apology. listen here '+$rootScope.lastApology.path;
             
                     var intent = "INTENT"; //leave empty for sending sms using default intent
                     var success = function () { 
-                      alert('Message sent successfully'); 
+                      $scope.goTo('/aftersent'); 
                     };
                     var error = function (e) {
                       alert('Message Failed:' + e); 
