@@ -42810,12 +42810,9 @@ angular.module('core').controller('AuthController', ['$scope', 'Authentication',
 
 angular.module('core').controller('AfterSentController', ['$scope', 'Authentication','$location',
   function($scope, Authentication,$location) {
-    $scope.authentication = Authentication;
-    $scope.$watch('authentication',function(auth){
-      if(auth.user){
-        $state.go('record');
-      }
-    });  
+    $scope.goTo = function(path) {
+      $location.path(path);
+    };  
   }
 ]);  
 'use strict';
@@ -42864,7 +42861,7 @@ angular.module('core').controller('InboxApolCtrl', ['$scope', 'Authentication', 
 'use strict';
 
 angular.module('core').controller('OutboxApolCtrl', ['$scope', 'Authentication', '$http','$location',
-  function($scope, Authentication, $http, $state) {
+  function($scope, Authentication, $http, $location) {
     $scope.authentication = Authentication;
     $scope.apologies = [];
     $http.get(ApplicationConfiguration.apiRoot + '/outbox')
@@ -43716,7 +43713,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 			$http.post(ApplicationConfiguration.apiRoot + '/auth/signin', {user:{uuid: device.uuid, token:'ALDZKFOJOZASFFGG'}}).success(function(response) {
 				//If successful we assign the response to the global user model
 				$scope.authentication.user = response;
-        $scope.loading = false;
 				//And redirect to the index page
 				$location.path('/record');
 			}).error(function(response) {

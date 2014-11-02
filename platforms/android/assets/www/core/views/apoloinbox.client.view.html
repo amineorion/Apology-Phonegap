@@ -13,19 +13,21 @@
                 </div>
             </div>
         </div>
-        <div ng-repeat='apology in apologies' style="padding: 20px;">
-            <div style="border: 1px solid white;border-top: 0px;border-right: 0px;border-left: 0px;" class="row">
-              <div class="col-xs-5">
-                  <span>FROM</span><br/>
-                  <span>{{ apology.senderPhoneNumber }}</span>
-              </div>
-              <div class="col-xs-5">
-                  <span>RECEIVED</span><br/>
-                  <span>{{ apology.sent | date:'MMM d, yyyy' }}</span>
-              </div>
-              <div class="col-xs-2">
-                  <span><a ng-href="#!/player/{{apology._id}}"><img src="./core/img/play.png" width="30px" /></a></span>
-              </div>
+        <div style="height: 60%;overflow-y: auto;">
+            <div ng-repeat='apology in apologies' style="padding:20px;">
+                <div style="border: 1px solid white;border-top: 0px;border-right: 0px;border-left: 0px;" class="row">
+                  <div class="col-xs-5">
+                      <span>FROM</span><br/>
+                      <span>{{ apology.senderPhoneNumber }}</span>
+                  </div>
+                  <div class="col-xs-5">
+                      <span>RECEIVED</span><br/>
+                      <span>{{ apology.sent | date:'MMM d, yyyy' }}</span>
+                  </div>
+                  <div class="col-xs-2">
+                      <span><a ng-href="#!/player/{{apology._id}}"><img src="./core/img/play.png" width="30px" /></a></span>
+                  </div>
+                </div>
             </div>
         </div>
         <div class='apology-footer' ng-click='goTo("/signin")'>

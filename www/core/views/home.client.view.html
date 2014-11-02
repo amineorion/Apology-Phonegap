@@ -1,12 +1,8 @@
 <section data-ng-controller="RecordController">
 
 	<div class='main-window ng-hide' ng-controller='RecordController' ng-show='authentication.user && !apologyUploaded'>
-	    <div class='your-inbox' ng-show='!apologyStarted' ng-click='goToInbox()'>
-	    	your inbox <span>{{ notifications }}</span>
-	    </div>
 
 		<p class='apology-header'>{{ apologyHeader }}</p>
-		<div class='goback-to-record' ng-show='apologyStarted' ng-click="goBackToHome()"><</div>
 		<p class='main-page-text' ng-show='!apologyStarted'>Think about who you want to apology to, then hold the record button and we will guid you through a sansational apology.</p>
 		<p class='main-page-subtext' ng-show='!apologyStarted'>When finished, chose who you want to recieve your words.</p>
 
@@ -31,9 +27,6 @@
 			<div ng-show='apologyStarted&&apologyPaused' ng-click='startApology()' class='pause-button'>
 				<img src="./core/img/play.png" alt="">
 			</div> -->
-		</div>
-		<div class='apology-footer' ng-show='apologyStarted'>
-			Tune into apology.fm
 		</div>
 	</div>
 </section>

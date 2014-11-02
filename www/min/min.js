@@ -42861,7 +42861,7 @@ angular.module('core').controller('InboxApolCtrl', ['$scope', 'Authentication', 
 'use strict';
 
 angular.module('core').controller('OutboxApolCtrl', ['$scope', 'Authentication', '$http','$location',
-  function($scope, Authentication, $http, $state) {
+  function($scope, Authentication, $http, $location) {
     $scope.authentication = Authentication;
     $scope.apologies = [];
     $http.get(ApplicationConfiguration.apiRoot + '/outbox')
@@ -43027,7 +43027,7 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
                     });
                   })
                   .error(function(err) {
-                    var message = 'Someone sent you an apology. listen here '+$rootScope.lastApology.path;
+                    var message = 'I have crafted you a heartfelt apology. When you feel ready to receive it, click the link to listen.'+$rootScope.lastApology.path;
             
                     var intent = "INTENT"; //leave empty for sending sms using default intent
                     var success = function () { 
@@ -43713,7 +43713,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 			$http.post(ApplicationConfiguration.apiRoot + '/auth/signin', {user:{uuid: device.uuid, token:'ALDZKFOJOZASFFGG'}}).success(function(response) {
 				//If successful we assign the response to the global user model
 				$scope.authentication.user = response;
-        $scope.loading = false;
 				//And redirect to the index page
 				$location.path('/record');
 			}).error(function(response) {
