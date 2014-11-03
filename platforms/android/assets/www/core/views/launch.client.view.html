@@ -1,0 +1,39 @@
+<section data-ng-controller="LaunchController as launch">
+    <div class='main-window'>
+        <div style="padding: 20px;">    
+            <div style="text-align: right" ng-class="{'custom-hide': launch.notifications==null}" ng-click="launch.goTo('/apoloinbox')">
+                YOUR INBOX <img src="./core/img/inbox.png" /><div style="width: 20px;height: 20px;border-radius: 50%;background-color: #fe5252;text-align: center;display: inline;position: absolute;margin-left: -15px;">{{ launch.notifications }}</div>
+            </div>
+            
+            <div style="padding-bottom: 35px;padding-top: 35px;">
+                <img src="./core/img/Apology.gif" width="250px" />
+            </div>
+            
+            <p class='apology-title' style="text-align:left;padding-bottom: 30px;">LISTEN TO A<br/>RECENT APOLOGY</p>
+            
+    
+            <p class='main-page-subtext' style="text-align:left;padding-left: 0px;" ng-class="{'custom-hide': !launch.started}">
+                RECORDED<br/>{{ launch.currentApology.created | date:'medium' }}
+            </p>
+            
+            <!--<div class='apology-prbar'>
+            {{ radio.timePlayed | number:0 }}
+            </div>
+        -->
+            
+            <div class='review-button-cont' style="margin-top: 50px;margin-bottom: 50px;">
+                <div ng-show='launch.isPlaying' ng-click='launch.pause()' class='pause-button'>
+                    <img src="./core/img/pause.png" alt="">
+                </div>
+                <div ng-hide='launch.isPlaying' ng-click='launch.play()' class='pause-button'>
+                    <img src="./core/img/play.png" alt="">
+                </div>
+            </div>
+            
+            <div ng-click="launch.goTo('/radio')" style="margin: auto;border-color: white;border-width: 1px;border-style: solid;border-radius: 25px;text-align: center;padding: 10px;max-width: 250px;margin-top: 60px;">TUNE IN TO APOLOGY RADIO</div>
+        </div>
+        <div class='apology-footer' ng-click="launch.goTo('/signin')">
+            RECORD AN APOLOGY
+        </div>
+    </div>
+</section>

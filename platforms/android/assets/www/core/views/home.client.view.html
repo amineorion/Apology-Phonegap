@@ -1,14 +1,12 @@
 <section data-ng-controller="RecordController">
 
-	<div class='main-window ng-hide' ng-controller='RecordController' ng-show='authentication.user && !apologyUploaded'>
-	    <div class='your-inbox' ng-show='!apologyStarted' ng-click='goToInbox()'>
-	    	your inbox <span>{{ notifications }}</span>
-	    </div>
-
-		<p class='apology-header'>{{ apologyHeader }}</p>
-		<div class='goback-to-record' ng-show='apologyStarted' ng-click="goBackToHome()"><</div>
-		<p class='main-page-text' ng-show='!apologyStarted'>Think about who you want to apology to, then hold the record button and we will guid you through a sansational apology.</p>
-		<p class='main-page-subtext' ng-show='!apologyStarted'>When finished, chose who you want to recieve your words.</p>
+	<div class='main-window ng-hide' ng-show='authentication.user && !apologyUploaded'>
+    	<div class='goback-to-record' ng-click="goTo('/launch')"><</div>
+        
+    	<p class='apology-header'>{{ apologyHeader }}</p>
+    	<div style="margin-top: 10px;margin-bottom: 20px;text-align: center;" ng-show='!apologyStarted'><img src="./core/img/log.png" style="width: 60px;" /></div>
+		<p class='main-page-text' ng-show='!apologyStarted' style="padding-left: 50px;padding-right: 50px;">Think about who you want to apologize to, then hold the record button and we will guide you through a sensational apology.</p>
+		<p class='main-page-subtext' ng-show='!apologyStarted' style="padding-left: 50px;padding-right: 50px;">When finished, choose who you want to recieve your words.</p>
 
 		<p class='apology-title' ng-show='apologyStarted'>{{ apologyTitle }}</p>
 
@@ -31,9 +29,10 @@
 			<div ng-show='apologyStarted&&apologyPaused' ng-click='startApology()' class='pause-button'>
 				<img src="./core/img/play.png" alt="">
 			</div> -->
+			
 		</div>
-		<div class='apology-footer' ng-show='apologyStarted'>
-			Tune into apology.fm
-		</div>
+		<div class='apology-footer' ng-click="goTo('/radio')" ng-show='!apologyStarted'>
+            TUNE INTO APOLOGY.FM <img src="./core/img/phones.png" style="width: 20px;vertical-align: top;" />
+        </div>
 	</div>
 </section>

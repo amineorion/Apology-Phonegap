@@ -135,11 +135,15 @@
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/css \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/skip.png \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/landing.gif \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/log.png \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/pause.png \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/btn-register.gif \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/login.gif \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/play.png \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/inbox.png \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/phones.png \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/bg.gif \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/loaders \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/logo.gif \
@@ -155,6 +159,7 @@
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/about.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/player.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/lodaing-page.client.view.html \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/launch.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/landing.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/notifications.client.view.html \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/views/confirmation.client.view.html \

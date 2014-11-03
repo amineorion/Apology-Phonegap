@@ -1,14 +1,15 @@
 <section data-ng-controller="OutboxApolCtrl">
     <div class='main-window' style="padding-top: 40px;">
-        <div><center><h4>RECEIVED APOLOGIES</h4></center></div>
+        <div class='goback-to-record' ng-click="goTo('/radio')"><</div>
+        <div><center><h4>YOUR APOLOGIES</h4></center></div>
         <div class="row" style="padding-top: 30px;margin-right: 0px;margin-left: 0px;padding-bottom: 30px;">
             <div style="padding: 0px;margin: 0px;padding-left: 30px;" class="col-xs-6">
-                <div ng-click='goTo("/apoloinbox")' style="padding: 10px;padding-left:20px;border-color: white;border-width: 1px;border-style: solid;border-bottom-left-radius: 25px;border-top-left-radius: 25px;width: 100%;background-color: white;color: #A7B9C2;">
+                <div ng-click='goTo("/apoloinbox")' style="padding: 10px;padding-left:20px;border-color: white;border-width: 1px;border-style: solid;border-bottom-left-radius: 25px;border-top-left-radius: 25px;width: 100%;background-color: transparent;">
                     INBOX
                 </div>
             </div>
             <div style="padding: 0px;margin: 0px;padding-right: 30px;" class="col-xs-6">
-                <div style="padding: 10px;padding-right:20px;border-color: white;border-width: 1px;border-style: solid;border-bottom-right-radius: 25px;border-top-right-radius: 25px;width: 100%;background-color: transparent;text-align: right;">
+                <div style="padding: 10px;padding-right:20px;border-color: white;border-width: 1px;border-style: solid;border-bottom-right-radius: 25px;border-top-right-radius: 25px;width: 100%;background-color: white;color: #A7B9C2;text-align: right;">
                     OUTBOX
                 </div>
             </div>

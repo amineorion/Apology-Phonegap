@@ -6987,3 +6987,6 @@ body {
 	right: 10px;
 	position: absolute;
 }
+.custom-hide {
+	visibility: hidden;
+}

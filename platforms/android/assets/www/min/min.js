@@ -42609,6 +42609,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       url: '/radio',
       templateUrl: 'core/views/radio.client.view.html'
     }).
+    state('launch', {
+      url: '/launch',
+      templateUrl: 'core/views/launch.client.view.html'
+    }).
     state('player', {
       url: '/player/:id',
       templateUrl: 'core/views/player.client.view.html',
@@ -42711,22 +42715,29 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
     this.isPlaying = false;
     this.duration = 0;
     this.timePlayed = 0;
-    var radio = null;
-    var fnPosition = null;
+    var player = null;
     this.started = false;
+    var fnPosition = null;
+    this.notifications = null;
+    this.isLeaving = false;
+    
+    $http.get(ApplicationConfiguration.apiRoot + '/notifications')
+    .success(function(response) {
+      scope.notifications = response.unread;
+    });
     
     this.start = function(){
       if(!this.started){
         this.started = true;
-        $http.get(ApplicationConfiguration.apiRoot + '/radio')
-        .success(function(response) {
-          scope.currentApology = response;
-          scope.load();
-        })
-        .error(function(err) {
-          console.log('Error', err);
-        });  
       }
+      $http.get(ApplicationConfiguration.apiRoot + '/radio')
+      .success(function(response) {
+        scope.currentApology = response;
+        scope.load();
+      })
+      .error(function(err) {
+        console.log('Error', err);
+      });  
     };
     
     this.load = function(){
@@ -42739,8 +42750,10 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
         }, function(status){
           if(status === Media.MEDIA_STOPPED){
             scope.pause();
-            if($location.path().indexOf("radio") > -1){
-              scope.start();
+            if(!scope.isLeaving){
+              if($location.path().indexOf("radio") > -1){
+                scope.start();
+              }
             }
           }
         });
@@ -42758,11 +42771,6 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
               console.log("Error getting pos=" + e);
             });
         }, 1000);
-        /*setInterval(function() {
-          if($location.path().indexOf("radio") === -1){
-            radio.stop();
-          }
-        }, 100);*/
       }
     };
     
@@ -42776,7 +42784,18 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
         }  
       }
     };
-    
+    this.skip = function(){
+      if(this.isPlaying){
+        this.isPlaying = false;
+        radio.stop();
+      }
+    };
+    this.flag = function(){
+      $http.get(ApplicationConfiguration.apiRoot + '/flag?id='+this.currentApology._id)
+      .success(function(response) {
+        radio.stop();
+      });
+    };
     this.pause = function(){
       if(this.isPlaying){
         radio.pause(); 
@@ -42785,15 +42804,113 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
     };
     this.goTo = function(path) {
       if(radio != null){
+        this.isLeaving = true;
+        clearInterval(fnPosition);          
         radio.stop();
-        clearInterval(fnPosition);  
+        radio.release();        
         radio = null;
       }
       $location.path(path);
     };
     
-    //$document.addEventListener("pause", function(){radio.stop();}, false);
   }]);
+'use strict';
+
+angular.module('core').controller('LaunchController', ['$scope', '$http', '$timeout','$document','$location',
+function($scope, $http, $timeout,$document,$location) {
+  var scope = this;
+  this.currentApology = {};
+  this.isPlaying = false;
+  this.duration = 0;
+  this.timePlayed = 0;
+  var player = null;
+  this.started = false;
+  var fnPosition = null;
+  this.notifications = null;
+  this.isLeaving = false;
+  
+  $http.get(ApplicationConfiguration.apiRoot + '/notifications')
+  .success(function(response) {
+    scope.notifications = response.unread;
+  });
+  
+  this.start = function(){
+    if(!this.started){
+      this.started = true;
+      $http.get(ApplicationConfiguration.apiRoot + '/recent')
+      .success(function(response) {
+        scope.currentApology = response;
+        scope.load();
+      })
+      .error(function(err) {
+        console.log('Error', err);
+      });  
+    }
+  };
+  
+  this.load = function(){
+    if(this.currentApology){
+      player = null;
+      player = new Media(this.currentApology.path,
+      function(){
+      }, function(err){
+        console.log(err);
+      }, function(status){
+        if(status === Media.MEDIA_STOPPED){
+          scope.pause();
+          if(!scope.isLeaving){
+            if($location.path().indexOf("radio") > -1){
+              player.seekTo(0);
+            }  
+          }
+        }
+      });
+      this.duration = player.getDuration();
+      this.play();
+      fnPosition = setInterval(function() {
+        player.getCurrentPosition(
+          function(position) {
+            if (position > -1) {
+              scope.timePlayed = position;
+              $scope.$apply();
+            }
+          },
+          function(e) {
+            console.log("Error getting pos=" + e);
+          });
+      }, 1000);
+    }
+  };
+  
+  this.play = function(){
+    if(!this.started){
+      this.start();
+    }else{
+      if(!this.isPlaying){
+        player.play(); 
+        this.isPlaying = true;
+      }  
+    }
+  };
+  
+  this.pause = function(){
+    if(this.isPlaying){
+      player.pause(); 
+      this.isPlaying = false;
+    }
+  };
+  this.goTo = function(path) {
+    if(player != null){
+      this.isLeaving = true;
+      player.stop();
+      clearInterval(fnPosition);  
+      player.release();
+      player = null;
+    }
+    $location.path(path);
+  };
+  
+}]);  
 'use strict';
 
 angular.module('core').controller('AuthController', ['$scope', 'Authentication','$state',
@@ -43027,7 +43144,7 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
                     });
                   })
                   .error(function(err) {
-                    var message = 'Someone sent you an apology. listen here '+$rootScope.lastApology.path;
+                    var message = 'I have crafted you a heartfelt apology. When you feel ready to receive it, click the link to listen.'+$rootScope.lastApology.path;
             
                     var intent = "INTENT"; //leave empty for sending sms using default intent
                     var success = function () { 
@@ -43069,8 +43186,8 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
 ]);
 'use strict';
 
-angular.module('core').controller('RecordController', ['$scope', 'Authentication', '$upload', '$http', 'Apologies', '$sce', '$timeout', '$state', '$rootScope','$cookieStore',
-  function($scope, Authentication, $upload, $http, Apologies, $sce, $timeout, $state, $rootScope,$cookieStore) { 
+angular.module('core').controller('RecordController', ['$scope', 'Authentication', '$upload', '$http', 'Apologies', '$sce', '$timeout', '$state', '$rootScope','$cookieStore','$location',
+  function($scope, Authentication, $upload, $http, Apologies, $sce, $timeout, $state, $rootScope,$cookieStore,$location) { 
     // This provides Authentication context.
     $scope.authentication = Authentication;
     $scope.apologyUploaded = false;
@@ -43084,6 +43201,9 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
     .error(function(err) {
       
     });
+    $scope.goTo = function(path) {
+      $location.path(path);
+    };
     var ua = navigator.userAgent.toLowerCase();
 
     var phoneCheck = {
@@ -43417,7 +43537,7 @@ angular.module('core').directive('landingPage', ['$timeout', '$location', 'Authe
           left : '100%'
         });
         $timeout(function () {
-          $location.path('/radio');
+          $location.path('/launch');
         }, 150)
 
       }
