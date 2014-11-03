@@ -9,11 +9,11 @@
                 <img src="./core/img/Apology.gif" width="250px" />
             </div>
             
-            <p class='apology-title' style="text-align:left;padding-bottom: 30px;">LISTEN TO A<br/>RECENT APOLOGY</p>
+            <p class='apology-title' style="text-align:left;padding-bottom: 30px;"><img src="./core/img/listen-text.png" /></p>
             
     
             <p class='main-page-subtext' style="text-align:left;padding-left: 0px;" ng-class="{'custom-hide': !launch.started}">
-                RECORDED<br/>{{ launch.currentApology.created | date:'medium' }}
+               RECORDED<br/><span class="record-date">{{ launch.currentApology.created | date:'medium' }}</span>
             </p>
             
             <!--<div class='apology-prbar'>
@@ -26,7 +26,7 @@
                     <img src="./core/img/pause.png" alt="">
                 </div>
                 <div ng-hide='launch.isPlaying' ng-click='launch.play()' class='pause-button'>
-                    <img src="./core/img/play.png" alt="">
+                    <img src="./core/img/play-arrow.png" alt="">
                 </div>
             </div>
             

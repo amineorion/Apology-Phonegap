@@ -138,6 +138,7 @@
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/skip.png \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/landing.gif \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/log.png \
+/home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/begin-button.png \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/pause.png \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/btn-register.gif \
 /home/amine/Documents/workspace/Apology-Phonegap/platforms/android/assets/www/core/img/login.gif \
