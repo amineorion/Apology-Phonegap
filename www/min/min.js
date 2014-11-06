@@ -42642,6 +42642,7 @@ angular.module('core').controller('PlayerController', ['$scope', '$http', 'Authe
     this.isPlaying = false;
     this.duration = 0;
     this.timePlayed = 0;
+    this.prBarWidth = 0;
     var player = null;
     var fnPosition = null;
     
@@ -42668,14 +42669,19 @@ angular.module('core').controller('PlayerController', ['$scope', '$http', 'Authe
         function(){
         }, function(err){
           console.log(err);
+        }, function(status){
+          if(status === Media.MEDIA_STOPPED){
+            scope.pause();
+          }
         });
-        this.duration = player.getDuration();
         this.play();
         fnPosition = setInterval(function() {
+          scope.duration = player.getDuration();
           player.getCurrentPosition(
             function(position) {
               if (position > -1) {
                 scope.timePlayed = position;
+                scope.prBarWidth = (position/scope.duration)*100;
                 $scope.$apply();
               }
             },
@@ -42701,6 +42707,7 @@ angular.module('core').controller('PlayerController', ['$scope', '$http', 'Authe
     };
     this.goTo = function(path) {
       player.stop();
+      player.release();
       $state.go(path);
     };
     this.start();
@@ -42803,7 +42810,7 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
       }
     };
     this.goTo = function(path) {
-      if(radio != null){
+      if(this.radio != null){
         this.isLeaving = true;
         clearInterval(fnPosition);          
         radio.stop();
@@ -42814,6 +42821,21 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
     };
     
   }]);
+'use strict';
+
+angular.module('core')
+  .filter('time', ['$filter',function ($filter) {
+    return function(input) {
+        if(input < 1){
+          return ':00';
+        }
+        var time = $filter('number')(input, 0);
+        if (time <= 9) {
+          return ':0'+time;
+        }
+      return ':'+time;
+    };
+  }]);  
 'use strict';
 
 angular.module('core').controller('LaunchController', ['$scope', '$http', '$timeout','$document','$location',
@@ -42929,7 +42951,24 @@ angular.module('core').controller('AfterSentController', ['$scope', 'Authenticat
   function($scope, Authentication,$location) {
     $scope.goTo = function(path) {
       $location.path(path);
-    };  
+    };
+
+    $scope.share = function() {
+      window.plugins.ContactChooser.chooseContact(function (contactInfo) {
+          setTimeout(function () { // use timeout to fix iOS alert problem
+              var message = 'Join me at Apology.fm';
+      
+              var intent = "INTENT"; //leave empty for sending sms using default intent
+              var success = function () { 
+                $scope.goTo('/launch'); 
+              };
+              var error = function (e) {
+                alert('Message Failed:' + e); 
+              };
+              sms.send(contactInfo.phoneNumber, message, intent, success, error);
+            },0);
+      });        
+    };
   }
 ]);  
 'use strict';
@@ -43063,10 +43102,26 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
     else if (phoneCheck.ios) {
         my_player = new Media($rootScope.lastApology.path, $scope.onMediaCallSuccess, onMediaCallError);
     }
+    
+    var fnPosition = setInterval(function() {
+      $scope.duration = my_player.getDuration();
+      my_player.getCurrentPosition(
+        function(position) {
+          if (position > -1) {
+            $scope.timePlayed = position;
+            $scope.prBarWidth = (position/$scope.duration)*100;
+            $scope.$apply();
+          }
+        },
+        function(e) {
+          console.log("Error getting pos=" + e);
+        });
+    }, 1000);
+    
     // my_player.play();
 
     $scope.goBackToHome = function() {
-      $state.go('radio');
+      $state.go('launch');
     };
     
     function onSuccess(contactid, contact) {
@@ -43144,7 +43199,7 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
                     });
                   })
                   .error(function(err) {
-                    var message = 'I have crafted you a heartfelt apology. When you feel ready to receive it, click the link to listen.'+$rootScope.lastApology.path;
+                    var message = 'I have crafted you a heartfelt apology. When you feel ready to receive it, click the link to listen. http://apology.fm/#!/apologies/'+$rootScope.lastApology._id;
             
                     var intent = "INTENT"; //leave empty for sending sms using default intent
                     var success = function () { 
@@ -43161,7 +43216,7 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
       
     }
 
-    $scope.playMedia = function (file) {
+    $scope.playMedia = function () {
       $scope.apologyPaused = false;
       $scope.apologyStarted = true;
       my_player.play();

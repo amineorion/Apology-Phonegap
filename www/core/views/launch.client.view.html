@@ -1,38 +1,47 @@
 <section data-ng-controller="LaunchController as launch">
     <div class='main-window'>
-        <div style="padding: 20px;">    
-            <div style="text-align: right" ng-class="{'custom-hide': launch.notifications==null}" ng-click="launch.goTo('/apoloinbox')">
-                YOUR INBOX <img src="./core/img/inbox.png" /><div style="width: 20px;height: 20px;border-radius: 50%;background-color: #fe5252;text-align: center;display: inline;position: absolute;margin-left: -15px;">{{ launch.notifications }}</div>
+        <div style="padding: 30px;">    
+            <div style="text-align: right" class="inbox-container" ng-class="{'custom-hide': launch.notifications==null}" ng-click="launch.goTo('/apoloinbox')">
+                YOUR INBOX <img src="./core/img/inbox.png" class="inbox-img"/><div style="width: 18px;height: 18px;border-radius: 50%;background-color: #fe5252;text-align: center;display: inline;position: absolute;margin-left: -15px;margin-top: -10px; font-size: 14px;">{{ launch.notifications }}</div>
             </div>
             
-            <div style="padding-bottom: 35px;padding-top: 35px;">
+            <div style="padding-bottom: 35px;padding-top: 25px;">
                 <img src="./core/img/Apology.gif" width="250px" />
             </div>
             
-            <p class='apology-title' style="text-align:left;padding-bottom: 30px;"><img src="./core/img/listen-text.png" /></p>
-            
-    
-            <p class='main-page-subtext' style="text-align:left;padding-left: 0px;" ng-class="{'custom-hide': !launch.started}">
-               RECORDED<br/><span class="record-date">{{ launch.currentApology.created | date:'medium' }}</span>
+            <p class='apology-title g-font b' style="text-align:left;padding-bottom: 10px; width: 60%;font-size: 24px;text-shadow: -1px 1px 12px rgba(255, 255, 255, 0.4);">
+            <!--
+            <img src="./core/img/listen-text.png" />
+            -->
+            LISTEN TO A RECENT APOLOGY
             </p>
             
+            <div class="row" style="margin: 0px;padding: 0px;">
+            <p class='main-page-subtext g-font b col-xs-8' style="text-align:left;padding-left: 0px;" ng-class="{'custom-hide': !launch.started}">
+               RECORDED<br/><span class="record-date a-font">{{ launch.currentApology.created | date:"MMM d, yyyy 'at' h:mm a" }}</span>
+            </p>
+            
+            <p class='main-page-subtext g-font b col-xs-4' style="text-align:right;padding-right: 0px;" ng-class="{'custom-hide': !launch.started}">
+               <span style="color: rgba(0,0,0,.2);font-size: 30px;">{{ launch.timePlayed | time }}</span>
+            </p>
+            </div>
             <!--<div class='apology-prbar'>
             {{ radio.timePlayed | number:0 }}
             </div>
         -->
             
-            <div class='review-button-cont' style="margin-top: 50px;margin-bottom: 50px;">
+            <div class='review-button-cont' style="margin-top: 30px;margin-bottom: 50px;">
                 <div ng-show='launch.isPlaying' ng-click='launch.pause()' class='pause-button'>
-                    <img src="./core/img/pause.png" alt="">
+                    <img class="listen-button pause" src="./core/img/pause.png" alt="">
                 </div>
                 <div ng-hide='launch.isPlaying' ng-click='launch.play()' class='pause-button'>
-                    <img src="./core/img/play-arrow.png" alt="">
+                    <img class="listen-button play" src="./core/img/play-arrow.png" alt="">
                 </div>
             </div>
             
-            <div ng-click="launch.goTo('/radio')" style="margin: auto;border-color: white;border-width: 1px;border-style: solid;border-radius: 25px;text-align: center;padding: 10px;max-width: 250px;margin-top: 60px;">TUNE IN TO APOLOGY RADIO</div>
+            <div ng-click="launch.goTo('/radio')" style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 7px;max-width: 250px;margin-top: 0px;" class="g-font tune-in">TUNE IN TO APOLOGY RADIO</div>
         </div>
-        <div class='apology-footer' ng-click="launch.goTo('/signin')">
+        <div class='apology-footer g-font b' ng-click="launch.goTo('/signin')">
             RECORD AN APOLOGY
         </div>
     </div>

@@ -1,21 +1,25 @@
 <section data-ng-controller="RadioController as radio">
     <div class='main-window'>
-        <div style="padding: 20px;">    
-            <div style="text-align: right" ng-class="{'custom-hide': radio.notifications==null}" ng-click="radio.goTo('/apoloinbox')">
-                YOUR INBOX <img src="./core/img/inbox.png" /><div style="width: 20px;height: 20px;border-radius: 50%;background-color: #fe5252;text-align: center;display: inline;position: absolute;margin-left: -15px;">{{ radio.notifications }}</div>
+        <div style="padding: 30px;">    
+            <div style="text-align: right" class="inbox-container" ng-class="{'custom-hide': radio.notifications==null}" ng-click="radio.goTo('/apoloinbox')">
+                YOUR INBOX <img class="inbox-img" src="./core/img/inbox.png" /><div style="width: 20px;height: 20px;border-radius: 50%;background-color: #fe5252;text-align: center;display: inline;position: absolute;margin-left: -15px;margin-top: -10px;">{{ radio.notifications }}</div>
             </div>
             
-            <div style="padding-bottom: 35px;padding-top: 35px;">
+            <div style="padding-bottom: 35px;padding-top: 25px;">
                 <img src="./core/img/Apology.gif" width="250px" />
             </div>
             
-            <p class='apology-title' style="text-align:left;padding-bottom: 30px;">LISTEN TO A<br/>RECENT APOLOGY</p>
+            <p class='apology-title g-font b' style="text-align:left;padding-bottom: 30px;">LISTEN TO A<br/>RECENT APOLOGY</p>
             
-    
-            <p class='main-page-subtext' style="text-align:left;padding-left: 0px;" ng-class="{'custom-hide': !radio.started}">
-                RECORDED<br/>{{ radio.currentApology.created | date:'medium' }}
+            <div class="row" style="margin: 0px;padding: 0px;">
+            <p class='main-page-subtext g-font b col-xs-8' style="text-align:left;padding-left: 0px;" ng-class="{'custom-hide': !radio.started}">
+               RECORDED<br/><span class="record-date a-font">{{ radio.currentApology.created | date:"MMM d, yyyy 'at' h:mm a" }}</span>
             </p>
             
+            <p class='main-page-subtext g-font b col-xs-4' style="text-align:right;padding-right: 0px;" ng-class="{'custom-hide': !radio.started}">
+               <span style="color: rgba(0,0,0,.2);font-size: 30px;">{{ radio.timePlayed | time }}</span>
+            </p>
+            </div>
             <!--<div class='apology-prbar'>
             {{ radio.timePlayed | number:0 }}
             </div>
@@ -26,12 +30,12 @@
                     <img src="./core/img/skip.png" alt="">
                 </div>
                 <div ng-hide='radio.isPlaying' ng-click='radio.play()' class='pause-button'>
-                    <img src="./core/img/play.png" alt="">
+                    <img src="./core/img/play-arrow.png" alt="">
                 </div>
             </div>
-            <div style="text-align: right;margin-top: 60px;" ng-click="radio.flag()">Flag</div>
+            <div class="g-font b" style="text-align: right;margin-top: 60px;" ng-click="radio.flag()">Flag</div>
         </div>
-        <div class='apology-footer' ng-click="radio.goTo('/signin')">
+        <div class='apology-footer g-font b' ng-click="radio.goTo('/signin')">
             RECORD AN APOLOGY
         </div>
     </div>

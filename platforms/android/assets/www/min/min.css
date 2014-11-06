@@ -42,6 +42,60 @@ audio:not([controls]) {
 template {
   display: none;
 }
+@font-face {
+  font-family: Avenir;
+  src:url("http://samfrons.com/AvenirLTStd-Roman.otf");
+}
+
+@font-face {
+    font-family: GravurCondensed Light;
+  src: url('http://samfrons.com/GravurCondensed-Light.otf');
+}
+
+@font-face {
+    font-family: GravurCondensed Bold;
+  src: url("http://samfrons.com/GravurCondensed-Bold.otf");
+}
+
+.a-font {
+  font-family: "Avenir", sans-serif;
+}
+.g-font {
+  font-family: "GravurCondensed Light", sans-serif;
+}
+.g-font.b {
+  font-family: "GravurCondensed Bold"
+}
+
+.bold {
+  font-weight: bold;
+}
+.box-title {
+  padding-bottom: 5px;
+display: inline-block;
+}
+.tune-in {
+  font-family: GravurCondensed Bold;
+font-size: 16px;
+}
+.timing {
+  font-size: 20px;
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+  display: block;
+  margin-top: 30%;
+  color: rgba(0,0,0,0.7);
+}
+.inbox-container {
+  padding-top: 20px;
+  font-family: GravurCondensed Bold;
+  font-size: 16px;
+}
+
+.inbox-container > img {
+  height: 20px;
+}
 .your-inbox {
   position: absolute;
   right: 10px;
@@ -50,14 +104,30 @@ template {
   text-transform: uppercase;
   font-weight: 200;
 }
+
+.inbox-img {
+  margin-left: 10px;
+vertical-align: text-bottom;
+}
+
 .goback-to-record {
   position: absolute;
-  top: 41px;
+  top: 55px;
   border: 1px solid;
   padding: 7px;
-  line-height: 7px;
+  line-height: 0px;
   border-radius: 50px;
   left: 13px;
+  font-size: 20px;
+  font-family: GravurCondensed Bold;
+  height: 20px;
+width: 20px;
+}
+
+.goback-to-record > .arrow {
+
+position: absolute;
+left: 5px;
 }
 .pause-button img {
     width: 100%;
@@ -77,8 +147,9 @@ template {
 }
 .apology-prbar {
   position: relative;
-  width: 100%;
+  width: 90%;
   padding: 20px;
+  margin: 0 auto;
 }
 .prbar {
   width: 0%;
@@ -104,11 +175,11 @@ template {
   left: 0px;
 }
 .stop-button {
-  width: 35px;
-  height: 35px;
+  width: 20px;
+  height: 20px;
   background: white;
   border-radius: 7px;
-  margin: 15% !important;
+  margin: 25% !important;
 }
 .main-page-text {
   text-align: center;
@@ -124,6 +195,7 @@ template {
   margin: auto;
   position: relative;
   top: 10px;
+  overflow: hidden;
 }
 .record-button {
   width: 100%;
@@ -132,12 +204,12 @@ template {
   border-radius: 100px;
 }
 .record-button-cont {
-  border: 2px solid;
+  border: 4px solid;
   width: 70px;
   height: 70px;
   border-radius: 100px;
   /*margin: auto;*/
-  padding: 9px;
+  padding: 10px;
   /*margin-top: 85px;*/
   position: absolute;
   margin: 40%;
@@ -153,15 +225,22 @@ template {
   top: 10px;
 }
 .review-button-cont {
-  border: 2px solid;
-  width: 70px;
-  height: 70px;
+  border: 4px solid;
+  width: 75px;
+  height: 75px;
   border-radius: 100px;
   margin: auto;
-  padding: 9px;
+  padding: 23px;
   margin-top: 30px;
   margin-bottom: 30px;
   bottom: 0px;
+}
+
+.listen-button {
+  width: 22px;
+height: 22px;
+margin: 0 auto;
+display: block;
 }
 .normal-button-cont::after {
   font-weight: 300;
@@ -198,9 +277,9 @@ template {
   text-align: center;
   text-align: c;
   font-weight: 300;
-  font-size: 18px;
-  border-top: 1px solid;
-  padding: 10px;
+  font-size: 24px;
+  border-top: 2px solid white;
+  padding: 15px 0 5px 0;
   text-transform: uppercase;
   margin-bottom: 10px;
 }
@@ -208,6 +287,7 @@ template {
   padding: 15px;
   text-align: center;
   font-weight: 300;
+  min-height: 72px;
 }
 a {
   background: transparent;
@@ -282,6 +362,11 @@ html, body {
 
   -webkit-transition:0.15s linear all;
   transition:0.15s linear all;
+}
+
+.page-title {
+  font-family: GravurCondensed Bold;
+font-size: 24px;
 }
 .landing-page img {
   height: 100%;
@@ -6989,4 +7074,7 @@ body {
 }
 .custom-hide {
 	visibility: hidden;
+}
+.record-date {
+font-family: "Avenir", sans-serif;
 }
