@@ -1,4 +1,8 @@
 <section data-ng-controller="LaunchController as launch">
+    <div class='landing-page' landing-page>
+        <img src="./core/img/landing.gif"></img>
+        <div class='landing-begin' ng-click='letTheGameBegin()'><img src="./core/img/begin-button.png" style="width: 120px;" /></div>
+    </div>
     <div class='main-window'>
         <div style="padding: 30px;">    
             <div style="text-align: right" class="inbox-container" ng-class="{'custom-hide': launch.notifications==null}" ng-click="launch.goTo('/apoloinbox')">

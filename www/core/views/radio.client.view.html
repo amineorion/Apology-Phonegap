@@ -1,35 +1,38 @@
 <section data-ng-controller="RadioController as radio">
     <div class='main-window'>
-        <div style="padding: 30px;">    
+        <div style="padding: 30px;">
+            <!--    
             <div style="text-align: right" class="inbox-container" ng-class="{'custom-hide': radio.notifications==null}" ng-click="radio.goTo('/apoloinbox')">
                 YOUR INBOX <img class="inbox-img" src="./core/img/inbox.png" /><div style="width: 20px;height: 20px;border-radius: 50%;background-color: #fe5252;text-align: center;display: inline;position: absolute;margin-left: -15px;margin-top: -10px;">{{ radio.notifications }}</div>
             </div>
-            
+            -->
             <div style="padding-bottom: 35px;padding-top: 25px;">
                 <img src="./core/img/Apology.gif" width="250px" />
             </div>
             
-            <p class='apology-title g-font b' style="text-align:left;padding-bottom: 30px;">LISTEN TO A<br/>RECENT APOLOGY</p>
+            <p class='apology-title g-font b' style="text-align:left;padding-bottom: 30px;">you are now<br/>listening to apology radio</p>
             
-            <div class="row" style="margin: 0px;padding: 0px;">
+            <!--<div class="row" style="margin: 0px;padding: 0px;">
             <p class='main-page-subtext g-font b col-xs-8' style="text-align:left;padding-left: 0px;" ng-class="{'custom-hide': !radio.started}">
                RECORDED<br/><span class="record-date a-font">{{ radio.currentApology.created | date:"MMM d, yyyy 'at' h:mm a" }}</span>
             </p>
             
             <p class='main-page-subtext g-font b col-xs-4' style="text-align:right;padding-right: 0px;" ng-class="{'custom-hide': !radio.started}">
                <span style="color: rgba(0,0,0,.2);font-size: 30px;">{{ radio.timePlayed | time }}</span>
-            </p>
+            </p>-->
             </div>
             <!--<div class='apology-prbar'>
             {{ radio.timePlayed | number:0 }}
             </div>
         -->
+           <div ng-click="radio.goTo('/')" ng-show='radio.isPlaying' style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 7px;max-width: 200px;margin-top: 30px; text-transform: uppercase;">home</div>
             
-            <div class='review-button-cont' style="margin-top: 50px;margin-bottom: 50px;">
-                <div ng-show='radio.isPlaying' ng-click='radio.skip()' class='pause-button'>
+            <div class='review-button-cont' ng-hide='radio.isPlaying' style="margin-top: 50px;margin-bottom: 50px;">
+                <!--<div ng-show='radio.isPlaying' ng-click='radio.skip()' class='pause-button'>
                     <img src="./core/img/skip.png" alt="">
-                </div>
-                <div ng-hide='radio.isPlaying' ng-click='radio.play()' class='pause-button'>
+                </div>-->
+        
+                <div ng-click='radio.play()' class='pause-button'>
                     <img src="./core/img/play-arrow.png" alt="">
                 </div>
             </div>

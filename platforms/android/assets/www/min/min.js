@@ -42609,10 +42609,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       url: '/radio',
       templateUrl: 'core/views/radio.client.view.html'
     }).
-    state('launch', {
+    /*state('launch', {
       url: '/launch',
       templateUrl: 'core/views/launch.client.view.html'
-    }).
+    }).*/
     state('player', {
       url: '/player/:id',
       templateUrl: 'core/views/player.client.view.html',
@@ -42628,7 +42628,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
     }).
 		state('home', {
 			url: '/',
-			templateUrl: 'core/views/landing.client.view.html'
+			templateUrl: 'core/views/launch.client.view.html'
 		});
 	}
 ]);
@@ -42814,8 +42814,7 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
         this.isLeaving = true;
         clearInterval(fnPosition);          
         radio.stop();
-        radio.release();        
-        radio = null;
+        radio.release();
       }
       $location.path(path);
     };
@@ -42846,10 +42845,11 @@ function($scope, $http, $timeout,$document,$location) {
   this.duration = 0;
   this.timePlayed = 0;
   var player = null;
-  this.started = false;
   var fnPosition = null;
   this.notifications = null;
   this.isLeaving = false;
+  this.skip = 0;
+  this.started = false;
   
   $http.get(ApplicationConfiguration.apiRoot + '/notifications')
   .success(function(response) {
@@ -42857,20 +42857,19 @@ function($scope, $http, $timeout,$document,$location) {
   });
   
   this.start = function(){
-    if(!this.started){
-      this.started = true;
-      $http.get(ApplicationConfiguration.apiRoot + '/recent')
+      $http.get(ApplicationConfiguration.apiRoot + '/recent?skip='+this.skip)
       .success(function(response) {
         scope.currentApology = response;
+        scope.skip++;
         scope.load();
       })
       .error(function(err) {
         console.log('Error', err);
       });  
-    }
   };
   
   this.load = function(){
+    this.started = true;
     if(this.currentApology){
       player = null;
       player = new Media(this.currentApology.path,
@@ -42881,9 +42880,7 @@ function($scope, $http, $timeout,$document,$location) {
         if(status === Media.MEDIA_STOPPED){
           scope.pause();
           if(!scope.isLeaving){
-            if($location.path().indexOf("radio") > -1){
-              player.seekTo(0);
-            }  
+            scope.start(); 
           }
         }
       });
@@ -42905,19 +42902,17 @@ function($scope, $http, $timeout,$document,$location) {
   };
   
   this.play = function(){
-    if(!this.started){
+    if(player === null){
       this.start();
-    }else{
-      if(!this.isPlaying){
-        player.play(); 
-        this.isPlaying = true;
-      }  
+    }else if(!this.isPlaying){
+      player.play(); 
+      this.isPlaying = true;
     }
   };
   
   this.pause = function(){
     if(this.isPlaying){
-      player.pause(); 
+      player.stop();
       this.isPlaying = false;
     }
   };
@@ -42931,7 +42926,6 @@ function($scope, $http, $timeout,$document,$location) {
     }
     $location.path(path);
   };
-  
 }]);  
 'use strict';
 
@@ -42956,11 +42950,11 @@ angular.module('core').controller('AfterSentController', ['$scope', 'Authenticat
     $scope.share = function() {
       window.plugins.ContactChooser.chooseContact(function (contactInfo) {
           setTimeout(function () { // use timeout to fix iOS alert problem
-              var message = 'Join me at Apology.fm';
+              var message = 'Here is an invite to listen to apology.fm.  A place to share and listen to apology.';
       
               var intent = "INTENT"; //leave empty for sending sms using default intent
               var success = function () { 
-                $scope.goTo('/launch'); 
+                $scope.goTo('/'); 
               };
               var error = function (e) {
                 alert('Message Failed:' + e); 
@@ -43121,7 +43115,7 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
     // my_player.play();
 
     $scope.goBackToHome = function() {
-      $state.go('launch');
+      $state.go('home');
     };
     
     function onSuccess(contactid, contact) {
@@ -43470,7 +43464,7 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
         $scope.goback         = false;
 
         $scope.apologyHeader  = 'Step 1';
-        $scope.apologyTitle   = 'I\'m sorry for...';
+        $scope.apologyTitle   = 'I am sorry for...';
     
         // create media object - overwrite existing recording
         if (my_recorder)
@@ -43518,7 +43512,7 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
             }
             //navigator.notification.vibrate(1000);
             $scope.apologyHeader = 'Step 3'
-            $scope.apologyTitle  = 'And I\'m greatful for...'
+            $scope.apologyTitle  = 'And I am grateful for...'
           }
           if ($scope.apologyTimer != 0) {
             $scope.recordTimer();
@@ -43580,20 +43574,63 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
 'use strict';
 
 
-angular.module('core').directive('landingPage', ['$timeout', '$location', 'Authentication', function($timeout, $location, Authentication){
+angular.module('core').directive('landingPage', ['$timeout', '$location', 'Authentication','$swipe', 'initService', function($timeout, $location, Authentication, $swipe, initService){
   return {
     link: function (scope, element, attrs) {
       scope.authentication = Authentication;
       if(scope.authentication.user) {
         element.remove();
       }
+      
+      if(!initService.isInit()) {
+        element.remove();
+      }
+      var latestX = 0;
+      var currentP = 0;
+      
+      $swipe.bind(element, {
+        'start': function(coords) {
+          console.log('start');
+          latestX = coords.x;
+          currentP = 10;
+          element.css({
+            left : currentP+'%'
+          });    
+        },
+        'move': function(coords) {
+          console.log('move');
+          currentP += Math.abs((latestX-coords.x)/3);
+          latestX = coords.x;
+          element.css({
+            left : currentP+'%'
+          });  
+        },
+        'cancel': function() {
+          console.log('cancel');
+          element.css({
+            left : '0%'
+          });  
+          currentP = 0;
+        },
+        'end': function(coords) {
+          console.log('end');
+          element.css({
+            left : '100%'
+          });
+          /*$timeout(function () {
+            $location.path('/launch');
+          }, 150)*/
+        }
+      });
       scope.letTheGameBegin = function () {
+        initService.setInit(false);
         element.css({
           left : '100%'
         });
+        /*
         $timeout(function () {
           $location.path('/launch');
-        }, 150)
+        }, 150)*/
 
       }
     }
@@ -43992,7 +44029,24 @@ angular.module('users').factory('Authentication', [
 
 		return _this._data;
 	}
-]);/*
+]);
+angular.module('core').factory('initService', [
+
+  function() {
+    var service = {
+      init: true,
+      isInit: function(){
+        return this.init;
+      },
+      setInit: function(newInit){
+        this.init = newInit;
+      },
+    };
+
+    return service;
+  }
+]);
+/*
 'use strict';
 
 // Users service used for communicating with the users REST endpoint
