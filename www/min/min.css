@@ -190,11 +190,11 @@ left: 5px;
   content: 'RECORD';
   font-weight: 300;
   text-align: center;
-  padding-left: 6px;
-  font-size: 9px;
-  margin: auto;
+  padding-left: 0px;
+  font-size: 15px;
+  margin-left: -6px;
   position: relative;
-  top: 10px;
+  top: 20px;
   overflow: hidden;
 }
 .record-button {

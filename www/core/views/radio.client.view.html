@@ -10,8 +10,9 @@
                 <img src="./core/img/Apology.gif" width="250px" />
             </div>
             
-            <p class='apology-title g-font b' style="text-align:left;padding-bottom: 30px;">you are now<br/>listening to apology radio</p>
-            
+            <p class='apology-title g-font b' style="text-align:left;padding-bottom: 10px; width: 60%;font-size: 24px;text-shadow: -1px 1px 12px rgba(255, 255, 255, 0.4);">
+            YOU ARE NOW LISTENING TO APOLOGY RADIO
+            </p>
             <!--<div class="row" style="margin: 0px;padding: 0px;">
             <p class='main-page-subtext g-font b col-xs-8' style="text-align:left;padding-left: 0px;" ng-class="{'custom-hide': !radio.started}">
                RECORDED<br/><span class="record-date a-font">{{ radio.currentApology.created | date:"MMM d, yyyy 'at' h:mm a" }}</span>
@@ -25,9 +26,15 @@
             {{ radio.timePlayed | number:0 }}
             </div>
         -->
-           <div ng-click="radio.goTo('/')" ng-show='radio.isPlaying' style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 7px;max-width: 200px;margin-top: 30px; text-transform: uppercase;">home</div>
-            
-            <div class='review-button-cont' ng-hide='radio.isPlaying' style="margin-top: 50px;margin-bottom: 50px;">
+                    <div class='apology-prbar'>
+            <div class='prbar' style='width:{{ radio.prBarWidth }}%'></div>
+            <div class='prbar-ghost'></div>
+            <p class='time-zero'>{{ radio.timePlayed | time }}</p>
+            <p class='time-remaining'>{{ radio.duration | time }}</p> 
+            <!--<p class='time-remaining' ng-show='!stopPlay'>:30</p>-->    
+        </div>
+
+            <div class='review-button-cont' ng-hide='radio.isPlaying' style="margin-top: 20px;margin-bottom: 20px;">
                 <!--<div ng-show='radio.isPlaying' ng-click='radio.skip()' class='pause-button'>
                     <img src="./core/img/skip.png" alt="">
                 </div>-->
@@ -36,7 +43,9 @@
                     <img src="./core/img/play-arrow.png" alt="">
                 </div>
             </div>
-            <div class="g-font b" style="text-align: right;margin-top: 60px;" ng-click="radio.flag()">Flag</div>
+            <div ng-click="radio.goTo('/')" ng-show='radio.isPlaying' style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 7px;max-width: 200px;margin-top: 20px;margin-bottom: 20px; text-transform: uppercase;height:75px;">home</div>
+            
+            <div class="g-font b" style="text-align: center;margin-top: 20px;" ng-click="radio.flag()">Flag</div>
         </div>
         <div class='apology-footer g-font b' ng-click="radio.goTo('/signin')">
             RECORD AN APOLOGY

@@ -42722,7 +42722,7 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
     this.isPlaying = false;
     this.duration = 0;
     this.timePlayed = 0;
-    var player = null;
+    var radio = null;
     this.started = false;
     var fnPosition = null;
     this.notifications = null;
@@ -42749,14 +42749,20 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
     
     this.load = function(){
       if(this.currentApology){
-        radio = null;
         radio = new Media(this.currentApology.path,
         function(){
         }, function(err){
           console.log(err);
+          scope.isLeaving = true;
+          clearInterval(fnPosition);  
+          radio.pause();         
+          radio.stop();
+          radio.release();
         }, function(status){
           if(status === Media.MEDIA_STOPPED){
-            scope.pause();
+            radio.pause(); 
+            radio.stop();
+            radio.release();
             if(!scope.isLeaving){
               if($location.path().indexOf("radio") > -1){
                 scope.start();
@@ -42764,13 +42770,14 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
             }
           }
         });
-        this.duration = radio.getDuration();
         this.play();
         fnPosition = setInterval(function() {
+          scope.duration = radio.getDuration();
           radio.getCurrentPosition(
             function(position) {
               if (position > -1) {
                 scope.timePlayed = position;
+                scope.prBarWidth = (position/scope.duration)*100;
                 $scope.$apply();
               }
             },
@@ -42785,11 +42792,9 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
       if(!this.started){
         this.start();
       }else{
-        if(!this.isPlaying){
-          radio.play(); 
-          this.isPlaying = true;
-        }  
-      }
+        radio.play(); 
+        this.isPlaying = true;    
+      }  
     };
     this.skip = function(){
       if(this.isPlaying){
@@ -42812,9 +42817,11 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
     this.goTo = function(path) {
       if(this.radio != null){
         this.isLeaving = true;
-        clearInterval(fnPosition);          
+        clearInterval(fnPosition);  
+        radio.pause();         
         radio.stop();
         radio.release();
+        console.log('release');
       }
       $location.path(path);
     };
@@ -42919,8 +42926,8 @@ function($scope, $http, $timeout,$document,$location) {
   this.goTo = function(path) {
     if(player != null){
       this.isLeaving = true;
-      player.stop();
       clearInterval(fnPosition);  
+      player.stop();
       player.release();
       player = null;
     }
@@ -43614,6 +43621,7 @@ angular.module('core').directive('landingPage', ['$timeout', '$location', 'Authe
         },
         'end': function(coords) {
           console.log('end');
+          initService.setInit(false);
           element.css({
             left : '100%'
           });
