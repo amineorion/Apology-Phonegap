@@ -34,18 +34,21 @@
             <!--<p class='time-remaining' ng-show='!stopPlay'>:30</p>-->    
         </div>
 
-            <div class='review-button-cont' ng-hide='radio.isPlaying' style="margin-top: 20px;margin-bottom: 20px;">
+            <div class='review-button-cont'  style="margin-top: 20px;margin-bottom: 20px;">
                 <!--<div ng-show='radio.isPlaying' ng-click='radio.skip()' class='pause-button'>
                     <img src="./core/img/skip.png" alt="">
                 </div>-->
         
-                <div ng-click='radio.play()' class='pause-button'>
+                <div ng-click='radio.play()' ng-hide='radio.isPlaying' class='pause-button'>
                     <img src="./core/img/play-arrow.png" alt="">
                 </div>
+                <div ng-click="radio.goTo('/')" ng-show='radio.isPlaying' class='stop-home-button' style="margin: -4px;">
+                </div>
             </div>
-            <div ng-click="radio.goTo('/')" ng-show='radio.isPlaying' style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 7px;max-width: 200px;margin-top: 20px;margin-bottom: 20px; text-transform: uppercase;height:75px;">home</div>
-            
-            <div class="g-font b" style="text-align: center;margin-top: 20px;" ng-click="radio.flag()">Flag</div>
+<!--            <div ng-click="radio.goTo('/')" ng-show='radio.isPlaying' style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 7px;max-width: 200px;margin-top: 20px;margin-bottom: 45px; text-transform: uppercase;">home</div>
+-->
+            <div ng-click="radio.flag()" style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 7px;max-width: 200px;margin-top: 20px;margin-bottom: 45px; text-transform: uppercase;">flag</div>
+
         </div>
         <div class='apology-footer g-font b' ng-click="radio.goTo('/signin')">
             RECORD AN APOLOGY

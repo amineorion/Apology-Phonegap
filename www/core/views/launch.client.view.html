@@ -1,12 +1,12 @@
 <section data-ng-controller="LaunchController as launch">
     <div class='landing-page' landing-page>
-        <img src="./core/img/landing.gif"></img>
+        <img src="./core/img/landing.gif"/>
         <div class='landing-begin' ng-click='letTheGameBegin()'><img src="./core/img/begin-button.png" style="width: 120px;" /></div>
     </div>
     <div class='main-window'>
-        <div style="padding: 30px;">    
+        <div style="padding: 30px;padding-top: 2%;">
             <div style="text-align: right" class="inbox-container" ng-class="{'custom-hide': launch.notifications==null}" ng-click="launch.goTo('/apoloinbox')">
-                YOUR INBOX <img src="./core/img/inbox.png" class="inbox-img"/><div style="width: 18px;height: 18px;border-radius: 50%;background-color: #fe5252;text-align: center;display: inline;position: absolute;margin-left: -15px;margin-top: -10px; font-size: 14px;">{{ launch.notifications }}</div>
+                YOUR INBOX <img src="./core/img/inbox.png" class="inbox-img"/><div style="width: 18px;height: 18px;border-radius: 50%;background-color: #fe5252;text-align: center;display: inline;position: absolute;margin-left: -15px;margin-top: -10px; font-size: 14px;" ng-show="launch.notifications!=0">{{ launch.notifications }}</div>
             </div>
             
             <div style="padding-bottom: 35px;padding-top: 25px;">
@@ -34,7 +34,7 @@
             </div>
         -->
             
-            <div class='review-button-cont' style="margin-top: 30px;margin-bottom: 50px;">
+            <div class='review-button-cont' style="margin-top: 30px;margin-bottom: 8%;">
                 <div ng-show='launch.isPlaying' ng-click='launch.pause()' class='pause-button'>
                     <img class="listen-button pause" src="./core/img/pause.png" alt="">
                 </div>

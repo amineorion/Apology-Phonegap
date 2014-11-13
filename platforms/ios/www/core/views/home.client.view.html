@@ -1,14 +1,10 @@
 <section data-ng-controller="RecordController">
 
-	<div class='main-window ng-hide' ng-controller='RecordController' ng-show='authentication.user && !apologyUploaded'>
-	    <div class='your-inbox' ng-show='!apologyStarted' ng-click='goToInbox()'>
-	    	your inbox
-	    </div>
-
-		<p class='apology-header'>{{ apologyHeader }}</p>
-		<div class='goback-to-record' ng-show='apologyStarted' ng-click="goBackToHome()"><</div>
-		<p class='main-page-text' ng-show='!apologyStarted'>Think about who you want to apology to, then hold the record button and we will guid you through a sansational apology.</p>
-		<p class='main-page-subtext' ng-show='!apologyStarted'>When finished, chose who you want to recieve your words.</p>
+	<div class='main-window ng-hide' ng-show='authentication.user && !apologyUploaded' style="padding-top: 10px;">
+    	<div class='goback-to-record' ng-click="goTo('/')"><span class="arrow"><</span></div>
+    	<p class='apology-header g-font b page-title'>{{ apologyHeader }}</p>
+    	<div style="margin-top: 10px;margin-bottom: 20px;text-align: center;" ng-show='!apologyStarted'><img src="./core/img/log.png" style="width: 60px;" /></div>
+		<p class='main-page-text a-font' ng-show='!apologyStarted' style="padding-left: 50px;padding-right: 50px; font-size: 17px">Think about who you want to apologize to, then tap the record button and we will guide you through a sensational apology.<br><br>Say the prompts as they appear followed by your own words.</p>
 
 		<p class='apology-title' ng-show='apologyStarted'>{{ apologyTitle }}</p>
 
@@ -31,9 +27,10 @@
 			<div ng-show='apologyStarted&&apologyPaused' ng-click='startApology()' class='pause-button'>
 				<img src="./core/img/play.png" alt="">
 			</div> -->
+			
 		</div>
-		<div class='apology-footer' ng-show='apologyStarted'>
-			Tune into apology.fm
-		</div>
+		<div class='apology-footer g-font b' ng-click="goTo('/radio')" ng-show='!apologyStarted'>
+            TUNE INTO APOLOGY.FM <img src="./core/img/phones.png" style="width: 20px;vertical-align: inherit; margin-left: 15px" />
+        </div>
 	</div>
 </section>

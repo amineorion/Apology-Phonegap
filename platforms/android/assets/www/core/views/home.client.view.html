@@ -16,9 +16,9 @@
 			<p class='time-remaining' ng-show='stopRecord'>-30</p>	
 		</div>
 
-		<div class='record-button-cont'>
+		<div class='record-button-cont' ng-hide='!apologyUploading&&apologyStarted&&!apologyPaused'>
 			<div ng-show='!apologyStarted' ng-click='startApology()' class='record-button'></div>
-			<div ng-show='!apologyUploading&&apologyStarted&&!apologyPaused' ng-click='stopRecording()' class='stop-button'></div>
+
 			<div ng-show='apologyUploading' class='apology-uploading'></div>
 
 <!-- 			<div ng-show='apologyStarted&&!apologyPaused' ng-click='pauseMedia()' class='pause-button'>
@@ -28,6 +28,9 @@
 				<img src="./core/img/play.png" alt="">
 			</div> -->
 			
+		</div>
+		<div class='recording-button-cont' ng-show='!apologyUploading&&apologyStarted&&!apologyPaused'>
+			<div class='record-button'></div>
 		</div>
 		<div class='apology-footer g-font b' ng-click="goTo('/radio')" ng-show='!apologyStarted'>
             TUNE INTO APOLOGY.FM <img src="./core/img/phones.png" style="width: 20px;vertical-align: inherit; margin-left: 15px" />

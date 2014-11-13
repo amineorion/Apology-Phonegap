@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="com.apology.fm" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Apology.fm</name>
     <description>
         We want you to send apology!
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="amineorion@gmail.com" href="http://apology.fm">
+        Apology Team
     </author>
     <feature name="File">
 	    <param name="android-package" value="org.apache.cordova.file.FileUtils" />
@@ -25,10 +25,9 @@
 	<feature name="Contacts">
 	    <param name="android-package" value="org.apache.cordova.contacts.ContactManager" />
 	</feature>
-	<preference name="orienation" value="portrait" />
+    <preference name="orientation" value="portrait" />
     <preference name="permissions" value="none" />
     <preference name="phonegap-version" value="3.5.0" />
-    <preference name="orientation" value="default" />
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />

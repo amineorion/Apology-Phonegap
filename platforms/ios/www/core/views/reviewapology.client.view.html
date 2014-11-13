@@ -2,16 +2,15 @@
 	<!-- <div class='main-window'> -->
 	<div class='main-window ng-hide' ng-show='authentication.user'>
 		<p class='apology-header'>review your apology</p>
-		<div class='goback-to-record' ng-click="goBackToHome()"><</div>
 
-		<p class='main-page-text'>You apology has been recorded. Does it sounds good?</p>
+		<p class='main-page-text' style="padding-left: 50px;padding-right: 50px;">Your apology has been recorded. Does it sound good?</p>
 
 		<div class='apology-prbar'>
 			<div class='prbar' style='width:{{ prBarWidth }}%'></div>
 			<div class='prbar-ghost'></div>
-			<p class='time-zero'>0</p>
-			<p class='time-remaining' ng-show='!stopPlay'>-{{ apologyTimer }}</p>	
-			<p class='time-remaining' ng-show='stopPlay'>-30</p>	
+			<p class='time-zero'>{{ timePlayed | time }}</p>
+			<p class='time-remaining'>{{ duration | time }}</p>	
+			<!--<p class='time-remaining' ng-show='!stopPlay'>:30</p>-->	
 		</div>
 
 <!-- 		<audio controls>
@@ -19,15 +18,24 @@
 			Your browser does not support the audio element.
 		</audio> -->		
 
-		<div class='record-button-cont'>
+		<div class='review-button-cont'>
 			<div ng-show='apologyStarted&&!apologyPaused' ng-click='stopMedia()' class='pause-button'>
 				<img src="./core/img/pause.png" alt="">
 			</div>
 			<div ng-show='!apologyStarted || apologyStarted&&apologyPaused' ng-click='playMedia()' class='pause-button'>
-				<img src="./core/img/play.png" alt="">
+				<img src="./core/img/play-arrow.png" alt="">
 			</div>
 		</div>
+		<center>
+        <p style="margin-bottom: 30px;">
+          If you like it, choose who<br/>to share with.  
+        </p>
+        </center>    
+		<div ng-click="chooseRecipient()" style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 7px;max-width: 200px;text-transform: uppercase;">Choose recipient</div>
+	<br>
+		<!-- upload anonamously so it just goes to server and doesn't send to anyone. it just plays on the radio-->
+		<div ng-click="goBackToHome()" style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 7px;max-width: 200px; text-transform: uppercase;">upload anonymously</div>
 
-		<button ng-click='chooseRecipient()'>Choose recipient</button>
+		<div style="margin-top: 20px;text-align: center;" ng-click="goTo('/signin')" >OR, START OVER</div>
 	</div>
 </section>

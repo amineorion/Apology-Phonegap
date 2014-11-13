@@ -42753,14 +42753,15 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
         function(){
         }, function(err){
           console.log(err);
-          scope.isLeaving = true;
           clearInterval(fnPosition);  
           radio.pause();         
           radio.stop();
           radio.release();
+
         }, function(status){
           if(status === Media.MEDIA_STOPPED){
-            radio.pause(); 
+            clearInterval(fnPosition);
+            radio.pause();
             radio.stop();
             radio.release();
             if(!scope.isLeaving){
@@ -42815,7 +42816,7 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
       }
     };
     this.goTo = function(path) {
-      if(this.radio != null){
+      if(radio != null){
         this.isLeaving = true;
         clearInterval(fnPosition);  
         radio.pause();         
@@ -42857,7 +42858,8 @@ function($scope, $http, $timeout,$document,$location) {
   this.isLeaving = false;
   this.skip = 0;
   this.started = false;
-  
+  this.init = true;
+
   $http.get(ApplicationConfiguration.apiRoot + '/notifications')
   .success(function(response) {
     scope.notifications = response.unread;
@@ -42878,21 +42880,32 @@ function($scope, $http, $timeout,$document,$location) {
   this.load = function(){
     this.started = true;
     if(this.currentApology){
-      player = null;
       player = new Media(this.currentApology.path,
       function(){
       }, function(err){
-        console.log(err);
+          console.log(err);
+          scope.pause();
+          player.stop();
+          player.release();
+          console.log('release');
+          if(!scope.isLeaving){
+              scope.start();
+          }
       }, function(status){
         if(status === Media.MEDIA_STOPPED){
           scope.pause();
+          player.stop();
+          player.release();
+          console.log('release');
           if(!scope.isLeaving){
             scope.start(); 
           }
         }
       });
-      this.duration = player.getDuration();
-      this.play();
+      if(this.init){
+        this.play();
+        this.init = false;
+      }
       fnPosition = setInterval(function() {
         player.getCurrentPosition(
           function(position) {
@@ -42912,15 +42925,18 @@ function($scope, $http, $timeout,$document,$location) {
     if(player === null){
       this.start();
     }else if(!this.isPlaying){
-      player.play(); 
+      player.play();
       this.isPlaying = true;
     }
   };
   
   this.pause = function(){
     if(this.isPlaying){
-      player.stop();
-      this.isPlaying = false;
+        clearInterval(fnPosition);
+        player.stop();
+        player.release();
+        console.log('release');
+        this.isPlaying = false;
     }
   };
   this.goTo = function(path) {
@@ -42929,7 +42945,8 @@ function($scope, $http, $timeout,$document,$location) {
       clearInterval(fnPosition);  
       player.stop();
       player.release();
-      player = null;
+      console.log('release');
+
     }
     $location.path(path);
   };
@@ -43056,7 +43073,10 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
     var my_player = null;
 
     $scope.goTo = function(path) {
-      $location.path(path);
+
+        my_player.stop();
+        my_player.release();
+        $location.path(path);
     };
     
     $scope.onMediaCallSuccess = function() {
@@ -43122,7 +43142,9 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
     // my_player.play();
 
     $scope.goBackToHome = function() {
-      $state.go('home');
+        my_player.stop();
+        my_player.release();
+        $state.go('home');
     };
     
     function onSuccess(contactid, contact) {
@@ -43179,9 +43201,21 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
     function onPickContactError() {
       console.log('onPickContactError')
     };
-
+    $scope.ananymous = function(){
+        my_player.pause();
+        $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
+        { apology: $rootScope.lastApology.path,
+            receipient: '0000000000'
+        }).success(function(response){
+            $scope.goTo('/aftersent');
+        }).error(function(err){
+            alert('error');
+        });
+    };
     $scope.chooseRecipient = function() {
-      console.log('chooseRecipient')
+        my_player.pause();
+
+        console.log('chooseRecipient')
       if(phoneCheck.ios){
         var options = new ContactFindOptions();
         navigator.contacts.chooseContact(onSuccess, options);
@@ -43190,26 +43224,34 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
           setTimeout(function () { // use timeout to fix iOS alert problem
               $http.post(ApplicationConfiguration.apiRoot + '/users/exist',{number: contactInfo.phoneNumber})
               .success(function(response) {
-                $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
-                    { apology: $rootScope.lastApology.path,
-                      receipient: contactInfo.phoneNumber 
-                    }).success(function(response){
-                      $scope.goTo('/aftersent');
-                    }).error(function(err){
-                      alert('error');
-                    });
+                      $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
+                          { apology: $rootScope.lastApology.path,
+                              receipient: contactInfo.phoneNumber
+                          }).success(function(response){
+                              $scope.goTo('/aftersent');
+                          }).error(function(err){
+                              alert('error');
+                          });
                   })
                   .error(function(err) {
                     var message = 'I have crafted you a heartfelt apology. When you feel ready to receive it, click the link to listen. http://apology.fm/#!/apologies/'+$rootScope.lastApology._id;
             
                     var intent = "INTENT"; //leave empty for sending sms using default intent
-                    var success = function () { 
-                      $scope.goTo('/aftersent'); 
+                    var success = function () {
+
                     };
                     var error = function (e) {
-                      alert('Message Failed:' + e); 
+
                     };
                     sms.send(contactInfo.phoneNumber, message, intent, success, error);
+                      $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
+                          { apology: $rootScope.lastApology.path,
+                              receipient: contactInfo.phoneNumber
+                          }).success(function(response){
+                              $scope.goTo('/aftersent');
+                          }).error(function(err){
+                              alert('error');
+                          });
                   });
             }, 0);
       });  
@@ -43360,13 +43402,13 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
 
     // Stop recording
     $scope.stopRecording = function () {
-        if (my_recorder) 
+        if (my_recorder)
             my_recorder.stopRecord(); // the file should be moved to "/sdcard/"+mediaRecFile
             my_recorder.release();
-            console.log("***test: recording stopped***");
             $scope.apologyTimer = 1;
             $scope.stopRecord = true;
             // $scope.apologyStarted = false;
+
     }
 
     function checkMediaRecFileExist() {
@@ -43509,13 +43551,13 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
           $scope.prBarWidth = (30-$scope.apologyTimer) * 3.33;
           if($scope.apologyTimer<=20 && $scope.apologyTimer>10){
             if($scope.apologyTimer === 20){
-              navigator.notification.vibrate(1000);
+              navigator.notification.vibrate(100);
             }
             $scope.apologyHeader = 'Step 2'
             $scope.apologyTitle  = 'And I honor you by...'
           } else if ($scope.apologyTimer<=10){
             if($scope.apologyTimer === 10){
-              navigator.notification.vibrate(1000);
+              navigator.notification.vibrate(100);
             }
             //navigator.notification.vibrate(1000);
             $scope.apologyHeader = 'Step 3'
@@ -43581,14 +43623,9 @@ angular.module('core').controller('RecordController', ['$scope', 'Authentication
 'use strict';
 
 
-angular.module('core').directive('landingPage', ['$timeout', '$location', 'Authentication','$swipe', 'initService', function($timeout, $location, Authentication, $swipe, initService){
+angular.module('core').directive('landingPage', ['$timeout', '$location', '$swipe', 'initService', function($timeout, $location, $swipe, initService){
   return {
     link: function (scope, element, attrs) {
-      scope.authentication = Authentication;
-      if(scope.authentication.user) {
-        element.remove();
-      }
-      
       if(!initService.isInit()) {
         element.remove();
       }
@@ -43842,7 +43879,7 @@ angular.module('core').service('Menus', [
 	}
 ]);
 
-
+/*
 'use strict';
 
 // Config HTTP Error Handling
@@ -43872,7 +43909,7 @@ angular.module('users').config(['$httpProvider',
 			}
 		]);
 	}
-]);
+]);*/
 'use strict';
 
 // Setting up route

@@ -1,14 +1,14 @@
 <section data-ng-controller="OutboxApolCtrl">
     <div class='main-window' style="padding-top: 40px;">
-        <div class='goback-to-record' ng-click="goTo('/radio')"><span class="arrow"><</span></div>
+        <div class='goback-to-record' ng-click="goTo('/')"><span class="arrow"><</span></div>
         <div><center><h4 class="g-font b page-title">YOUR APOLOGIES</h4></center></div>
         <div class="row" style="padding-top: 30px;margin-right: 0px;margin-left: 0px;padding-bottom: 30px;">
-            <div style="padding: 0px;margin: 0px;padding-left: 30px;" class="col-xs-6">
+            <div style="padding: 0px;margin: 0px;padding-left: 30px;" class="col-xs-6 g-font b">
                 <div ng-click='goTo("/apoloinbox")' style="padding: 7px;padding-left:20px;border-color: white;border-width: 1px;border-style: solid;border-bottom-left-radius: 25px;border-top-left-radius: 25px;width: 100%;background-color: transparent;">
                     INBOX
                 </div>
             </div>
-            <div style="padding: 0px;margin: 0px;padding-right: 30px;" class="col-xs-6">
+            <div style="padding: 0px;margin: 0px;padding-right: 30px;" class="col-xs-6 g-font b">
                 <div style="padding: 7px;padding-right:20px;border-color: white;border-width: 1px;border-style: solid;border-bottom-right-radius: 25px;border-top-right-radius: 25px;width: 100%;background-color: white;color: #5b5557;text-align: right;">
                     OUTBOX
                 </div>
@@ -19,7 +19,8 @@
                 <div style="border: 1px solid white;border-top: 0px;border-right: 0px;border-left: 0px;padding-bottom: 20px;" class="row">
                   <div class="col-xs-5">
                       <span class="box-title g-font b">TO</span><br/>
-                      <span class="a-font b">{{ apology.receiverPhoneNumber }}</span>
+                      <span class="a-font b" ng-show="apology.receiverPhoneNumber!=0000000000">{{ apology.receiverPhoneNumber }}</span>
+                      <span class="a-font b" ng-show="apology.receiverPhoneNumber==0000000000">Anonymous</span>
                   </div>
                   <div class="col-xs-5">
                       <span class="box-title g-font b">SENT</span><br/>
