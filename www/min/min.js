@@ -42676,7 +42676,7 @@ angular.module('core').controller('PlayerController', ['$scope', '$http', 'Authe
         });
         this.play();
         fnPosition = setInterval(function() {
-          scope.duration = player.getDuration();
+          scope.duration = 30;
           player.getCurrentPosition(
             function(position) {
               if (position > -1) {
@@ -42773,7 +42773,7 @@ angular.module('core').controller('RadioController', ['$scope', '$http', '$timeo
         });
         this.play();
         fnPosition = setInterval(function() {
-          scope.duration = radio.getDuration();
+          scope.duration = 30;
           radio.getCurrentPosition(
             function(position) {
               if (position > -1) {
@@ -43125,7 +43125,7 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
     }
     
     var fnPosition = setInterval(function() {
-      $scope.duration = my_player.getDuration();
+      $scope.duration = 30;
       my_player.getCurrentPosition(
         function(position) {
           if (position > -1) {
@@ -43171,30 +43171,38 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
         console.log('Phone: ', contacts[0].phoneNumbers[0].value)
 
         var number = contacts[0].phoneNumbers[0].value;
-        
+
         $http.post(ApplicationConfiguration.apiRoot + '/users/exist',{number: number})
-        .success(function(response) {
-          $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
-              { apology: $rootScope.lastApology.path,
-                receipient: number 
-              }).success(function(response){
-                alert('Message sent successfully');
-              }).error(function(err){
-                alert('error');
-              });
-        })
-        .error(function(err) {
-          var message = 'Take it'
-  
-          var intent = "INTENT"; //leave empty for sending sms using default intent
-          var success = function () { 
-            alert('Message sent successfully'); 
-          };
-          var error = function (e) {
-            alert('Message Failed:' + e); 
-          };
-          sms.send(number, message, intent, success, error);
-        });
+            .success(function(response) {
+                $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
+                    { apology: $rootScope.lastApology.path,
+                        receipient: number
+                    }).success(function(response){
+                        $scope.goTo('/aftersent');
+                    }).error(function(err){
+                        alert('error');
+                    });
+            })
+            .error(function(err) {
+                var message = 'I have crafted you a heartfelt apology. When you feel ready to receive it, click the link to listen. http://apology.fm/#!/apologies/'+$rootScope.lastApology._id;
+
+                var intent = "INTENT"; //leave empty for sending sms using default intent
+                var success = function () {
+
+                };
+                var error = function (e) {
+
+                };
+                sms.send(number, message, intent, success, error);
+                $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
+                    { apology: $rootScope.lastApology.path,
+                        receipient: number
+                    }).success(function(response){
+                        $scope.goTo('/aftersent');
+                    }).error(function(err){
+                        alert('error');
+                    });
+            });
 
     }
 
@@ -43216,46 +43224,48 @@ angular.module('core').controller('ReviewApolCtrl', ['$scope', 'Authentication',
         my_player.pause();
 
         console.log('chooseRecipient')
-      if(phoneCheck.ios){
-        var options = new ContactFindOptions();
-        navigator.contacts.chooseContact(onSuccess, options);
-      }else if(phoneCheck.android){
-        window.plugins.ContactChooser.chooseContact(function (contactInfo) {
-          setTimeout(function () { // use timeout to fix iOS alert problem
-              $http.post(ApplicationConfiguration.apiRoot + '/users/exist',{number: contactInfo.phoneNumber})
-              .success(function(response) {
-                      $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
-                          { apology: $rootScope.lastApology.path,
-                              receipient: contactInfo.phoneNumber
-                          }).success(function(response){
-                              $scope.goTo('/aftersent');
-                          }).error(function(err){
-                              alert('error');
-                          });
-                  })
-                  .error(function(err) {
-                    var message = 'I have crafted you a heartfelt apology. When you feel ready to receive it, click the link to listen. http://apology.fm/#!/apologies/'+$rootScope.lastApology._id;
-            
-                    var intent = "INTENT"; //leave empty for sending sms using default intent
-                    var success = function () {
+        if(phoneCheck.ios){
+            var options = new ContactFindOptions();
+            navigator.contacts.chooseContact(onSuccess, options);
+        }else{
+            window.plugins.ContactChooser.chooseContact(function (contactInfo) {
+                setTimeout(function () { // use timeout to fix iOS alert problem
+                    $http.post(ApplicationConfiguration.apiRoot + '/users/exist',{number: contactInfo.phoneNumber})
+                        .success(function(response) {
+                            $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
+                                { apology: $rootScope.lastApology.path,
+                                    receipient: contactInfo.phoneNumber
+                                }).success(function(response){
+                                    $scope.goTo('/aftersent');
+                                }).error(function(err){
+                                    alert('error');
+                                });
+                        })
+                        .error(function(err) {
+                            var message = 'I have crafted you a heartfelt apology. When you feel ready to receive it, click the link to listen. http://apology.fm/#!/apologies/'+$rootScope.lastApology._id;
 
-                    };
-                    var error = function (e) {
+                            var intent = "INTENT"; //leave empty for sending sms using default intent
+                            var success = function () {
 
-                    };
-                    sms.send(contactInfo.phoneNumber, message, intent, success, error);
-                      $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
-                          { apology: $rootScope.lastApology.path,
-                              receipient: contactInfo.phoneNumber
-                          }).success(function(response){
-                              $scope.goTo('/aftersent');
-                          }).error(function(err){
-                              alert('error');
-                          });
-                  });
-            }, 0);
-      });  
-      } 
+                            };
+                            var error = function (e) {
+
+                            };
+                            sms.send(contactInfo.phoneNumber, message, intent, success, error);
+                            $http.post(ApplicationConfiguration.apiRoot + '/sharedApologies',
+                                { apology: $rootScope.lastApology.path,
+                                    receipient: contactInfo.phoneNumber
+                                }).success(function(response){
+                                    $scope.goTo('/aftersent');
+                                }).error(function(err){
+                                    alert('error');
+                                });
+                        });
+                }, 0);
+            });
+        }
+
+
       
     }
 
