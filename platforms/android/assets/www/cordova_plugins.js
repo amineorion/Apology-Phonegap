@@ -318,7 +318,8 @@ module.exports = [
         "file": "plugins/org.apache.cordova.vibration/www/vibration.js",
         "id": "org.apache.cordova.vibration.notification",
         "merges": [
-            "navigator.notification"
+            "navigator.notification",
+            "navigator"
         ]
     },
     {
@@ -347,7 +348,7 @@ module.exports.metadata =
     "org.apache.cordova.media": "0.2.12-dev",
     "org.apache.cordova.media-capture": "0.3.2-dev",
     "org.apache.cordova.plugin.sms": "0.1.0",
-    "org.apache.cordova.vibration": "0.3.10-dev",
+    "org.apache.cordova.vibration": "0.3.11",
     "cordova.phonegap.audio.encode": "1.0.0",
     "com.monday.contact-chooser": "0.2"
 }

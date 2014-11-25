@@ -1,15 +1,15 @@
 <section data-ng-controller="ReviewApolCtrl">
 	<!-- <div class='main-window'> -->
 	<div class='main-window ng-hide' ng-show='authentication.user'>
-		<p class='apology-header g-font b page-title'>review your apology</p>
+		<p class='apology-header g-font b page-title' style="padding-bottom:1%">review your apology</p>
 
-		<p class='main-page-text a-font' style="padding-left: 50px;padding-right: 50px;">Your apology has been recorded. Does it sound good?</p>
+		<p class='main-page-text a-font' style="padding-left: 50px;padding-right: 50px;padding-top:1%;padding-bottom:1%;">Your apology has been recorded. Does it sound good?</p>
 
 		<div class='apology-prbar'>
 			<div class='prbar' style='width:{{ prBarWidth }}%'></div>
 			<div class='prbar-ghost'></div>
 			<p class='time-zero'>{{ timePlayed | time }}</p>
-			<p class='time-remaining'>{{ duration | time }}</p>	
+			<p class='time-remaining'>:30</p>
 			<!--<p class='time-remaining' ng-show='!stopPlay'>:30</p>-->	
 		</div>
 
@@ -27,7 +27,7 @@
 			</div>
 		</div>
 		<center>
-        <p style="margin-bottom: 30px;" class="a-font">
+        <p style="margin-bottom: 1%;" class="a-font">
           If you like it, choose who<br/>to share with.  
         </p>
         </center>    

@@ -1,10 +1,10 @@
 <section data-ng-controller="RecordController">
 
-	<div class='main-window ng-hide' ng-show='authentication.user && !apologyUploaded' style="padding-top: 10px;">
+	<div class='main-window ng-hide' ng-show='authentication.user && !apologyUploaded' style="padding-top: 1%;">
     	<div class='goback-to-record' ng-click="goTo('/')"><span class="arrow"><</span></div>
-    	<p class='apology-header g-font b page-title'>{{ apologyHeader }}</p>
-    	<div style="margin-top: 10px;margin-bottom: 20px;text-align: center;" ng-show='!apologyStarted'><img src="./core/img/log.png" style="width: 60px;" /></div>
-		<p class='main-page-text a-font' ng-show='!apologyStarted' style="padding-left: 20px;padding-right: 20px; font-size: 17px">Think about who you want to apologize to, then tap the record button and we will guide you through a sensational apology.<br><br>Say the prompts as they appear followed by your own words.</p>
+    	<p class='apology-header g-font b page-title' style="padding-bottom:1%;">{{ apologyHeader }}</p>
+    	<div style="margin-top: 1%;margin-bottom: 1%;text-align: center;" ng-show='!apologyStarted'><img src="./core/img/log.png" style="width: 60px;" /></div>
+		<p class='main-page-text a-font' ng-show='!apologyStarted' style="padding-left: 2%;padding-right: 2%; font-size: 17px">Think about who you want to apologize to, then tap the record button and we will guide you through a sensational apology.<br><br>Say the prompts as they appear followed by your own words.</p>
 
 		<p class='apology-title' ng-show='apologyStarted'>{{ apologyTitle }}</p>
 
@@ -16,7 +16,7 @@
 			<p class='time-remaining' ng-show='stopRecord'>-30</p>	
 		</div>
 
-		<div class='record-button-cont' ng-hide='!apologyUploading&&apologyStarted&&!apologyPaused'>
+		<div class='record-button-cont' ng-hide='!apologyUploading&&apologyStarted&&!apologyPaused' style="margin-bottom:90px;">
 			<div ng-show='!apologyStarted' ng-click='startApology()' class='record-button'></div>
 
 			<div ng-show='apologyUploading' class='apology-uploading'></div>
@@ -29,11 +29,11 @@
 			</div> -->
 			
 		</div>
-		<div class='recording-button-cont' ng-show='!apologyUploading&&apologyStarted&&!apologyPaused'>
+		<div class='recording-button-cont' ng-show='!apologyUploading&&apologyStarted&&!apologyPaused' style="margin-bottom:90px;">
 			<div class='record-button'></div>
 		</div>
 		<div class='apology-footer g-font b' ng-click="goTo('/radio')" ng-show='!apologyStarted'>
-            TUNE INTO APOLOGY.FM <img src="./core/img/phones.png" style="width: 20px;vertical-align: inherit; margin-left: 15px" />
+            TUNE INTO APOLOGY.FM <img src="./core/img/phones.png" style="	width: 20px;vertical-align: inherit; margin-left: 15px" />
         </div>
 	</div>
 </section>

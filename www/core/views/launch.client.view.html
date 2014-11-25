@@ -5,15 +5,15 @@
     </div>
     <div class='main-window'>
         <div style="padding: 30px;padding-top: 2%;">
-            <div style="text-align: right" class="inbox-container" ng-class="{'custom-hide': launch.notifications==null}" ng-click="launch.goTo('/apoloinbox')">
+            <div style="text-align: right;padding-top: 4%" class="inbox-container" ng-class="{'custom-hide': launch.notifications==null}" ng-click="launch.goTo('/apoloinbox')">
                 YOUR INBOX <img src="./core/img/inbox.png" class="inbox-img"/><div style="width: 18px;height: 18px;border-radius: 50%;background-color: #fe5252;text-align: center;display: inline;position: absolute;margin-left: -15px;margin-top: -10px; font-size: 14px;" ng-show="launch.notifications!=0">{{ launch.notifications }}</div>
             </div>
             
-            <div style="padding-bottom: 35px;padding-top: 25px;">
+            <div style="padding-bottom: 1%;padding-top: 1%;">
                 <img src="./core/img/Apology.gif" width="250px" />
             </div>
             
-            <p class='apology-title g-font b' style="text-align:left;padding-bottom: 0px; width: 60%;font-size: 24px;text-shadow: -1px 1px 12px rgba(255, 255, 255, 0.4);">
+            <p class='apology-title g-font b' style="text-align:left;padding-bottom: 0px; width: 80%;font-size: 24px;text-shadow: -1px 1px 12px rgba(255, 255, 255, 0.4);">
             <!--
             <img src="./core/img/listen-text.png" />
             -->
@@ -21,20 +21,27 @@
             </p>
             
             <div class="row" style="margin: 0px;padding: 0px;">
-            <p class='main-page-subtext g-font b col-xs-8' style="text-align:left;padding-left: 0px;" ng-class="{'custom-hide': !launch.started}">
+            <p class='main-page-subtext g-font b col-xs-10' style="text-align:left;padding-left: 0px;padding: 1%;" ng-class="{'custom-hide': !launch.started}">
                RECORDED<br/><span class="record-date a-font">{{ launch.currentApology.created | date:"MMM d, yyyy 'at' h:mm a" }}</span>
             </p>
             
-            <p class='main-page-subtext g-font b col-xs-4' style="text-align:right;padding-right: 0px;" ng-class="{'custom-hide': !launch.started}">
+            <p class='main-page-subtext g-font b col-xs-2' style="text-align:right;padding-right: 0px;padding: 1%;" ng-class="{'custom-hide': !launch.started}">
                <span style="color: rgba(0,0,0,.2);font-size: 30px;">{{ launch.timePlayed | time }}</span>
             </p>
+            </div>
+            <div class='apology-prbar'>
+                <div class='prbar' style='width:{{ launch.prBarWidth }}%'></div>
+                <div class='prbar-ghost'></div>
+                <p class='time-zero'>{{ launch.timePlayed | time }}</p>
+                <p class='time-remaining'>:30</p>
+                <!--<p class='time-remaining' ng-show='!stopPlay'>:30</p>-->
             </div>
             <!--<div class='apology-prbar'>
             {{ radio.timePlayed | number:0 }}
             </div>
         -->
             
-            <div class='review-button-cont' style="margin-top: 4%;margin-bottom: 8%;">
+            <div class='review-button-cont' style="margin-top: 4%;margin-bottom: 4%;">
                 <div ng-show='launch.isPlaying' ng-click='launch.pause()' class='pause-button'>
                     <img class="listen-button pause" src="./core/img/pause.png" alt="">
                 </div>
