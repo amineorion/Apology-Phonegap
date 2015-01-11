@@ -42259,7 +42259,8 @@ angularFileUpload.directive('ngFileDrop', [ '$parse', '$timeout', function($pars
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'apologyfm';
-  var apiRoot = 'http://apology.fm';
+    //var apiRoot = 'http://apology.fm';
+    var apiRoot = 'http://127.0.0.1:3000';
 	//var apiRoot = 'http://apology.herokuapp.com';
 	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'angularFileUpload'];
 
@@ -44015,30 +44016,38 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
     $scope.goTo = function (link) {
       $location.path(link)
     }
-
+        $scope.error = '';
 		$scope.signup = function() {
 		  $scope.error = '';
-			$http.post(ApplicationConfiguration.apiRoot + '/auth/signup', {user:{uuid: device.uuid, phoneNumber: $scope.phoneNumber}}).success(function(response) {
-				$scope.authentication.user = response;
-        $location.path('/record');
+			$http.post(ApplicationConfiguration.apiRoot + '/auth/signup', {user:{username: $scope.username, password: $scope.password}}).success(function(response) {
+			$scope.authentication.user = response;
+            $location.path('/record');
 			}).error(function(response) {
 				$scope.error = response.message;
 			});
 		};
 
 		$scope.signin = function() {
-		  $scope.loading = true;
-			$http.post(ApplicationConfiguration.apiRoot + '/auth/signin', {user:{uuid: device.uuid, token:'ALDZKFOJOZASFFGG'}}).success(function(response) {
-				//If successful we assign the response to the global user model
-				$scope.authentication.user = response;
-				//And redirect to the index page
-				$location.path('/record');
-			}).error(function(response) {
-			  $scope.loading = false;
-				console.log(response);
-			});
+            $scope.error = '';
+		  $http.post(ApplicationConfiguration.apiRoot + '/auth/signin', {user:{username: $scope.username, password: $scope.password}}).success(function(response) {
+            $scope.authentication.user = response;
+            $location.path('/record');
+          }).error(function(response) {
+              $scope.error = response.message;
+              console.log(response);
+		  });
 		};
-		$scope.signin();
+        $scope.verify = function() {
+            $scope.loading = true;
+            $http.get(ApplicationConfiguration.apiRoot + '/auth/verify').success(function(response) {
+                $scope.authentication.user = response;
+                $location.path('/record');
+            }).error(function(response) {
+                console.log(response);
+                $scope.loading = false;
+            });
+        };
+        $scope.verify();
 /*
 		$scope.forgotPassword = function() {
 			$scope.success = $scope.error = null;

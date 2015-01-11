@@ -3,12 +3,12 @@
 	<div class='main-window ng-hide' ng-show='authentication.user && !apologyUploaded' style="padding-top: 1%;">
     	<div class='goback-to-record' ng-click="goTo('/')"><span class="arrow"><</span></div>
     	<p class='apology-header g-font b page-title' style="padding-bottom:1%;">{{ apologyHeader }}</p>
-    	<div style="margin-top: 1%;margin-bottom: 1%;text-align: center;" ng-show='!apologyStarted'><img src="./core/img/log.png" style="width: 60px;" /></div>
-		<p class='main-page-text a-font' ng-show='!apologyStarted' style="padding-left: 2%;padding-right: 2%; font-size: 17px">Think about who you want to apologize to, then tap the record button and we will guide you through a sensational apology.<br><br>Say the prompts as they appear followed by your own words.</p>
+    	<div style="margin-top: 1%;margin-bottom: 0%;text-align: center;" ng-show='!apologyStarted'><img src="./core/img/log.png" style="width: 60px;" /></div>
+		<p class='main-page-text a-font' ng-show='!apologyStarted' style="padding-left: 4.5%;padding-right: 4.5%; font-size: 16px">Think about who you want to apologize to, then tap the record button and we will guide you through a sensational apology.<br><span class="space"></span>Say the prompts as they appear followed by your own words.</p>
 
 		<p class='apology-title' ng-show='apologyStarted'>{{ apologyTitle }}</p>
 
-		<div class='apology-prbar' ng-show='apologyStarted'>
+		<div class='apology-prbar' style="width:80%" ng-show='apologyStarted'>
 			<div class='prbar' style='width:{{ prBarWidth }}%'></div>
 			<div class='prbar-ghost'></div>
 			<p class='time-zero'>0</p>
@@ -29,7 +29,7 @@
 			</div> -->
 			
 		</div>
-		<div class='recording-button-cont' ng-show='!apologyUploading&&apologyStarted&&!apologyPaused' style="margin-bottom:90px;">
+		<div class='recording-button-cont g-font b' ng-show='!apologyUploading&&apologyStarted&&!apologyPaused' style="margin-bottom:90px;">
 			<div class='record-button'></div>
 		</div>
 		<div class='apology-footer g-font b' ng-click="goTo('/radio')" ng-show='!apologyStarted'>

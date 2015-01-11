@@ -59,6 +59,7 @@ template {
 
 .a-font {
   font-family: "Avenir", sans-serif;
+  font-weight: 400;
 }
 .g-font {
   font-family: "GravurCondensed Light", sans-serif;
@@ -112,8 +113,8 @@ vertical-align: text-bottom;
 
 .goback-to-record {
   position: absolute;
-  top: 55px;
-  border: 1px solid;
+  top: 50px;
+  border: 1.5px solid;
   padding: 7px;
   line-height: 0px;
   border-radius: 50px;
@@ -125,7 +126,7 @@ width: 20px;
 }
 
 .goback-to-record > .arrow {
-
+top: 5.5px;
 position: absolute;
 left: 5px;
 }
@@ -148,7 +149,7 @@ left: 5px;
 .apology-prbar {
   position: relative;
   width: 90%;
-  padding: 20px;
+  padding: 5px 0px;
   margin: 0 auto;
 }
 .prbar {
@@ -158,13 +159,13 @@ left: 5px;
 }
 .time-remaining {
   position: absolute;
-  right: 20px;
-  font-weight: 200;
+  right: 0px;
+  font-weight: 400;
 }
 .time-zero {
   position: absolute;
-  left: 20px;
-  font-weight: 200;
+  left: 0px;
+  font-weight: 400;
 }
 .prbar-ghost {
   position: relative;
@@ -199,23 +200,45 @@ left: 5px;
   text-align: center;
   padding-left: 0px;
   font-size: 15px;
-  margin-left: -6px;
+  margin-left: 0px;
   position: relative;
   top: 20px;
   overflow: hidden;
+   font-family: GravurCondensed Bold;
+   left: -5px;
 }
+
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+.record-button-cont {
+bottom: 7% !important;
+}
+}
+
 .record-button-cont {
   border: 4px solid;
-  width: 70px;
-  height: 70px;
+  width: 65px;
+  height: 65px;
   border-radius: 100px;
   /*margin: auto;*/
   padding: 10px;
   /*margin-top: 85px;*/
   position: absolute;
   margin: 40%;
-  bottom: 0px;
+  bottom: 7% !important;
 }
+
+@media only screen and (min-device-width : 414px) and (max-device-width : 736px) and (orientation : portrait) and (-webkit-min-device-pixel-ratio : 3) {
+.record-button-cont {
+bottom: 7% !important;
+}
+ }
+
+ @media only screen and (min-device-width : 375px) and (max-device-width : 667px) and (orientation : portrait) and (-webkit-min-device-pixel-ratio : 2) {
+.record-button-cont {
+bottom: 7% !important;
+}
+ }
 .recording-button-cont::after {
   content: 'RECORDING';
   font-weight: 300;
@@ -257,14 +280,18 @@ left: 5px;
 }
 .review-button-cont {
   border: 4px solid;
-  width: 75px;
-  height: 75px;
+  width: 65px;
+  height: 65px;
   border-radius: 100px;
   margin: auto;
-  padding: 23px;
+  padding: 20px;
   margin-top: 30px;
   margin-bottom: 30px;
   bottom: 0px;
+}
+
+.review-button-cont.radio {
+  padding: 18px;
 }
 
 .listen-button {
@@ -296,7 +323,7 @@ display: block;
 }
 .apology-title {
   text-align: center;
-  font-weight: 200;
+  font-weight: 300;
   font-size: 20px;
   padding-bottom: 60px;
   padding-top: 10px;
@@ -310,9 +337,9 @@ display: block;
   font-weight: 300;
   font-size: 24px;
   border-top: 2px solid white;
-  padding: 15px 0 5px 0;
+  padding: 5px 0 5px 0;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 .main-page-subtext {
   padding: 15px;
@@ -395,6 +422,12 @@ html, body {
   transition:0.15s linear all;
 }
 
+.space {
+  display: block;
+  height: 10px;
+  width: 100%;
+}
+
 .page-title {
   font-family: GravurCondensed Bold;
 font-size: 24px;
@@ -406,7 +439,7 @@ font-size: 24px;
 .landing-begin {
   position: absolute;
   z-index: 99999;
-  bottom: 75px;
+  bottom: 65px;
   left: 35px;
   font-weight: 200;
   font-size: 22px;
@@ -7023,6 +7056,7 @@ body {
   margin-bottom: 16px;
   font-size: 20px;
   font-weight: 300;
+  border-radius: 0 !important;
 }
 .forgot-buttons {
   text-align: right;

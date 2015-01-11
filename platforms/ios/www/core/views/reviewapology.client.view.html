@@ -5,7 +5,7 @@
 
 		<p class='main-page-text a-font' style="padding-left: 50px;padding-right: 50px;padding-top:1%;padding-bottom:1%;">Your apology has been recorded. Does it sound good?</p>
 
-		<div class='apology-prbar'>
+		<div class='apology-prbar' style="width: 80%">
 			<div class='prbar' style='width:{{ prBarWidth }}%'></div>
 			<div class='prbar-ghost'></div>
 			<p class='time-zero'>{{ timePlayed | time }}</p>
@@ -18,7 +18,7 @@
 			Your browser does not support the audio element.
 		</audio> -->		
 
-		<div class='review-button-cont' style="margin-top:4%;margin-bottom:4%">
+		<div class='review-button-cont radio' style="margin-top:4%;margin-bottom:4%">
 			<div ng-show='apologyStarted&&!apologyPaused' ng-click='stopMedia()' class='pause-button'>
 				<img src="./core/img/pause.png" alt="">
 			</div>
@@ -27,15 +27,15 @@
 			</div>
 		</div>
 		<center>
-        <p style="margin-bottom: 1%;" class="a-font">
-          If you like it, choose who<br/>to share with.  
+        <p style="margin-bottom: 4%;" class="a-font">
+          If you like it, choose who<br/>to share it with.  
         </p>
         </center>    
-		<div ng-click="chooseRecipient()" style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 7px;max-width: 200px;text-transform: uppercase;">Choose recipient</div>
-	<br>
+		<div ng-click="chooseRecipient()" class="g-font b" style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 5px;max-width: 200px;text-transform: uppercase; margin-bottom:20px">Choose recipient</div>
+	
 		<!-- upload anonamously so it just goes to server and doesn't send to anyone. it just plays on the radio-->
-		<div ng-click="ananymous()" style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 7px;max-width: 200px; text-transform: uppercase;">upload anonymously</div>
+		<div ng-click="ananymous()" class="g-font b" style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 5px;max-width: 200px; text-transform: uppercase;">upload anonymously</div>
 
-		<div style="margin-top: 20px;text-align: center;" ng-click="goTo('/signin')" >OR, START OVER</div>
+		<div class="g-font b" style="margin-top: 20px;text-align: center;" ng-click="goTo('/signin')" >OR, START OVER</div>
 	</div>
 </section>

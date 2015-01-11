@@ -10,7 +10,7 @@
                 <img src="./core/img/Apology.gif" width="250px" />
             </div>
             
-            <p class='apology-title g-font b' style="text-align:left;padding-bottom: 10px; width: 80%;font-size: 24px;text-shadow: -1px 1px 12px rgba(255, 255, 255, 0.4);">
+            <p class='apology-title g-font b' style="text-align:left !important;padding-bottom: 10px; width: 80%;font-size: 20px;text-shadow: -1px 1px 12px rgba(255, 255, 255, 0.4);">
             YOU ARE NOW LISTENING TO APOLOGY RADIO
             </p>
             <!--<div class="row" style="margin: 0px;padding: 0px;">
@@ -26,7 +26,7 @@
             {{ radio.timePlayed | number:0 }}
             </div>
         -->
-                    <div class='apology-prbar'>
+                    <div class='apology-prbar' style="width: 80%">
             <div class='prbar' style='width:{{ radio.prBarWidth }}%'></div>
             <div class='prbar-ghost'></div>
             <p class='time-zero'>{{ radio.timePlayed | time }}</p>
@@ -34,7 +34,7 @@
             <!--<p class='time-remaining' ng-show='!stopPlay'>:30</p>-->    
         </div>
 
-            <div class='review-button-cont'  style="margin-top: 4%;margin-bottom: 4%;">
+            <div class='review-button-cont radio'  style="margin-top: 4%;margin-bottom: 4%;">
                 <!--<div ng-show='radio.isPlaying' ng-click='radio.skip()' class='pause-button'>
                     <img src="./core/img/skip.png" alt="">
                 </div>-->
@@ -47,7 +47,7 @@
             </div>
 <!--            <div ng-click="radio.goTo('/')" ng-show='radio.isPlaying' style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 7px;max-width: 200px;margin-top: 20px;margin-bottom: 45px; text-transform: uppercase;">home</div>
 -->
-            <div ng-click="radio.flag()" style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 7px;max-width: 200px;margin-top: 4%; text-transform: uppercase;">flag</div>
+            <div ng-click="radio.flag()" class="g-font b" style="margin: auto;border-color: white;border-width: 2px;border-style: solid;border-radius: 30px;text-align: center;padding: 5px;max-width: 200px;margin-top: 4%; text-transform: uppercase;">flag</div>
 
         </div>
         <div class='apology-footer g-font b' ng-click="radio.goTo('/signin')">
